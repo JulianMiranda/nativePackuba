@@ -26,12 +26,10 @@ export const EnterPhoneScreen = () => {
 
   async function signIn(phoneNumber: any) {
     try {
-      console.log('Telf', phoneNumber);
       const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-      console.log('confirmation', confirmation);
+
       setConfirm(confirmation);
     } catch (error) {
-      console.log('error', error);
       Alert.alert(error);
     }
   }
