@@ -1,42 +1,74 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, View, Button, TextInput} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {Alert} from 'react-native';
+import auth from '@react-native-firebase/auth';
+import {AuthContext} from '../../context/auth/AuthContext';
+import PhoneNumber from './Phone';
+import VerifyCode from './Code';
+import Name from './Name';
+import {Loading} from '../../components/Loading';
 
-export default function PhoneNumber(props: any) {
-  const [phoneNumber, setPhoneNumber] = useState<any>();
+export const EnterPhoneScreen = () => {
+  const {signInPhone, wait} = useContext(AuthContext);
+  const [confirm, setConfirm] = useState<any>();
+  const [name, setName] = useState(false);
+  const [user, setUser] = useState<any>();
+  const [authenticated, setAuthenticated] = useState(false);
 
-  return (
-    <View style={styles.screen}>
-      <Text style={styles.text}>Enter Phone Number</Text>
-      <TextInput
-        autoFocus
-        style={styles.input}
-        value={phoneNumber}
-        onChangeText={setPhoneNumber}
+  useEffect(() => {
+    if (authenticated) {
+      if (user?.displayName !== null) {
+        signInPhone();
+      } else {
+        setName(true);
+      }
+    }
+  }, [authenticated]);
+
+  async function signIn(phoneNumber: any) {
+    try {
+      console.log('Telf', phoneNumber);
+      const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+      console.log('confirmation', confirmation);
+      setConfirm(confirmation);
+    } catch (error) {
+      console.log('error', error);
+      Alert.alert(error);
+    }
+  }
+
+  async function confirmVerificationCode(code: any) {
+    try {
+      await confirm.confirm(code);
+      setConfirm(null);
+    } catch (error) {
+      Alert.alert('El código que ingresaste no es correcto');
+    }
+  }
+
+  const showInputPhone = () => {
+    setConfirm(null);
+  };
+
+  auth().onAuthStateChanged(user => {
+    if (user) {
+      setUser(user);
+      setAuthenticated(true);
+    } else {
+      setAuthenticated(false);
+    }
+  });
+
+  if (wait) return <Loading />;
+
+  if (name) return <Name />;
+
+  if (confirm)
+    return (
+      <VerifyCode
+        onSubmit={confirmVerificationCode}
+        showInputPhone={showInputPhone}
       />
-      <Button
-        title="Phone Number Sign In"
-        onPress={() => props.onSubmit(phoneNumber)}
-      />
-    </View>
-  );
-}
+    );
 
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  input: {
-    borderWidth: 2,
-    borderColor: 'lightblue',
-    width: 300,
-    marginVertical: 30,
-    fontSize: 25,
-    padding: 10,
-    borderRadius: 8,
-  },
-  text: {
-    fontSize: 25,
-  },
-});
+  return <PhoneNumber onSubmit={signIn} />;
+};
