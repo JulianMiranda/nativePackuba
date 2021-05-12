@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack'; /* 
-import SplashScreen from 'react-native-splash-screen'; */
+import {createStackNavigator} from '@react-navigation/stack';
+import SplashScreen from 'react-native-splash-screen';
 import {ThemeContext} from '../context/theme/ThemeContext';
 import {AuthContext} from '../context/auth/AuthContext';
 import {Tabs} from './Tabs';
@@ -14,9 +14,9 @@ const Stack = createStackNavigator();
 export const StackNavigator = () => {
   const {status} = useContext(AuthContext);
   const {theme} = useContext(ThemeContext);
-  /* useEffect(() => {
+  useEffect(() => {
     SplashScreen.hide();
-  }, []); */
+  }, []);
   if (status === 'checking') return <Loading />;
   return (
     <NavigationContainer theme={theme}>
