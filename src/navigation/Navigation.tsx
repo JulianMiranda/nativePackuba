@@ -14,22 +14,25 @@ const Stack = createStackNavigator();
 export const StackNavigator = () => {
   const {status} = useContext(AuthContext);
   const {theme} = useContext(ThemeContext);
-  useEffect(() => {
+  /* useEffect(() => {
     SplashScreen.hide();
   }, []);
+  console.log(status); */
+
   if (status === 'checking') return <Loading />;
   return (
     <NavigationContainer theme={theme}>
       <Stack.Navigator
+      
         screenOptions={{
           headerShown: false,
-          cardStyle: {
-            /* 	backgroundColor: 'white' */
-          },
         }}>
         {status !== 'authenticated' ? (
           <>
-            <Stack.Screen name="InfoScreen" component={InfoScreen} />
+            <Stack.Screen            
+              name="InfoScreen"             
+              component={InfoScreen}
+            />
             <Stack.Screen
               name="EnterPhoneScreen"
               component={EnterPhoneScreen}

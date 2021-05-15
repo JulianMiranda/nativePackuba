@@ -5,13 +5,10 @@ import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Material from 'react-native-vector-icons/MaterialCommunityIcons';
-import {HomeScreen} from '../screens/Home/HomeScreen';
-import {SettingsScreen} from '../screens/Settings/SettingsScreen';
+import FontAws from 'react-native-vector-icons/FontAwesome5';
 import {ThemeContext} from '../context/theme/ThemeContext';
 import {IS_IPHONE_X} from '../utils/isIphone';
 import {TabBarAdvancedButton} from '../components/TabBarAdvancedButton';
-import {ShopScreen} from '../screens/Shop/ShopScreen';
 import {SettingsStack} from './SettingsStack';
 import {ShopStack} from './ShopStack';
 import {HomeStack} from './HomeStack';
@@ -46,7 +43,7 @@ export const Tabs = () => {
         inactiveTintColor: 'gray',
         style: styles.navigator,
         labelStyle: {
-          marginBottom: Platform.OS === 'ios' ? -5 : -5,
+          marginBottom: Platform.OS === 'ios' ? -5 : 3,
         },
         tabStyle: {
           backgroundColor: 'rgba(255,255,255,0.92)',
@@ -57,9 +54,9 @@ export const Tabs = () => {
         name="Home"
         component={HomeStack}
         options={{
-          title: '',
+          title: 'Tienda',
           tabBarIcon: ({color}) => (
-            <Material name="storefront-outline" size={22} color={color} />
+            <FontAws name="store" size={24} color={color} />
           ),
         }}
       />
@@ -77,7 +74,7 @@ export const Tabs = () => {
         name="Settings"
         component={SettingsStack}
         options={{
-          title: '',
+          title: 'Perfil',
           tabBarIcon: ({color}) => <Icon name="bars" size={24} color={color} />,
         }}
       />

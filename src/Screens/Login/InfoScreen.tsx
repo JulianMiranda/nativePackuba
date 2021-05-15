@@ -1,13 +1,17 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {ThemeContext} from '../../context/theme/ThemeContext';
+import SplashScreen from 'react-native-splash-screen';
 
 export const InfoScreen = () => {
   const navigation = useNavigation();
   const {
     theme: {colors},
   } = useContext(ThemeContext);
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
   return (
     <>
       <View style={styles.container}>

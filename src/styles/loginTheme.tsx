@@ -17,7 +17,7 @@ export const loginStyles = StyleSheet.create({
   },
   text: {
     color: 'black',
-    marginTop: 200,
+    marginTop: 100,
     margin: 30,
     fontSize: 16,
   },

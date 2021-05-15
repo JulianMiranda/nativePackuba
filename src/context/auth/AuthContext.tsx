@@ -60,6 +60,7 @@ export const AuthProvider = ({children}: any) => {
 						notificationTokens: [notificationTokens]
 					});
 			} */
+      console.log('aut', resp.data);
 
       dispatch({
         type: 'signUp',
