@@ -17,7 +17,7 @@ export default function Name() {
       <TextInput
         value={name}
         onChangeText={setName}
-        style={loginStyles.inputName}
+        style={{...loginStyles.inputName, color: 'black'}}
       />
       <TouchableOpacity
         activeOpacity={0.8}
