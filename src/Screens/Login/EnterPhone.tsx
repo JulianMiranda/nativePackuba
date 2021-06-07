@@ -30,7 +30,7 @@ export const EnterPhoneScreen = () => {
 
       setConfirm(confirmation);
     } catch (error) {
-      Alert.alert(error);
+      Alert.alert('Debe ingresar un número válido');
     }
   }
 

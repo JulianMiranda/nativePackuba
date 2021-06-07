@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
+import {LogBox} from 'react-native';
 import {StackNavigator} from './src/navigation/Navigation';
 import {AuthProvider} from './src/context/auth/AuthContext';
 import {ThemeProvider} from './src/context/theme/ThemeContext';
@@ -9,6 +10,12 @@ import 'moment/locale/es';
 moment.locale('es');
 
 const AppState = ({children}: any) => {
+  LogBox.ignoreLogs([
+    'Warning: isMounted(...) is deprecated', // works
+    'Module RCTImageLoader', // works
+    'Require cycle:', // doesn't work
+  ]);
+
   return (
     <AuthProvider>
       <ThemeProvider>

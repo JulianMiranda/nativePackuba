@@ -17,11 +17,13 @@ export const HomeScreen = (props: Props) => {
     theme: {colors},
   } = useContext(ThemeContext);
 
-  const {categoryList, loadCategories} = useCategoryPaginated();
+  const {categoryList, loadCategories, isLoading} = useCategoryPaginated();
 
   useEffect(() => {
-    SplashScreen.hide();
-  }, []);
+    if (!isLoading) {
+      SplashScreen.hide();
+    }
+  }, [isLoading]);
 
   return (
     <>
