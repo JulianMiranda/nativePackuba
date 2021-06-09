@@ -52,10 +52,10 @@ export const SingleSubcategory = ({item, root}: Props) => {
         <FadeInImage uri={item.images[0].url} style={styles.image} />
       </TouchableOpacity>
 
-      <View style={{flex: 6}}>
-        <Text style={styles.name}>{item.name}</Text>
+      <View style={{flex: 6, marginHorizontal: 5}}>
+        <Text style={{...styles.name, fontSize: 16}}>{item.name}</Text>
       </View>
-      <View style={{flex: 2}}>
+      <View style={{flex: 2, alignItems: 'center'}}>
         <Text style={styles.name}>{item.price}$</Text>
       </View>
       <View style={{flex: 3, flexDirection: 'row'}}>
@@ -149,6 +149,6 @@ const styles = StyleSheet.create({
   image: {
     height: 40,
     width: 40,
-    borderRadius: 100,
+    borderRadius: 13,
   },
 });

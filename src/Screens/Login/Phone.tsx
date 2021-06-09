@@ -1,8 +1,11 @@
 import React, {useContext, useRef, useState} from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
+import {Text, View, TouchableOpacity, TextInput} from 'react-native';
 import PhoneInput from 'react-native-phone-input';
 import {ThemeContext} from '../../context/theme/ThemeContext';
 import {loginStyles} from '../../styles/loginTheme';
+import CountryPicker from 'react-native-country-picker-modal';
+
+import {CountryCode, Country} from '../../utils/countryTypes';
 
 export default function PhoneNumber(props: any) {
   const {
@@ -17,21 +20,53 @@ export default function PhoneNumber(props: any) {
       setPhoneNumber(number);
     }
   };
+
+  const [countryCode, setCountryCode] = useState<CountryCode>('CU');
+
+  const onSelect = (country: Country) => {
+    setCountryCode(country.cca2);
+    inputRef.current.setValue(country.callingCode[0]);
+  };
+
   return (
     <View style={loginStyles.screen}>
       <Text style={loginStyles.title}>Ingresa tu número de teléfono móvil</Text>
       <View style={{marginLeft: 20, marginRight: 35}}>
-        <PhoneInput
-          ref={inputRef}
-          onChangePhoneNumber={onChangePhone}
-          initialCountry={'ec'}
-          textProps={{
-            placeholder: '0962914922',
-          }}
-          flagStyle={loginStyles.flagStyle}
-          textStyle={loginStyles.flagInputText}
-          style={{height: 45}}
-        />
+        <View style={{flexDirection: 'row'}}>
+          <View
+            style={{
+              backgroundColor: 'transparent',
+              width: '10%',
+              alignContent: 'center',
+              justifyContent: 'center',
+            }}>
+            <CountryPicker
+              {...{
+                countryCode,
+                onSelect,
+              }}
+              withFilter
+            />
+          </View>
+          <View
+            style={{
+              width: '100%',
+              alignContent: 'center',
+              justifyContent: 'center',
+            }}>
+            <PhoneInput
+              ref={inputRef}
+              onChangePhoneNumber={onChangePhone}
+              initialCountry={'cu'}
+              textProps={{
+                placeholder: '0962914922',
+              }}
+              flagStyle={loginStyles.flagStyle}
+              textStyle={loginStyles.flagInputText}
+              style={{height: 45}}
+            />
+          </View>
+        </View>
       </View>
 
       <TouchableOpacity
