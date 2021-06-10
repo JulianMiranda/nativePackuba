@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {LogBox} from 'react-native';
+import {LogBox, StatusBar} from 'react-native';
 import {StackNavigator} from './src/navigation/Navigation';
 import {AuthProvider} from './src/context/auth/AuthContext';
 import {ThemeProvider} from './src/context/theme/ThemeContext';
@@ -28,6 +28,11 @@ const AppState = ({children}: any) => {
 export const App = () => {
   return (
     <AppState>
+      <StatusBar
+        backgroundColor="rgba(255,255,255,0.92)"
+        translucent
+        barStyle={'dark-content'}
+      />
       <StackNavigator />
     </AppState>
   );

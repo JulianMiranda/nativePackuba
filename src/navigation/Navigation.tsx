@@ -1,4 +1,5 @@
 import React, {useContext, useEffect} from 'react';
+import {StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
@@ -23,16 +24,13 @@ export const StackNavigator = () => {
   return (
     <NavigationContainer theme={theme}>
       <Stack.Navigator
-      
+        /*  headerMode="none" */
         screenOptions={{
           headerShown: false,
         }}>
         {status !== 'authenticated' ? (
           <>
-            <Stack.Screen            
-              name="InfoScreen"             
-              component={InfoScreen}
-            />
+            <Stack.Screen name="InfoScreen" component={InfoScreen} />
             <Stack.Screen
               name="EnterPhoneScreen"
               component={EnterPhoneScreen}

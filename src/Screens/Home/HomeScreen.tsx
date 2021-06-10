@@ -1,5 +1,13 @@
 import React, {useContext, useEffect} from 'react';
-import {View, Text, Image, FlatList, Platform, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  Platform,
+  Dimensions,
+  StatusBar,
+} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {CategoryCard} from '../../components/CategoryCard';
 import {ThemeContext} from '../../context/theme/ThemeContext';
@@ -27,6 +35,7 @@ export const HomeScreen = (props: Props) => {
 
   return (
     <>
+      {/* <StatusBar backgroundColor="green" barStyle="light-content" /> */}
       <Image
         source={require('../../assets/LOGO1.png')}
         style={homeStyles.imageBG}

@@ -21,26 +21,26 @@ public class MainActivity extends ReactActivity {
   @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.show(this);  // here
-        hideNavigationBar();
+        //hideNavigationBar();
         super.onCreate(savedInstanceState);
     }
   
-  @Override
+  /*@Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
             hideNavigationBar();
         }
-    }
+    }*/
   @Override
   protected String getMainComponentName() {
     return "EnviosPackuba";
   }    
 
-    private void hideNavigationBar() {
+    /*private void hideNavigationBar() {
        getWindow().getDecorView().setSystemUiVisibility(
             View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-    }
+    }*/
 
 }
