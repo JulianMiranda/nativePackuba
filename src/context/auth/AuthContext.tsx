@@ -3,12 +3,15 @@ import React, {createContext, useEffect, useReducer} from 'react';
 import auth from '@react-native-firebase/auth';
 /* import firebase from 'firebase'; */
 
-import {getHeaders} from '../../api/getHeaders';
+import {getHeaders, getToken} from '../../api/getHeaders';
 
 import api from '../../api/api';
 import {User, LoginData, RegisterData} from '../../interfaces/User.interface';
 
-import {authReducer, AuthState} from './authReducer'; /* 
+import {authReducer, AuthState} from './authReducer';
+import messaging from '@react-native-firebase/messaging';
+
+/* 
 import {registerForPushNotifications} from '../../utils/notificationPermissions'; */
 
 type AuthContextProps = {
@@ -40,6 +43,22 @@ export const AuthProvider = ({children}: any) => {
     checkToken();
   }, []);
 
+  async function requestUserPermission() {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    const fcmToken = await messaging().getToken();
+    if (fcmToken) {
+      console.log('FCM', fcmToken);
+    }
+
+    if (enabled) {
+      console.log('Authorization status:', authStatus);
+    }
+  }
+
   const checkToken = async (isLogin = false) => {
     const headers = await getHeaders();
 
@@ -53,14 +72,11 @@ export const AuthProvider = ({children}: any) => {
       if (resp.status !== 200) {
         return dispatch({type: 'notAuthenticated'});
       }
-      /* if (isLogin && resp.data.role === 'JUN') {
-				const notificationTokens = await registerForPushNotifications();
-				if (notificationTokens !== '')
-					api.put(`/users/update/${resp.data.id}`, {
-						notificationTokens: [notificationTokens]
-					});
-			} */
-      console.log('aut', resp.data);
+      console.log(resp.data);
+
+      if (resp.data.role === 'JUN') {
+        requestUserPermission();
+      }
 
       dispatch({
         type: 'signUp',
