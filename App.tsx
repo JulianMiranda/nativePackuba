@@ -17,22 +17,24 @@ const AppState = ({children}: any) => {
   ]);
 
   return (
-    <AuthProvider>
-      <ThemeProvider>
-        <ShopProvider>{children}</ShopProvider>
-      </ThemeProvider>
-    </AuthProvider>
+    <>
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle={'dark-content'}
+      />
+      <AuthProvider>
+        <ThemeProvider>
+          <ShopProvider>{children}</ShopProvider>
+        </ThemeProvider>
+      </AuthProvider>
+    </>
   );
 };
 
 export const App = () => {
   return (
     <AppState>
-      <StatusBar
-        backgroundColor="rgba(255,255,255,0.92)"
-        translucent
-        barStyle={'dark-content'}
-      />
       <StackNavigator />
     </AppState>
   );

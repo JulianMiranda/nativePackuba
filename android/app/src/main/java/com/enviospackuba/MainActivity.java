@@ -23,6 +23,8 @@ public class MainActivity extends ReactActivity {
         SplashScreen.show(this);  // here
         //hideNavigationBar();
         super.onCreate(savedInstanceState);
+
+        
     }
   
   /*@Override
