@@ -26,10 +26,14 @@ export const EnterPhoneScreen = () => {
 
   async function signIn(phoneNumber: any) {
     try {
+      console.log(phoneNumber);
+
       const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
 
       setConfirm(confirmation);
     } catch (error) {
+      console.log(error);
+
       Alert.alert('Debe ingresar un número válido');
     }
   }
