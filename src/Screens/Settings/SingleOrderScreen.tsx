@@ -16,12 +16,7 @@ export const SingleOrderScreen = (props: Props) => {
   const colors = ['#2684FD', '#bae6f7'];
   return (
     <>
-      <TopScreen
-        colors={colors}
-        text="Compra"
-        backButton={false}
-        height={170}
-      />
+      <TopScreen colors={colors} text="Compra" backButton={true} height={170} />
       <ScrollView
         style={{
           flex: 1,

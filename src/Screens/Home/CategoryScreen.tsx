@@ -40,7 +40,7 @@ export const CategoryScreen = (props: Props) => {
   return (
     <>
       {/* Backbutton */}
-      <BackButton {...props} />
+      <BackButton navigation={navigation} />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}>

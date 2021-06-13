@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, Platform, StyleSheet} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {BackButton} from './BackButton';
@@ -14,9 +15,10 @@ interface Props {
 export const TopScreen = (props: Props) => {
   const {colors, text, backButton, height} = props;
   const {top} = useSafeAreaInsets();
+  const navigation = useNavigation();
   return (
     <>
-      {/*  {backButton && <BackButton {...props}/>} */}
+      {backButton && <BackButton navigation={navigation} />}
       <View
         style={{
           ...styles.headerContainer,

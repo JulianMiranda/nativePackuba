@@ -20,7 +20,7 @@ export const OrdersScreen = () => {
       <TopScreen
         colors={colors}
         text="Historial"
-        backButton={false}
+        backButton={true}
         height={170}
       />
       <ScrollView style={{padding: 20}}>
