@@ -15,6 +15,7 @@ import {ShopContext} from '../../context/shop/ShopContext';
 import {ThemeContext} from '../../context/theme/ThemeContext';
 import {HeaderTable} from '../../components/HeaderTable';
 import LinearGradient from 'react-native-linear-gradient';
+import {formatToCurrency} from '../../utils/formatToCurrency';
 
 export const ShopScreen = () => {
   const {
@@ -25,10 +26,10 @@ export const ShopScreen = () => {
 
   const {car, message, emptyCar, makeShop, removeAlert} =
     useContext(ShopContext);
-  const [total, setTotal] = useState(17.6);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    let total = 17.6;
+    let total = 0;
     car.forEach(function (item) {
       const valor = item.cantidad * item.subcategory.price;
       total += valor;
@@ -57,6 +58,7 @@ export const ShopScreen = () => {
       ],
     );
   };
+
   useEffect(() => {
     if (message.length === 0) return;
 
@@ -163,7 +165,7 @@ export const ShopScreen = () => {
                     textDecorationLine: 'underline', */,
                     fontFamily: 'NovaSlim-Regular',
                   }}>
-                  {total}$
+                  {formatToCurrency(total)}
                 </Text>
               </View>
             </>

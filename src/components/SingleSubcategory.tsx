@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {ShopContext} from '../context/shop/ShopContext';
 import {CarItemProps} from '../interfaces/Shop.Interface';
 import {Subcategory} from '../interfaces/Subcategory.interface';
+import {formatToCurrency} from '../utils/formatToCurrency';
 import {FadeInImage} from './FadeInImage';
 import {ModalComponent} from './Modal';
 
@@ -56,7 +57,9 @@ export const SingleSubcategory = ({item, root}: Props) => {
         <Text style={{...styles.name, fontSize: 16}}>{item.name}</Text>
       </View>
       <View style={{flex: 2, alignItems: 'center'}}>
-        <Text style={styles.name}>{item.price}$</Text>
+        <Text style={{...styles.name, fontSize: 12}}>
+          {formatToCurrency(item.price)}
+        </Text>
       </View>
       <View style={{flex: 3, flexDirection: 'row'}}>
         <TouchableOpacity

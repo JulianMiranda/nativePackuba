@@ -13,10 +13,14 @@ export const HeaderTable = ({editHeader}: Props) => {
           backgroundColor: '#f1f1f1',
           borderRadius: 10,
           padding: 10,
-          marginRight: 5,
         }}>
-        <View style={{flex: 4}}>
-          <Text style={{textAlign: 'left', fontFamily: 'NovaSlim-Regular'}}>
+        <View style={{flex: 6}}>
+          <Text
+            style={{
+              textAlign: 'left',
+              fontFamily: 'NovaSlim-Regular',
+              fontSize: 14,
+            }}>
             Producto
           </Text>
         </View>
@@ -24,18 +28,25 @@ export const HeaderTable = ({editHeader}: Props) => {
           <Text
             style={{
               fontFamily: 'NovaSlim-Regular',
-              textAlign: 'center',
-              marginLeft: 10,
+              textAlign: 'right',
+              marginRight: -5,
+              fontSize: 14,
             }}>
             Precio
           </Text>
         </View>
         <View
           style={{
-            flex: 2,
-            marginLeft: 5,
+            flex: 3,
+            marginLeft: 1,
           }}>
-          <Text style={{fontFamily: 'NovaSlim-Regular', textAlign: 'center'}}>
+          <Text
+            style={{
+              fontFamily: 'NovaSlim-Regular',
+              textAlign: 'center',
+              marginLeft: 7,
+              fontSize: 14,
+            }}>
             Cantidad
           </Text>
         </View>
