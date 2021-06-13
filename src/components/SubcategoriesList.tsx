@@ -6,21 +6,20 @@ import {HeaderTable} from './HeaderTable';
 import {SingleSubcategory} from './SingleSubcategory';
 
 interface Props {
-	subcategories: Subcategory[];
+  subcategories: Subcategory[];
 }
 
 export const SubcategoriesList = ({subcategories}: Props) => {
-	const {car, setItem} = useContext(ShopContext);
-	return (
-		<View
-			style={{
-				alignItems: 'flex-start',
-				marginTop: 50,
-				marginLeft: 10,
-				marginBottom: 70
-			}}
-		>
-			{/* <View style={{flexDirection: 'row', marginBottom: 5}}>
+  const {car, setItem} = useContext(ShopContext);
+  return (
+    <View
+      style={{
+        alignItems: 'flex-start',
+        marginTop: 50,
+        marginLeft: 10,
+        marginBottom: 70,
+      }}>
+      {/* <View style={{flexDirection: 'row', marginBottom: 5}}>
 				<View style={{flex: 4}}>
 					<Text style={{textAlign: 'left'}}>Elemento</Text>
 				</View>
@@ -34,10 +33,11 @@ export const SubcategoriesList = ({subcategories}: Props) => {
 					<Text style={{textAlign: 'center'}}>Añadir</Text>
 				</View>
 			</View> */}
-			<HeaderTable editHeader={'Añadir'} />
-			{subcategories.map((item, index) => (
-				<SingleSubcategory key={index.toString()} item={item} root={'Subca'} />
-			))}
-		</View>
-	);
+      <HeaderTable editHeader={'Añadir'} />
+
+      {subcategories.map((item, index) => (
+        <SingleSubcategory key={index.toString()} item={item} root={'Subca'} />
+      ))}
+    </View>
+  );
 };

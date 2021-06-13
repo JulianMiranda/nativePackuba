@@ -44,6 +44,8 @@ export const Tabs = () => {
         style: styles.navigator,
         labelStyle: {
           marginBottom: Platform.OS === 'ios' ? -5 : 3,
+          fontFamily: 'calibri-7',
+          fontSize: 11,
         },
         tabStyle: {
           backgroundColor: 'rgba(255,255,255,0.92)',

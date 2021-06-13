@@ -46,12 +46,12 @@ export const ShopScreen = () => {
       '¿Estás seguro que deseas vaciar el carrito?',
       [
         {
-          text: 'Cancel',
+          text: 'No',
           onPress: () => {},
           style: 'destructive',
         },
         {
-          text: 'Ok',
+          text: 'Sí',
           onPress: () => emptyCar(),
         },
       ],
@@ -62,12 +62,12 @@ export const ShopScreen = () => {
 
     Alert.alert('Paso obligatorio', message, [
       {
-        text: 'Cancel',
+        text: 'No',
         onPress: removeAlert,
         style: 'destructive',
       },
       {
-        text: 'Ok',
+        text: 'Sí',
         onPress: () => {
           removeAlert();
           Linking.openURL(
@@ -100,7 +100,7 @@ export const ShopScreen = () => {
             <Text
               style={{
                 ...styles.titleList,
-                top: top + 50,
+                top: top + 40,
               }}>
               Mi Compra
             </Text>
@@ -108,8 +108,8 @@ export const ShopScreen = () => {
         </View>
 
         {/* Detalles y Loading */}
-        <Text style={styles.tableTitle}>Productos</Text>
-        <View style={{marginLeft: 7}}>
+        {/*  <Text style={styles.tableTitle}>Productos</Text> */}
+        <View style={{marginLeft: 7, marginTop: 20}}>
           <View>
             <HeaderTable editHeader={'Quitar'} />
           </View>
@@ -128,12 +128,13 @@ export const ShopScreen = () => {
                 marginLeft: 10,
                 fontSize: 22,
                 fontWeight: '400',
+                fontFamily: 'NovaSlim-Regular',
               }}>
               Carrito vacío 😦
             </Text>
           ) : (
             <>
-              <Text
+              {/* <Text
                 style={{
                   marginTop: 50,
                   marginLeft: 10,
@@ -141,7 +142,7 @@ export const ShopScreen = () => {
                   fontWeight: '400',
                 }}>
                 Costo de envío: 17.60$
-              </Text>
+              </Text> */}
               <View style={{flexDirection: 'row'}}>
                 <Text
                   style={{
@@ -149,16 +150,18 @@ export const ShopScreen = () => {
                     marginLeft: 10,
                     fontSize: 26,
                     fontWeight: '400',
+                    fontFamily: 'NovaSlim-Regular',
                   }}>
-                  Valor a total:
+                  Valor total:
                 </Text>
                 <Text
                   style={{
                     marginTop: 30,
                     marginLeft: 10,
                     fontSize: 26,
-                    fontWeight: '600',
-                    textDecorationLine: 'underline',
+                    fontWeight: '600' /* 
+                    textDecorationLine: 'underline', */,
+                    fontFamily: 'NovaSlim-Regular',
                   }}>
                   {total}$
                 </Text>
@@ -169,14 +172,18 @@ export const ShopScreen = () => {
       </ScrollView>
       <View style={styles.emptyButton}>
         <TouchableOpacity onPress={emptyCarConfirm}>
-          <Text style={{color: colors.primary}}>Vaciar Carrito</Text>
+          <Text style={{color: colors.primary, fontFamily: 'NovaSlim-Regular'}}>
+            Vaciar Carrito
+          </Text>
         </TouchableOpacity>
       </View>
       <View style={{...styles.shopButton, backgroundColor: colors.primary}}>
         <TouchableOpacity
           activeOpacity={car.length < 1 ? 1 : 0.8}
           onPress={car.length < 1 ? () => {} : makeShopFunction}>
-          <Text style={{color: 'white'}}>Realizar Compra</Text>
+          <Text style={{color: 'white', fontFamily: 'NovaSlim-Regular'}}>
+            Realizar Compra
+          </Text>
         </TouchableOpacity>
       </View>
     </>
@@ -194,6 +201,7 @@ const styles = StyleSheet.create({
 
   titleList: {
     color: 'white',
+    fontFamily: 'NovaSlim-Regular',
     fontSize: 40,
     alignSelf: 'flex-start',
     left: 70,

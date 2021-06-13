@@ -43,7 +43,7 @@ export default function SettingsOptions() {
         <View
           key={index.toString()}
           style={{flexDirection: 'row', marginVertical: 10, marginLeft: 10}}>
-          <Icon name={menu.iconNameLeft} color="#ccc" size={32} />
+          <Icon name={menu.iconNameLeft} color={menu.color} size={32} />
           <TouchableOpacity
             onPress={menu.onPress}
             style={{
@@ -58,6 +58,7 @@ export default function SettingsOptions() {
                 fontSize: 22,
                 fontWeight: '500',
                 color: '#615e5e',
+                fontFamily: 'NovaSlim-Regular',
               }}>
               {menu.title}
             </Text>
@@ -87,6 +88,7 @@ function generateOptions(selectedComponent: any) {
       iconNameLeft: 'history',
       iconNameRight: 'chevron-right',
       iconSizeRight: 32,
+      color: '#2684FD',
       onPress: () => selectedComponent('historial'),
     },
     {
@@ -95,6 +97,7 @@ function generateOptions(selectedComponent: any) {
       iconNameLeft: 'whatsapp',
       iconNameRight: 'arrow-top-right',
       iconSizeRight: 26,
+      color: '#21e462',
       onPress: () => selectedComponent('whatsapp'),
     },
     {
@@ -103,6 +106,7 @@ function generateOptions(selectedComponent: any) {
       iconNameLeft: 'power',
       iconNameRight: 'chevron-right',
       iconSizeRight: 26,
+      color: '#fa1818',
       onPress: () => selectedComponent('logout'),
     },
   ];

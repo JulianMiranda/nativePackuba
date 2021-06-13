@@ -1,5 +1,11 @@
 import React, {useContext, useRef, useState} from 'react';
-import {Text, View, TouchableOpacity, TextInput} from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+  ActivityIndicator,
+} from 'react-native';
 import PhoneInput from 'react-native-phone-input';
 import {ThemeContext} from '../../context/theme/ThemeContext';
 import {loginStyles} from '../../styles/loginTheme';
@@ -46,6 +52,7 @@ export default function PhoneNumber(props: any) {
                 onSelect,
               }}
               withFilter
+              /* renderCountryFilter={placeholder='Buscar'} */
             />
           </View>
           <View
@@ -68,18 +75,24 @@ export default function PhoneNumber(props: any) {
           </View>
         </View>
       </View>
+      {props.isLoading ? (
+        <View style={{marginTop: 33}}>
+          <ActivityIndicator color={colors.card} />
+        </View>
+      ) : (
+        <TouchableOpacity
+          activeOpacity={phoneNumber ? 0.8 : 1}
+          style={{
+            backgroundColor: phoneNumber ? colors.card : '#abcffa',
+            alignSelf: 'center',
+            borderRadius: 16,
+            marginTop: 30,
+          }}
+          onPress={phoneNumber ? () => props.onSubmit(phoneNumber) : () => {}}>
+          <Text style={loginStyles.textButton}>Enviar código</Text>
+        </TouchableOpacity>
+      )}
 
-      <TouchableOpacity
-        activeOpacity={phoneNumber ? 0.8 : 1}
-        style={{
-          backgroundColor: phoneNumber ? colors.card : '#abcffa',
-          alignSelf: 'center',
-          borderRadius: 16,
-          marginTop: 30,
-        }}
-        onPress={phoneNumber ? () => props.onSubmit(phoneNumber) : () => {}}>
-        <Text style={loginStyles.textButton}>Enviar código</Text>
-      </TouchableOpacity>
       <Text style={loginStyles.text}>
         Si continúas, es posible que recibas un SMS de verificación. Peden
         aplicarse las tarifas de mensajes y datos

@@ -142,7 +142,8 @@ const styles = StyleSheet.create({
     marginBottom: 3,
   },
   name: {
-    fontSize: 20,
+    fontFamily: 'NovaSlim-Regular',
+    fontSize: 16,
     fontWeight: '400',
     marginVertical: 3,
   },

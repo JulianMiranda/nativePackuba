@@ -65,7 +65,7 @@ export const CategoryScreen = (props: Props) => {
                 style={{
                   ...styles.mainName,
                   top: top + 50,
-                  fontFamily: 'Montserrat-Light',
+                  fontFamily: 'NovaSlim-Regular',
                 }}>
                 {name + '\n'}
               </Text>

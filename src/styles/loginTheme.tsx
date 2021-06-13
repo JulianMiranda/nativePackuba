@@ -9,14 +9,16 @@ export const loginStyles = StyleSheet.create({
   },
   title: {
     color: 'black',
-    marginTop: 30,
-    marginBottom: 25,
-    fontSize: 22,
-    marginRight: 10,
-    textAlign: 'justify',
+    fontFamily: 'NovaSlim-Regular',
+    marginTop: 60,
+    marginBottom: 60,
+    fontSize: 28,
+    marginRight: 10 /* 
+    textAlign: 'justify', */,
   },
   text: {
     color: 'black',
+    fontFamily: 'NovaSlim-Regular',
     marginTop: 100,
     margin: 30,
     fontSize: 16,
@@ -43,11 +45,13 @@ export const loginStyles = StyleSheet.create({
   },
   flagInputText: {
     color: 'black',
-    fontSize: 25,
-    backgroundColor: '#DBEBFF',
+    fontSize: 22,
+    fontFamily: 'NovaSlim-Regular',
+    backgroundColor: '#f1f1f1' /* 
     borderBottomColor: 'rgba(0,0,0,0.92)',
-    borderBottomWidth: 2,
-    height: 30,
+    borderBottomWidth: 2, */,
+    borderRadius: 10,
+    height: 40,
     marginRight: 50,
   },
   flagStyle: {
@@ -57,9 +61,13 @@ export const loginStyles = StyleSheet.create({
   },
   backButton: {position: 'absolute', zIndex: 999999999, left: 20},
   inputName: {
+    /* 
     borderBottomColor: 'black',
-    borderBottomWidth: 2,
-    backgroundColor: '#DBEBFF',
+    borderBottomWidth: 2, */
+    borderRadius: 10,
+    marginHorizontal: 10,
+    marginBottom: 20,
+    backgroundColor: '#f1f1f1',
     height: 50,
     fontSize: 22,
   },
@@ -72,6 +80,7 @@ export const loginStyles = StyleSheet.create({
   },
   textButton: {
     textAlign: 'center',
+    fontFamily: 'NovaSlim-Regular',
     margin: 10,
     color: 'white',
   },

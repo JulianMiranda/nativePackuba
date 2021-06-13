@@ -13,6 +13,7 @@ export const EnterPhoneScreen = () => {
   const [name, setName] = useState(false);
   const [user, setUser] = useState<any>();
   const [authenticated, setAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (authenticated) {
@@ -26,24 +27,28 @@ export const EnterPhoneScreen = () => {
 
   async function signIn(phoneNumber: any) {
     try {
-      console.log(phoneNumber);
+      setIsLoading(true);
 
       const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
 
       setConfirm(confirmation);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
-
+      setIsLoading(false);
       Alert.alert('Debe ingresar un número válido');
     }
   }
 
   async function confirmVerificationCode(code: any) {
     try {
+      setIsLoading(true);
       await confirm.confirm(code);
       setConfirm(null);
+      setIsLoading(false);
     } catch (error) {
-      Alert.alert('El código que ingresaste no es correcto');
+      setIsLoading(false);
+      Alert.alert('El código ingresado no es correcto');
     }
   }
 
@@ -72,5 +77,5 @@ export const EnterPhoneScreen = () => {
       />
     );
 
-  return <PhoneNumber onSubmit={signIn} />;
+  return <PhoneNumber onSubmit={signIn} isLoading={isLoading} />;
 };

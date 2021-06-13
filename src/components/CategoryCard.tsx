@@ -35,9 +35,7 @@ export const CategoryCard = ({category}: Props) => {
           /* backgroundColor: 'red' */
         }}>
         <FadeInImage uri={category.image.url} style={styles.productImage} />
-        <Text style={{...styles.name, color: colors.text}}>
-          {category.name}
-        </Text>
+        <Text style={{...styles.name, color: '#3f3e3d'}}>{category.name}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -61,9 +59,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   name: {
-    fontFamily: 'Montserrat-Italic',
-    fontSize: 20,
-    /*fontWeight: 'bold', */
+    fontFamily: 'NovaSlim-Regular',
+    fontSize: 22,
     top: 4,
     left: 10,
   },

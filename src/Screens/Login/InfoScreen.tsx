@@ -3,19 +3,32 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {ThemeContext} from '../../context/theme/ThemeContext';
 import SplashScreen from 'react-native-splash-screen';
+import {TopScreen} from '../../components/TopScreen';
+import {LogoColors} from '../../components/LogoColors';
 
 export const InfoScreen = () => {
   const navigation = useNavigation();
   const {
     theme: {colors},
   } = useContext(ThemeContext);
+  const colorsBG = ['#2684FD', '#bae6f7'];
   useEffect(() => {
     SplashScreen.hide();
   }, []);
   return (
     <>
+      <TopScreen
+        colors={colorsBG}
+        text={`Bienvenido\n a `}
+        backButton={false}
+        height={210}
+      />
+      <View
+        style={{position: 'absolute', top: 140, right: 85, zIndex: 9999999}}>
+        <LogoColors />
+      </View>
       <View style={styles.container}>
-        <Text style={styles.title}>Bienvenido a Packuba</Text>
+        {/* <Text style={styles.title}>Bienvenido a PACKUBA</Text> */}
 
         <Text style={styles.text}>
           - Esta aplicación está hecha para envíos de Ecuador hacia Cuba
@@ -45,13 +58,15 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    marginBottom: 25,
+    fontFamily: 'NovaSlim-Regular',
+    fontSize: 28,
+    /*  fontWeight: 'bold',
+    marginBottom: 25, */
     alignSelf: 'center',
   },
   text: {
     fontSize: 22,
+    fontFamily: 'NovaSlim-Regular',
     fontWeight: '300',
     textAlign: 'left',
     marginVertical: 10,
@@ -67,6 +82,7 @@ const styles = StyleSheet.create({
   },
   textButton: {
     alignSelf: 'center',
+    fontFamily: 'NovaSlim-Regular',
     color: 'white',
     fontSize: 18,
     marginHorizontal: 20,
