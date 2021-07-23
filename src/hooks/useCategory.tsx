@@ -10,7 +10,7 @@ export const useCategory = (id: string) => {
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
 
   const loadSubcategories = async () => {
-    const body = {
+    const body = {      
       filter: {category: ['=', id], status: ['=', true]},
       population: [
         {

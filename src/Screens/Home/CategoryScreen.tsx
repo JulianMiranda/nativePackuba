@@ -42,6 +42,7 @@ export const CategoryScreen = (props: Props) => {
       {/* Backbutton */}
       <BackButton navigation={navigation} />
       <KeyboardAvoidingView
+     
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}>
         <ScrollView style={{flex: 1}}>
@@ -120,6 +121,7 @@ const styles = StyleSheet.create({
   },
   loadingIndicator: {
     flex: 1,
+    marginTop: 100,
     justifyContent: 'center',
     alignItems: 'center',
   },

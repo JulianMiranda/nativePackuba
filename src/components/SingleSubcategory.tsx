@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {ShopContext} from '../context/shop/ShopContext';
-import {CarItemProps} from '../interfaces/Shop.Interface';
 import {Subcategory} from '../interfaces/Subcategory.interface';
 import {formatToCurrency} from '../utils/formatToCurrency';
 import {FadeInImage} from './FadeInImage';
@@ -26,9 +25,10 @@ export const SingleSubcategory = ({item, root}: Props) => {
   const [buttonName, setButtonName] = useState('Add');
   const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(() => {
-    car.map(({subcategory, cantidad}) => {
-      if (subcategory.id === item.id) {
+  console.log('montar', item.name);
+  useEffect(() => {    
+    car.map(({subcategory, cantidad}) => {      
+      if (subcategory.id === item.id) {        
         setCantidad(cantidad.toString());
         setButtonName('Edit');
       } else {
@@ -84,8 +84,8 @@ export const SingleSubcategory = ({item, root}: Props) => {
             flex: 1,
             paddingHorizontal: 5,
             textAlign: 'center',
-          }}
-          keyboardType="number-pad"
+          }}          
+          keyboardType="numeric"
           value={cantidad}
           onChangeText={value => {
             if (root === 'Shop')

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Linking,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -19,6 +20,23 @@ export default function SettingsOptions() {
   const {user, logOut} = useContext(AuthContext);
   const {emptyCar} = useContext(ShopContext);
 
+  const sinOut = () => {
+    Alert.alert('Cerrar sesión', '¿Estás seguro que deseas cerrar sesión?', [
+      {
+        text: 'No',
+        onPress: () => {},
+        style: 'destructive',
+      },
+      {
+        text: 'Sí',
+        onPress: () => {
+          logOut();
+          emptyCar();
+        },
+      },
+    ]);
+  };
+
   const selectedComponent = (key: Key) => {
     switch (key) {
       case 'historial':
@@ -30,8 +48,7 @@ export default function SettingsOptions() {
         );
         break;
       case 'logout':
-        logOut();
-        emptyCar();
+        sinOut();
         break;
     }
   };

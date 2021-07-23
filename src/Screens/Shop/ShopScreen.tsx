@@ -131,6 +131,7 @@ export const ShopScreen = () => {
                 fontSize: 22,
                 fontWeight: '400',
                 fontFamily: 'NovaSlim-Regular',
+                alignSelf: 'center',           
               }}>
               Carrito vacío 😦
             </Text>
@@ -172,22 +173,25 @@ export const ShopScreen = () => {
           )}
         </View>
       </ScrollView>
-      <View style={styles.emptyButton}>
+      {car.length > 0 && <View style={styles.emptyButton}>
         <TouchableOpacity onPress={emptyCarConfirm}>
           <Text style={{color: colors.primary, fontFamily: 'NovaSlim-Regular'}}>
             Vaciar Carrito
           </Text>
         </TouchableOpacity>
-      </View>
+      </View> }
+      {car.length > 0 &&
       <View style={{...styles.shopButton, backgroundColor: colors.primary}}>
-        <TouchableOpacity
-          activeOpacity={car.length < 1 ? 1 : 0.8}
-          onPress={car.length < 1 ? () => {} : makeShopFunction}>
-          <Text style={{color: 'white', fontFamily: 'NovaSlim-Regular'}}>
-            Realizar Compra
-          </Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity
+        activeOpacity={car.length < 1 ? 1 : 0.8}
+        onPress={car.length < 1 ? () => {} : makeShopFunction}>
+        <Text style={{color: 'white', fontFamily: 'NovaSlim-Regular'}}>
+          Realizar Compra
+        </Text>
+      </TouchableOpacity>
+    </View>
+      }
+      
     </>
   );
 };

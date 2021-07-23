@@ -19,20 +19,7 @@ export const SubcategoriesList = ({subcategories}: Props) => {
         marginLeft: 10,
         marginBottom: 70,
       }}>
-      {/* <View style={{flexDirection: 'row', marginBottom: 5}}>
-				<View style={{flex: 4}}>
-					<Text style={{textAlign: 'left'}}>Elemento</Text>
-				</View>
-				<View style={{flex: 2}}>
-					<Text style={{textAlign: 'center', marginLeft: 10}}>Precio</Text>
-				</View>
-				<View style={{flex: 2, marginLeft: 5}}>
-					<Text style={{textAlign: 'center'}}>Cantidad</Text>
-				</View>
-				<View style={{flex: 2}}>
-					<Text style={{textAlign: 'center'}}>Añadir</Text>
-				</View>
-			</View> */}
+     
       <HeaderTable editHeader={'Añadir'} />
 
       {subcategories.map((item, index) => (

@@ -34,14 +34,17 @@ export const loginStyles = StyleSheet.create({
   cell: {
     width: 40,
     height: 40,
-    lineHeight: 38,
+    lineHeight: 30,
     fontSize: 24,
-    borderWidth: 2,
-    borderColor: '#00000030',
+    borderWidth: 0 /* 
+    backgroundColor: 'gray', */,
+    borderBottomColor: 'black',
+    borderBottomWidth: 2 /* 
+    borderColor: '#7a00002f', */,
     textAlign: 'center',
   },
   focusCell: {
-    borderColor: '#000',
+    borderColor: '#bb4747',
   },
   flagInputText: {
     color: 'black',

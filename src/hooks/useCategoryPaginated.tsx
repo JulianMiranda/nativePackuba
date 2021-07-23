@@ -11,6 +11,7 @@ export const useCategoryPaginated = () => {
     setIsLoading(true);
     const body = {
       filter: {status: ['=', true]},
+      sort: {createdAt: 'ASC'},
       population: [
         {
           path: 'image',
