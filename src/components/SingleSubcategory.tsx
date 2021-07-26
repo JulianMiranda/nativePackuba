@@ -24,8 +24,7 @@ export const SingleSubcategory = ({item, root}: Props) => {
   const [cantidad, setCantidad] = useState('1');
   const [buttonName, setButtonName] = useState('Add');
   const [isVisible, setIsVisible] = useState(false);
-
-  console.log('montar', item.name);
+  
   useEffect(() => {    
     car.map(({subcategory, cantidad}) => {      
       if (subcategory.id === item.id) {        
@@ -56,9 +55,12 @@ export const SingleSubcategory = ({item, root}: Props) => {
       <View style={{flex: 6, marginHorizontal: 5}}>
         <Text style={{...styles.name, fontSize: 16}}>{item.name}</Text>
       </View>
-      <View style={{flex: 2, alignItems: 'center'}}>
-        <Text style={{...styles.name, fontSize: 12}}>
+      <View style={{flex: 3, alignItems: 'center'}}>
+        <Text style={{...styles.name, fontSize: (parseInt(cantidad) > 5) ? 10 : 14, color: (parseInt(cantidad) > 5) ? 'gray' : 'black'}}>
           {formatToCurrency(item.price)}
+        </Text>
+        <Text style={{...styles.name, fontSize: (parseInt(cantidad) > 5) ? 14 : 10,color: (parseInt(cantidad) > 5) ? 'black' : 'gray'}}>
+          {formatToCurrency(item.priceGalore)}
         </Text>
       </View>
       <View style={{flex: 3, flexDirection: 'row'}}>

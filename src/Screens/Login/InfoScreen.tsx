@@ -31,15 +31,14 @@ export const InfoScreen = () => {
         {/* <Text style={styles.title}>Bienvenido a PACKUBA</Text> */}
 
         <Text style={styles.text}>
-          - Esta aplicación está hecha para envíos de Ecuador hacia Cuba
+        📦 Somos una agencia de compras radicada en Ecuador con destino a Cuba
         </Text>
 
         <Text style={styles.text}>
-          - Solo se podrá enviar un máximo de 10 paquetes por persona
+        📦 Ofrecemos productos para consumo personal y negocio
         </Text>
         <Text style={styles.text}>
-          - Se tendrá que contactar obligatoriamente vía Whatsapp al encargado
-          para registrar los detalles del envío
+        📦 Toda mercadería a partir de 6 unidades toma un precio por mayor 
         </Text>
       </View>
       <TouchableOpacity
@@ -56,6 +55,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 50,
     padding: 10,
+    marginRight: 10,
   },
   title: {
     fontFamily: 'NovaSlim-Regular',
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     fontFamily: 'NovaSlim-Regular',
     fontWeight: '300',
     textAlign: 'left',
-    marginVertical: 10,
+    marginVertical: 20,
   },
   button: {
     position: 'absolute',

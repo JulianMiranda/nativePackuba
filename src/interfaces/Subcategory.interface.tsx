@@ -18,6 +18,7 @@ export interface Subcategory {
 	images: Image[];
 	id: string;
 	price: number;
+	priceGalore: number;
 	currency: string;
 }
 

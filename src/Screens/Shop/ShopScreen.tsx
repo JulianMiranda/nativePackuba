@@ -31,8 +31,14 @@ export const ShopScreen = () => {
   useEffect(() => {
     let total = 0;
     car.forEach(function (item) {
-      const valor = item.cantidad * item.subcategory.price;
+      if(item.cantidad < 12){
+        const valor = item.cantidad * item.subcategory.price;
+        total += valor;
+      } else {
+        const valor = item.cantidad * item.subcategory.priceGalore;
       total += valor;
+      }
+      
     });
     setTotal(total);
   }, [car]);
