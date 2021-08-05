@@ -66,7 +66,7 @@ export default function OTP({onSubmit, showInputPhone}: any) {
           activeOpacity={verificationCode.length === 4 ? 0.8 : 1}
           style={{
             backgroundColor:
-              verificationCode.length === 6 ? colors.card : '#abcffa',
+              verificationCode.length === 4 ? colors.card : '#abcffa',
             alignSelf: 'center',
             borderRadius: 16,
             marginTop: 30,

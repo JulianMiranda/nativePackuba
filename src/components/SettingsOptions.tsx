@@ -12,8 +12,9 @@ import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {AuthContext} from '../context/auth/AuthContext';
 import {ShopContext} from '../context/shop/ShopContext';
+import { TandC } from './TandC';
 
-type Key = 'historial' | 'whatsapp' | 'logout';
+type Key = 'historial' | 'whatsapp' | 'logout' | 'about' | 'radar';
 
 export default function SettingsOptions() {
   const navigation = useNavigation();
@@ -42,9 +43,17 @@ export default function SettingsOptions() {
       case 'historial':
         navigation.navigate('OrdersScreen');
         break;
+      case 'about':
+        navigation.navigate('TandCScreen');
+        break;
       case 'whatsapp':
         Linking.openURL(
-          'http://api.whatsapp.com/send?text=Este es un mensaje predetermidado&phone=+593995687985',
+          'http://api.whatsapp.com/send?text=Hola Packuba, me podrías ayudar?&phone=+593962914922',
+        );
+        break;
+        case 'radar':
+        Linking.openURL(
+          'https://www.correos.cu/rastreador-de-envios/',
         );
         break;
       case 'logout':
@@ -109,6 +118,24 @@ function generateOptions(selectedComponent: any) {
       onPress: () => selectedComponent('historial'),
     },
     {
+      title: 'Rastrear mi Compra',
+      iconType: 'material-community',
+      iconNameLeft: 'radar',
+      iconNameRight: 'arrow-top-right',
+      iconSizeRight: 26,
+      color: '#f0ec22',
+      onPress: () => selectedComponent('radar'),
+    },
+    {
+      title: 'Sobre la Compra',
+      iconType: 'material-community',
+      iconNameLeft: 'shield-star-outline',
+      iconNameRight: 'chevron-right',
+      iconSizeRight: 26,
+      color: '#b621e4',
+      onPress: () => selectedComponent('about'),
+    },
+    {
       title: 'Contáctanos vía Whatsapp',
       iconType: 'material-community',
       iconNameLeft: 'whatsapp',
@@ -117,6 +144,7 @@ function generateOptions(selectedComponent: any) {
       color: '#21e462',
       onPress: () => selectedComponent('whatsapp'),
     },
+    
     {
       title: 'Cerrar sesión',
       iconType: 'material-community',
