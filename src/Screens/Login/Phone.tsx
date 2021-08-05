@@ -19,7 +19,9 @@ export default function PhoneNumber(props: any) {
   } = useContext(ThemeContext);
   const inputRef = useRef<any>();
   const [phoneNumber, setPhoneNumber] = useState('');
-
+  const [loading, setLoading] = useState(false);
+  
+  
   const onChangePhone = (number: string) => {
     if (inputRef.current.isValidNumber()) {
       inputRef.current.blur();
@@ -76,7 +78,7 @@ export default function PhoneNumber(props: any) {
           </View>
         </View>
       </View>
-      {props.isLoading ? (
+      {loading ? (
         <View style={{marginTop: 33}}>
           <ActivityIndicator color={colors.card} />
         </View>
@@ -89,7 +91,7 @@ export default function PhoneNumber(props: any) {
             borderRadius: 16,
             marginTop: 30,
           }}
-          onPress={phoneNumber ? () => props.onSubmit(phoneNumber) : () => {}}>
+          onPress={phoneNumber ? () => {setLoading(true);props.onSubmit(phoneNumber)} : () => {}}>
           <Text style={loginStyles.textButton}>Enviar código</Text>
         </TouchableOpacity>
       )}

@@ -36,9 +36,28 @@ export const EnterPhoneScreen = () => {
   async function signIn(phoneNumber: any) {
     try {
       setIsLoading(true);
+      api.get<Login>(
+        'generateToken/'+phoneNumber
+      ).then(async(resp)=> {
+        try {
+         if(resp.status === 200){
+          setUser(resp.data.user) 
+          await AsyncStorage.setItem('token', resp.data.token)}
+          if(resp.data.state=== 'Login'){
+            signInPhone(resp.data);
+          } else{
+           
+            setName(true);
+          }
+        } catch (error) {
+          console.log(error);
+          
+        }
+       
+      });
 /* 
       const confirmation = await auth().signInWithPhoneNumber(phoneNumber); */
-      ApiStack.sendOtp(phoneNumber).then((reqId: any)=> setReqId(reqId))
+     /*  ApiStack.sendOtp(phoneNumber).then((reqId: any)=> setReqId(reqId)) */
       /* setConfirm(confirmation); */
       setIsLoading(false);
     } catch (error) {
