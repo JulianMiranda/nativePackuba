@@ -24,6 +24,7 @@ export default function PhoneNumber(props: any) {
     if (inputRef.current.isValidNumber()) {
       inputRef.current.blur();
       setPhoneNumber(number);
+      props.setNumber(number);
     }
   };
 
@@ -94,7 +95,7 @@ export default function PhoneNumber(props: any) {
       )}
 
       <Text style={loginStyles.text}>
-        Si continúas, es posible que recibas un SMS de verificación. Peden
+        Si continúas, es posible que recibas un SMS de verificación. Pueden
         aplicarse las tarifas de mensajes y datos
       </Text>
     </View>

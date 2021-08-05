@@ -6,6 +6,10 @@ import PhoneNumber from './Phone';
 import VerifyCode from './Code';
 import Name from './Name';
 import {Loading} from '../../components/Loading';
+import ApiStack from './PhoneOtp';
+import api from '../../api/api';
+import { Login } from '../../interfaces/Login.interface';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const EnterPhoneScreen = () => {
   const {signInPhone, wait} = useContext(AuthContext);
@@ -14,8 +18,12 @@ export const EnterPhoneScreen = () => {
   const [user, setUser] = useState<any>();
   const [authenticated, setAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [reqId, setReqId] = useState('');
+  const [number, setNumber] = useState('');
+  
+  const [register, setRegister] = useState(false);
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (authenticated) {
       if (user?.displayName !== null) {
         signInPhone();
@@ -23,15 +31,15 @@ export const EnterPhoneScreen = () => {
         setName(true);
       }
     }
-  }, [authenticated]);
+  }, [authenticated]); */
 
   async function signIn(phoneNumber: any) {
     try {
       setIsLoading(true);
-
-      const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-
-      setConfirm(confirmation);
+/* 
+      const confirmation = await auth().signInWithPhoneNumber(phoneNumber); */
+      ApiStack.sendOtp(phoneNumber).then((reqId: any)=> setReqId(reqId))
+      /* setConfirm(confirmation); */
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -43,33 +51,66 @@ export const EnterPhoneScreen = () => {
   async function confirmVerificationCode(code: any) {
     try {
       setIsLoading(true);
-      await confirm.confirm(code);
-      setConfirm(null);
+      ApiStack.verifyOtp(reqId, code).then((resp)=> {
+        console.log(resp);
+        
+        if(resp){
+          console.log(resp);
+         api.get<Login>(
+            'generateToken/'+number
+          ).then(async(resp)=> {
+            try {
+             if(resp.status === 200){
+              setUser(resp.data.user) 
+              await AsyncStorage.setItem('token', resp.data.token)}
+              if(resp.data.state=== 'Login'){
+                signInPhone(resp.data);
+              } else{
+               
+                setName(true);
+              }
+            } catch (error) {
+              console.log(error);
+              
+            }
+           
+          });
+          
+        } else {
+          Alert.alert('El código ingresado no es correcto, por favor verifíquelo');
+        }
+      }
+        )
+      /* await confirm.confirm(code);
+      setConfirm(null); */
       setIsLoading(false);
+      
     } catch (error) {
       setIsLoading(false);
       Alert.alert('El código ingresado no es correcto');
     }
   }
 
+ 
+
   const showInputPhone = () => {
     setConfirm(null);
   };
 
-  auth().onAuthStateChanged(user => {
+  /* auth().onAuthStateChanged(user => {
     if (user) {
       setUser(user);
       setAuthenticated(true);
     } else {
       setAuthenticated(false);
     }
-  });
+  }); */
 
   if (wait) return <Loading />;
 
-  if (name) return <Name />;
+  if (name) return <Name user={user}/>;
 
-  if (confirm)
+  if (reqId)
     return (
       <VerifyCode
         onSubmit={confirmVerificationCode}
@@ -77,5 +118,5 @@ export const EnterPhoneScreen = () => {
       />
     );
 
-  return <PhoneNumber onSubmit={signIn} isLoading={isLoading} />;
+  return <PhoneNumber onSubmit={signIn} setNumber={setNumber} isLoading={isLoading} />;
 };

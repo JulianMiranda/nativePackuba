@@ -12,7 +12,7 @@ import {ThemeContext} from '../../context/theme/ThemeContext';
 import {loginStyles} from '../../styles/loginTheme';
 
 export default function OTP({onSubmit, showInputPhone}: any) {
-  const CELL_COUNT = 6;
+  const CELL_COUNT = 4;
   const {
     theme: {colors},
   } = useContext(ThemeContext);
@@ -63,7 +63,7 @@ export default function OTP({onSubmit, showInputPhone}: any) {
         />
 
         <TouchableOpacity
-          activeOpacity={verificationCode.length === 6 ? 0.8 : 1}
+          activeOpacity={verificationCode.length === 4 ? 0.8 : 1}
           style={{
             backgroundColor:
               verificationCode.length === 6 ? colors.card : '#abcffa',
@@ -72,7 +72,7 @@ export default function OTP({onSubmit, showInputPhone}: any) {
             marginTop: 30,
           }}
           onPress={
-            verificationCode.length === 6
+            verificationCode.length === 4
               ? () => onSubmit(verificationCode)
               : () => console.log('No Code valid')
           }>

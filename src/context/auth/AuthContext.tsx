@@ -10,6 +10,9 @@ import {User, LoginData, RegisterData} from '../../interfaces/User.interface';
 
 import {authReducer, AuthState} from './authReducer';
 import messaging from '@react-native-firebase/messaging';
+import { Login } from '../../interfaces/Login.interface';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /* 
 import {registerForPushNotifications} from '../../utils/notificationPermissions'; */
@@ -19,8 +22,8 @@ type AuthContextProps = {
   wait: boolean;
   user: User | null;
   errorMessage: string;
-  signUpPhone: (name: string) => void;
-  signInPhone: () => void;
+  signUpPhone: (name: string, user: any) => void;
+  signInPhone: (resp: Login) => void;
   logOut: () => void;
   removeError: () => void;
   loginB: () => void;
@@ -60,28 +63,28 @@ export const AuthProvider = ({children}: any) => {
   }
 
   const checkToken = async (isLogin = false) => {
-    const headers = await getHeaders();
-
+   /*  const headers = await getHeaders(); */
+  
+   const token = await AsyncStorage.getItem('token');
     // No token, no autenticado
-    if (!headers.get('x-token')) return dispatch({type: 'notAuthenticated'});
+    if (!token) return dispatch({type: 'notAuthenticated'});
 
     // Hay token
     try {
-      const resp = await api.get<User>('/login');
+      const resp = await api.get<Login>('/tokenRenew');
 
       if (resp.status !== 200) {
         return dispatch({type: 'notAuthenticated'});
       }
-      console.log(resp.data);
-
-      if (resp.data.role === 'JUN') {
+      await AsyncStorage.setItem('token', resp.data.token);
+      if (resp.data.user.role === 'JUN') {
         requestUserPermission();
       }
 
       dispatch({
         type: 'signUp',
         payload: {
-          user: resp.data,
+          user: resp.data.user,
         },
       });
     } catch (error) {
@@ -89,9 +92,10 @@ export const AuthProvider = ({children}: any) => {
     }
   };
 
-  const signInPhone = () => {
+  const signInPhone = async (resp: Login) => {
     try {
       dispatch({type: 'initCheck'});
+     
       checkToken(true);
     } catch (error) {
       dispatch({
@@ -101,10 +105,16 @@ export const AuthProvider = ({children}: any) => {
     }
   };
 
-  const signUpPhone = async (name: string) => {
+  const signUpPhone = async (name: string, user: any) => {
     dispatch({type: 'initCheck'});
     try {
-      auth()
+      api.put<Login>(
+        'users/update/'+user.id,
+        {name}
+      ).then(async(resp)=> {
+        checkToken(true);
+      });
+      /* auth()
         .currentUser?.updateProfile({
           displayName: name.trim(),
         })
@@ -119,7 +129,7 @@ export const AuthProvider = ({children}: any) => {
             type: 'addError',
             payload: 'Error al actualizar nombre',
           }),
-        );
+        ); */
     } catch (error) {
       dispatch({
         type: 'addError',
@@ -133,7 +143,7 @@ export const AuthProvider = ({children}: any) => {
   };
 
   const logOut = async () => {
-    auth().signOut();
+    AsyncStorage.removeItem('token');
     dispatch({type: 'logout'});
   };
 

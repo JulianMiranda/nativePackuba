@@ -10,7 +10,7 @@ import {AuthContext} from '../../context/auth/AuthContext';
 import {ThemeContext} from '../../context/theme/ThemeContext';
 import {loginStyles} from '../../styles/loginTheme';
 
-export default function Name() {
+export default function Name(props: any) {
   const {signUpPhone} = useContext(AuthContext);
   const {
     theme: {colors},
@@ -19,7 +19,7 @@ export default function Name() {
   const [loading, setLoading] = useState(false);
   const handleSave = () => {
     setLoading(true);
-    signUpPhone(name.trim());
+    signUpPhone(name.trim(), props.user);
   };
   return (
     <View style={loginStyles.screen}>
