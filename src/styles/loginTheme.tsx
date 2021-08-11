@@ -84,7 +84,9 @@ export const loginStyles = StyleSheet.create({
   textButton: {
     textAlign: 'center',
     fontFamily: 'NovaSlim-Regular',
-    margin: 10,
+    margin: 7,
+    fontSize: 18,
     color: 'white',
+    marginHorizontal: 20,
   },
 });

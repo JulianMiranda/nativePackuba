@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Text,
   View,
@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  ToastAndroid,
 } from 'react-native';
 
 import {StackScreenProps} from '@react-navigation/stack';
@@ -36,7 +37,28 @@ export const CategoryScreen = (props: Props) => {
   const {top} = useSafeAreaInsets();
 
   const {isLoading, subcategories} = useCategory(id);
+ 
+  const showToastWithGravityAndOffset = () => {
 
+    ToastAndroid.showWithGravityAndOffset(
+      "Todos los precios tienen el envío incluído",
+      ToastAndroid.LONG,
+      ToastAndroid.TOP,
+      25,
+      50
+    );
+
+    
+   
+  };
+  console.log(id);
+  
+  useEffect(() => {
+    if(id === '610c7275b33a5c00158b00a5'){
+      showToastWithGravityAndOffset();
+    }
+    
+  }, [])
   return (
     <>
       {/* Backbutton */}

@@ -14,7 +14,7 @@ import {AuthContext} from '../context/auth/AuthContext';
 import {ShopContext} from '../context/shop/ShopContext';
 import { TandC } from './TandC';
 
-type Key = 'historial' | 'whatsapp' | 'logout' | 'about' | 'radar';
+type Key = 'historial' | 'whatsapp' | 'logout' | 'about' | 'radar'| 'app';
 
 export default function SettingsOptions() {
   const navigation = useNavigation();
@@ -38,6 +38,46 @@ export default function SettingsOptions() {
     ]);
   };
 
+  const rastrearCompra = () => {
+    Alert.alert(
+      'Rastrear mi Compra',
+      '¿Desea ir a la página de Correos de Cuba?',
+      [
+        {
+          text: 'No',
+          onPress: () => {},
+          style: 'destructive',
+        },
+        {
+          text: 'Sí',
+          onPress: () =>  Linking.openURL(
+            'https://www.correos.cu/rastreador-de-envios/',
+          )
+        },
+      ],
+    );
+
+    };
+
+    const irWhatsApp = () => {
+    Alert.alert(
+      'Contáctanos vía WhatsApp',
+      '¿Necesita ayuda de un administrador?',
+      [
+        {
+          text: 'No',
+          onPress: () => {},
+          style: 'destructive',
+        },
+        {
+          text: 'Sí',
+          onPress: () =>  Linking.openURL(
+            'http://api.whatsapp.com/send?text=Hola 📦 *baría*, me podría ayudar?&phone=+593992918332',
+          )
+        },
+      ],
+    );
+    };
   const selectedComponent = (key: Key) => {
     switch (key) {
       case 'historial':
@@ -46,15 +86,16 @@ export default function SettingsOptions() {
       case 'about':
         navigation.navigate('TandCScreen');
         break;
+        case 'app':
+          navigation.navigate('TandCScreen');
+          break;
       case 'whatsapp':
-        Linking.openURL(
-          'http://api.whatsapp.com/send?text=Hola Packuba, me podrías ayudar?&phone=+593962914922',
-        );
+        irWhatsApp();
+        
         break;
         case 'radar':
-        Linking.openURL(
-          'https://www.correos.cu/rastreador-de-envios/',
-        );
+          rastrearCompra();
+       
         break;
       case 'logout':
         sinOut();
@@ -118,16 +159,25 @@ function generateOptions(selectedComponent: any) {
       onPress: () => selectedComponent('historial'),
     },
     {
-      title: 'Rastrear mi Compra',
+      title: 'Rastrear mi compra',
       iconType: 'material-community',
       iconNameLeft: 'radar',
       iconNameRight: 'arrow-top-right',
       iconSizeRight: 26,
-      color: '#f0ec22',
+      color: '#000000',
       onPress: () => selectedComponent('radar'),
     },
     {
-      title: 'Sobre la Compra',
+      title: 'Acerca de la aplicacón',
+      iconType: 'material-community',
+      iconNameLeft: 'google-play',
+      iconNameRight: 'chevron-right',
+      iconSizeRight: 26,
+      color: '#ecf024',
+      onPress: () => selectedComponent('app'),
+    },
+    {
+      title: 'Información al comprar',
       iconType: 'material-community',
       iconNameLeft: 'shield-star-outline',
       iconNameRight: 'chevron-right',
@@ -136,7 +186,7 @@ function generateOptions(selectedComponent: any) {
       onPress: () => selectedComponent('about'),
     },
     {
-      title: 'Contáctanos vía Whatsapp',
+      title: 'Contáctanos vía WhatsApp',
       iconType: 'material-community',
       iconNameLeft: 'whatsapp',
       iconNameRight: 'arrow-top-right',

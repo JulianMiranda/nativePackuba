@@ -5,12 +5,14 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import {useOrders} from '../../hooks/useOrders';
 import {Order} from '../../interfaces/Order.interface';
 import moment from 'moment';
 import {useNavigation} from '@react-navigation/native';
 import {TopScreen} from '../../components/TopScreen';
+import { formatToCurrency } from '../../utils/formatToCurrency';
 
 export const OrdersScreen = () => {
   const {orders} = useOrders();
@@ -23,13 +25,21 @@ export const OrdersScreen = () => {
         backButton={true}
         height={170}
       />
-      <ScrollView style={{padding: 20}}>
-        {/*  <Text style={styles.title}>Historial de Compras</Text> */}
-
-        {orders.map((item, index) => (
-          <OrderComponent singleOrder={item} key={index.toString()} />
-        ))}
-      </ScrollView>
+      <FlatList
+          data={orders}
+          keyExtractor={(category, index) => index.toString()}
+          showsVerticalScrollIndicator={false}
+         /*  numColumns={1} */
+          // Header
+          
+          renderItem={({item, index}) =>  <OrderComponent singleOrder={item} key={index.toString()} />}
+         
+          ListFooterComponent={
+            <View style={{height: 70}} />
+          
+          }
+        />
+    
     </>
   );
 };
@@ -45,7 +55,7 @@ const OrderComponent = ({singleOrder}: any) => {
       <Text style={styles.firstText}>
         Compra realizada {moment(order.createdAt).calendar()}
       </Text>
-      <Text style={styles.firstText}>Costo total {order.cost}$</Text>
+      <Text style={styles.firstText}>Valor de compra: {formatToCurrency(order.cost)}</Text>
       <Text style={{...styles.firstText, marginTop: 7, color: '#2684FD'}}>
         Ver Detalles
       </Text>

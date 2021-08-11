@@ -27,6 +27,8 @@ export const ShopProvider = ({children}: any) => {
   const {status, user} = useContext(AuthContext);
   const [state, dispatch] = useReducer(shopReducer, shopInicialState);
 
+ 
+
   useEffect(() => {
     if (status === 'authenticated') checkCar();
   }, [status]);
@@ -73,7 +75,8 @@ export const ShopProvider = ({children}: any) => {
         cost: total,
         car: state.car,
       });
-      if (a.status === 201) dispatch({type: 'empty_car'});
+      if (a.status === 201) {       
+        dispatch({type: 'empty_car'})};
     } else {
       dispatch({
         type: 'show_alert',

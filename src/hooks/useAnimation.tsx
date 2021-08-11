@@ -34,7 +34,7 @@ export const useAnimation = () => {
       // easing: Easing.bounce
     }).start();
   };
-
+ 
   return {
     opacity,
     position,

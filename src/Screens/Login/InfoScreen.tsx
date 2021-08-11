@@ -1,23 +1,29 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Alert, Modal, Pressable, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Alert, Modal, Pressable, ScrollView, Image, Animated} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {ThemeContext} from '../../context/theme/ThemeContext';
 import SplashScreen from 'react-native-splash-screen';
 import {TopScreen} from '../../components/TopScreen';
 import {LogoColors} from '../../components/LogoColors';
 import { TandC } from '../../components/TandC';
+import { useAnimation } from '../../hooks/useAnimation';
 
 export const InfoScreen = () => {
   const navigation = useNavigation();
   const {
     theme: {colors},
   } = useContext(ThemeContext);
+ const {opacity,position,startMovingPosition, fadeIn, fadeOut}= useAnimation()
   const colorsBG = ['#2684FD', '#bae6f7'];
   useEffect(() => {
     SplashScreen.hide();
   }, []);
   const [modalVisible, setModalVisible] = useState(false);
-  const [showText, setShowText] = useState(false);
+  const [showText1, setShowText1] = useState(false);
+  const [showText2, setShowText2] = useState(false);
+  const [open, setOpen] = useState(0);
+
+
   return (
     <>
     
@@ -31,13 +37,60 @@ export const InfoScreen = () => {
         style={{position: 'absolute', top: 140, right: 85, zIndex: 9999999}}>
         <LogoColors />
       </View>
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setShowText(!showText)}
+      <View style={{flex:1, justifyContent: 'center'}}>
+      {open !== 2 && 
+      <>
+      <Animated.View
+      style={{
+        backgroundColor: '#ffffff',
+       
+        opacity,
+        transform:[{
+          translateY: position,
+        }]
+      }}
       >
-        <Text style={styles.textStyle}>{showText ? '-    ' : '+    '}Qué debe usted saber antes de la compra</Text>
+      <Pressable
+        style={{...styles.button, ...styles.buttonOpen, backgroundColor: colors.card}}
+        onPress={() => {
+          fadeIn();
+         
+          if(showText1){
+            startMovingPosition(-100);
+            setShowText1(!showText1);
+            setOpen(0);
+          } else {
+            startMovingPosition(100);
+            setShowText1(!showText1);
+            setOpen(1);
+          }
+         }}
+      >
+        <Text style={styles.textStyle}>{showText1 ? '-    ' : '+    '}Qué debe saber usted antes de la compra</Text>
       </Pressable>
+      </Animated.View>
+      </>
+      }
+      {open !== 1 && <Pressable
+        style={{...styles.button, ...styles.buttonOpen, backgroundColor: colors.card}}
+        onPress={() => {if(showText2){
+          setShowText2(!showText2);
+          setOpen(0);
+        } else {
+          setShowText2(!showText2);
+          setOpen(2);
+        }
+      }}
+      >
+        <Text style={styles.textStyle}>{showText2 ? '-    ' : '+    '}Acerca de nuestra aplicacón</Text>
+      </Pressable>}
+      </View>
       <View style={styles.container}>
+        {open === 0 && <Image
+				source={require('../../assets/avion.jpg')}
+				style={{height: 150, width: 300, alignSelf: 'center', marginTop: 50}}
+			/>}
+      
         {/* <Text style={styles.title}>Bienvenido a PACKUBA</Text> */}
        {/*  <View style={styles.centeredView}> */}
       {/* <Modal
@@ -71,10 +124,26 @@ export const InfoScreen = () => {
       
       
     {/* </View> */}
-    {showText ? (
+    {showText1 && (
         <TandC/>
-      ):(
-        <>
+      )
+       
+       /*  <Text style={styles.text}>
+        📦 Somos una agencia de compras radicada en Ecuador con destino a Cuba
+        </Text>
+
+        <Text style={styles.text}>
+        📦 Ofrecemos productos para consumo personal y negocio
+        </Text>
+        <Text style={styles.text}>
+        📦 Toda mercadería a partir de 6 unidades toma un precio por mayor 
+        </Text> */
+        
+     
+      }
+
+{showText2 && (
+  <>
         <Text style={styles.text}>
         📦 Somos una agencia de compras radicada en Ecuador con destino a Cuba
         </Text>
@@ -86,15 +155,14 @@ export const InfoScreen = () => {
         📦 Toda mercadería a partir de 6 unidades toma un precio por mayor 
         </Text>
         </>
-      )
-      }
+      )}
        
       </View>
       <TouchableOpacity
-        style={{...styles.button, backgroundColor: colors.card, marginTop: 1, marginBottom: 10}}
+        style={{...styles.button, backgroundColor: '#b80204', marginTop: 1, marginBottom: 15}}
         activeOpacity={0.8}
         onPress={() => navigation.navigate('EnterPhoneScreen')}>
-        <Text style={styles.textButton}>Comencemos</Text>
+        <Text style={styles.textButton}>Comenzar</Text>
       </TouchableOpacity>
     </>
   );
@@ -159,7 +227,7 @@ const styles = StyleSheet.create({
   },
   
   buttonOpen: {
-    backgroundColor: "#bae6f7",
+    backgroundColor: "#b80204",
   },
   buttonClose: {
     backgroundColor: "#2196F3",

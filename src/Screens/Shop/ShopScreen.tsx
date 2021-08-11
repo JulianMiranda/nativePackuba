@@ -8,8 +8,11 @@ import {
   Platform,
   Alert,
   Linking,
+  TextInput,
+  Image,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/core';
 import {SingleSubcategory} from '../../components/SingleSubcategory';
 import {ShopContext} from '../../context/shop/ShopContext';
 import {ThemeContext} from '../../context/theme/ThemeContext';
@@ -27,7 +30,7 @@ export const ShopScreen = () => {
   const {car, message, emptyCar, makeShop, removeAlert} =
     useContext(ShopContext);
   const [total, setTotal] = useState(0);
-
+  const navigation = useNavigation();
   useEffect(() => {
     let total = 0;
     car.forEach(function (item) {
@@ -44,13 +47,37 @@ export const ShopScreen = () => {
   }, [car]);
 
   const makeShopFunction = () => {
-    makeShop(total);
+    Alert.alert(
+      '¡¡¡Gracias por su compra!!!',
+      'Para confirmar contactaremos con un administrador',
+      [
+        {
+          text: 'No',
+          onPress: () => {},
+          style: 'destructive',
+        },
+        {
+          text: 'Sí',
+          onPress: async () => {
+            
+           await makeShop(total);
+            /* navigation.navigate('HomeScreen'); */
+            Linking.openURL(
+              'http://api.whatsapp.com/send?text=Hola 📦 *baría*, he realizado una compra!&phone=+593992918332',
+            );
+          
+          }
+          ,
+        },
+      ],
+    );
+    /* makeShop(total); */
   };
 
   const emptyCarConfirm = () => {
     Alert.alert(
       'Vaciar carrito',
-      '¿Estás seguro que deseas vaciar el carrito?',
+      '¿Está seguro que desea vaciar el carrito?',
       [
         {
           text: 'No',
@@ -88,22 +115,20 @@ export const ShopScreen = () => {
 
   return (
     <>
-      <ScrollView style={{flex: 1}}>
-        {/* Heade Containerr */}
+      <ScrollView style={{flex: 1, marginBottom: 120}}>
+        
         <View
           style={{
             ...styles.headerContainer,
             overflow: 'hidden',
-            /* 	backgroundColor: color */
+           
           }}>
           <LinearGradient
             style={{
               flex: 1,
               width: '100%',
             }}
-            //start={{x: 0.5, y: 0.0}}
-            //end={{x: 0.1, y: 0.2}}
-            //colors={['#4c669f', '#3b5998', '#192f6a']}
+            
             colors={[color, '#f7baba']}>
             <Text
               style={{
@@ -115,8 +140,7 @@ export const ShopScreen = () => {
           </LinearGradient>
         </View>
 
-        {/* Detalles y Loading */}
-        {/*  <Text style={styles.tableTitle}>Productos</Text> */}
+        
         <View style={{marginLeft: 7, marginTop: 20}}>
           <View>
             <HeaderTable editHeader={'Quitar'} />
@@ -130,9 +154,11 @@ export const ShopScreen = () => {
           ))}
 
           {car.length < 1 ? (
+            <>
             <Text
               style={{
                 marginTop: 30,
+                marginBottom: 100,
                 marginLeft: 10,
                 fontSize: 22,
                 fontWeight: '400',
@@ -141,53 +167,73 @@ export const ShopScreen = () => {
               }}>
               Carrito vacío 😦
             </Text>
+            <Image source={require('../../assets/emtyCar.jpg')}
+				style={{height: 250, width: 250, alignSelf: 'center'}}/>
+            </>
           ) : (
-            <>
-              {/* <Text
-                style={{
-                  marginTop: 50,
-                  marginLeft: 10,
-                  fontSize: 22,
-                  fontWeight: '400',
-                }}>
-                Costo de envío: 17.60$
-              </Text> */}
+            <>         
+            <TextInput placeholder='Describa los detalles de su compra                                                                                     Ejemplo: Números, Colores, Marcas' multiline style={{backgroundColor: '#eeebeb',marginTop: 10, borderRadius: 8}}/>         
               <View style={{flexDirection: 'row'}}>
                 <Text
                   style={{
                     marginTop: 30,
                     marginLeft: 10,
-                    fontSize: 26,
+                    fontSize: 24,
                     fontWeight: '400',
                     fontFamily: 'NovaSlim-Regular',
                   }}>
-                  Valor total:
+                  Valor de compra:
                 </Text>
                 <Text
                   style={{
                     marginTop: 30,
                     marginLeft: 10,
                     fontSize: 26,
-                    fontWeight: '600' /* 
-                    textDecorationLine: 'underline', */,
+                    fontWeight: '600',
                     fontFamily: 'NovaSlim-Regular',
                   }}>
                   {formatToCurrency(total)}
                 </Text>
+               
               </View>
             </>
           )}
         </View>
+
+
+        {car.length > 0 && (
+        <View  style={{
+                    marginTop: 30,
+                    margin: 15,                    
+                    marginBottom: 20,
+                    padding: 10,
+                    borderRadius: 8,
+                    backgroundColor: '#dce8ff',
+
+                  }} >
+                <Text
+                  style={{
+                   
+                    marginLeft: 10,
+                    fontSize: 16,
+                    fontWeight: '400',
+                    fontFamily: 'NovaSlim-Regular',
+                  }}>
+                  *Para su envío, la compra se embalará en paquetes de 1.5 kg con un costo de $19.80 por paquete.
+                </Text>
+                </View>
+        )}
       </ScrollView>
+
       {car.length > 0 && <View style={styles.emptyButton}>
         <TouchableOpacity onPress={emptyCarConfirm}>
-          <Text style={{color: colors.primary, fontFamily: 'NovaSlim-Regular'}}>
+          <Text style={{color: colors.card, fontFamily: 'NovaSlim-Regular'}}>
             Vaciar Carrito
           </Text>
         </TouchableOpacity>
       </View> }
       {car.length > 0 &&
-      <View style={{...styles.shopButton, backgroundColor: colors.primary}}>
+      <View style={{...styles.shopButton, backgroundColor: colors.card ,marginLeft: 50}}>
       <TouchableOpacity
         activeOpacity={car.length < 1 ? 1 : 0.8}
         onPress={car.length < 1 ? () => {} : makeShopFunction}>
@@ -230,6 +276,8 @@ const styles = StyleSheet.create({
     marginVertical: 3,
   },
   shopButton: {
+    width: 150,
+    justifyContent: 'center',
     position: 'absolute',
     zIndex: 99999,
     bottom: 75,
@@ -238,9 +286,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-    borderRadius: 60,
+    borderRadius: 8, 
+   
   },
   emptyButton: {
+    width: 150,
+    justifyContent: 'center',
     position: 'absolute',
     bottom: 75,
     zIndex: 99999,
@@ -250,7 +301,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#eeebeb',
     padding: 10,
-    borderRadius: 60,
+    borderRadius: 8,
+  
   },
   tableTitle: {
     marginTop: 30,

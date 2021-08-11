@@ -37,7 +37,7 @@ export const HomeScreen = (props: Props) => {
     <>
       {/* <StatusBar backgroundColor="green" barStyle="light-content" /> */}
       <Image
-        source={require('../../assets/LOGO1.png')}
+        source={require('../../assets/bandera.jpg')}
         style={homeStyles.imageBG}
       />
 
@@ -61,8 +61,7 @@ export const HomeScreen = (props: Props) => {
         <Image
           source={require('../../assets/LOGO2.png')}
           style={{
-            /* position: 'absolute',
-						left: width / 2 - 120, */
+           
             alignSelf: 'center',
             marginTop: top + 5,
             height: 37,
@@ -71,7 +70,7 @@ export const HomeScreen = (props: Props) => {
             marginBottom: 5,
           }}
         />
-        {/* <PackubaName /> */}
+       
       </View>
 
       <View style={{alignItems: 'center'}}>

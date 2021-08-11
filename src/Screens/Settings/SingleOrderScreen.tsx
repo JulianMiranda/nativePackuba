@@ -5,6 +5,7 @@ import {ThemeContext} from '../../context/theme/ThemeContext';
 import {RootStackParams} from '../../navigation/SettingsStack';
 import moment from 'moment';
 import {TopScreen} from '../../components/TopScreen';
+import { formatToCurrency } from '../../utils/formatToCurrency';
 
 interface Props
   extends StackScreenProps<RootStackParams, 'SingleOrderScreen'> {}
@@ -28,7 +29,7 @@ export const SingleOrderScreen = (props: Props) => {
             fontWeight: '300',
             fontFamily: 'NovaSlim-Regular',
           }}>
-          Hecho {moment(order.createdAt).fromNow()}
+          Realizada {moment(order.createdAt).fromNow()}
         </Text>
         {/* <View style={{backgroundColor: '#f1f1f1', borderRadius: 10}}> */}
         <Text
@@ -61,7 +62,6 @@ export const SingleOrderScreen = (props: Props) => {
                 fontSize: 18,
                 marginLeft: 4,
               }}>
-              {''}
               {item.subcategory.name}
             </Text>
           </View>
@@ -70,12 +70,13 @@ export const SingleOrderScreen = (props: Props) => {
           style={{
             fontSize: 22,
             marginTop: 60,
+            marginBottom: 80,
             alignSelf: 'flex-end',
             marginRight: 10,
             fontWeight: '300',
             fontFamily: 'NovaSlim-Regular',
           }}>
-          Costo total {order.cost}$
+         Valor de compra: {formatToCurrency(order.cost)}
         </Text>
       </ScrollView>
     </>

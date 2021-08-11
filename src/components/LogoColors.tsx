@@ -13,7 +13,7 @@ export const LogoColors = () => {
 };
 const styles = StyleSheet.create({
   text: {
-    fontFamily: 'NovaSlim-Regular',
+    fontFamily: 'Berlin Sans FB Demi',
     fontSize: 36,
   },
 });

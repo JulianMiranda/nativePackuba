@@ -8,10 +8,10 @@ export const homeStyles = StyleSheet.create({
 	},
 	imageBG: {
 		position: 'absolute',
-		width: 350,
-		height: 350,
-		top: height / 2 - 100,
-		right: width / 2 - 175,
+		width: 300,
+		height: 200,
+		top: height / 2 - 60,
+		right: width / 2 - 150,
 		opacity: 0.2
 	},
 	title: {

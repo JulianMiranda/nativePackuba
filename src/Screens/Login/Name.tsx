@@ -36,15 +36,21 @@ export default function Name(props: any) {
         </View>
       ) : (
         <TouchableOpacity
-          activeOpacity={name.trim().length > 0 ? 0.8 : 1}
+          activeOpacity={name.trim().length > 2 ? 0.8 : 1}
           style={{
-            backgroundColor: name.trim().length > 0 ? colors.card : '#abcffa',
-            alignSelf: 'center',
-            borderRadius: 16,
+
+
+            padding: 1,
+            paddingHorizontal: 10,
+            borderRadius: 6,
             marginTop: 30,
-            paddingHorizontal: 15,
+
+
+
+            backgroundColor: name.trim().length > 2 ? colors.primary : '#f1b2b3',
+            alignSelf: 'center',
           }}
-          onPress={name.trim().length > 0 ? () => handleSave() : () => {}}>
+          onPress={name.trim().length > 2 ? () => handleSave() : () => {}}>
           <Text style={loginStyles.textButton}>Guardar</Text>
         </TouchableOpacity>
       )}

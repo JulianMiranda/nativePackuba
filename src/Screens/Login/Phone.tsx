@@ -80,19 +80,21 @@ export default function PhoneNumber(props: any) {
       </View>
       {loading ? (
         <View style={{marginTop: 33}}>
-          <ActivityIndicator color={colors.card} />
+          <ActivityIndicator color={colors.primary} />
         </View>
       ) : (
         <TouchableOpacity
           activeOpacity={phoneNumber ? 0.8 : 1}
           style={{
-            backgroundColor: phoneNumber ? colors.card : '#abcffa',
+            padding: 1,
+            paddingHorizontal: 10,
+            borderRadius: 6,
+            backgroundColor: phoneNumber ? colors.primary : '#f1b2b3',
             alignSelf: 'center',
-            borderRadius: 16,
             marginTop: 30,
           }}
           onPress={phoneNumber ? () => {setLoading(true);props.onSubmit(phoneNumber)} : () => {}}>
-          <Text style={loginStyles.textButton}>Enviar código</Text>
+          <Text style={loginStyles.textButton}>Continuar</Text>
         </TouchableOpacity>
       )}
 

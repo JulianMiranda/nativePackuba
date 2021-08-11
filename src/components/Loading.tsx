@@ -5,8 +5,8 @@ export const Loading = () => {
 	return (
 		<View style={{flex: 1, alignContent: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
 			<Image
-				source={require('../assets/points.gif')}
-				style={{height: 120, width: 120, alignSelf: 'center'}}
+				source={require('../assets/loading.gif')}
+				style={{height: 150, width: 150, alignSelf: 'center'}}
 			/>
 			{/* <ActivityIndicator /> */}
 		</View>
