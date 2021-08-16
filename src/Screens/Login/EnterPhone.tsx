@@ -16,22 +16,10 @@ export const EnterPhoneScreen = () => {
   const [confirm, setConfirm] = useState<any>();
   const [name, setName] = useState(false);
   const [user, setUser] = useState<any>();
-  const [authenticated, setAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [reqId, setReqId] = useState('');
   const [number, setNumber] = useState('');
   
-  const [register, setRegister] = useState(false);
-
-  /* useEffect(() => {
-    if (authenticated) {
-      if (user?.displayName !== null) {
-        signInPhone();
-      } else {
-        setName(true);
-      }
-    }
-  }, [authenticated]); */
 
   async function signIn(phoneNumber: any) {
     try {
@@ -45,8 +33,7 @@ export const EnterPhoneScreen = () => {
           await AsyncStorage.setItem('token', resp.data.token)}
           if(resp.data.state=== 'Login'){
             signInPhone(resp.data);
-          } else{
-           
+          } else{           
             setName(true);
           }
         } catch (error) {
@@ -55,10 +42,7 @@ export const EnterPhoneScreen = () => {
         }
        
       });
-/* 
-      const confirmation = await auth().signInWithPhoneNumber(phoneNumber); */
-     /*  ApiStack.sendOtp(phoneNumber).then((reqId: any)=> setReqId(reqId)) */
-      /* setConfirm(confirmation); */
+
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -84,8 +68,8 @@ export const EnterPhoneScreen = () => {
               await AsyncStorage.setItem('token', resp.data.token)}
               if(resp.data.state=== 'Login'){
                 signInPhone(resp.data);
-              } else{
-               
+
+              } else{               
                 setName(true);
               }
             } catch (error) {
@@ -100,8 +84,7 @@ export const EnterPhoneScreen = () => {
         }
       }
         )
-      /* await confirm.confirm(code);
-      setConfirm(null); */
+    
       setIsLoading(false);
       
     } catch (error) {
@@ -116,16 +99,7 @@ export const EnterPhoneScreen = () => {
     setConfirm(null);
   };
 
-  /* auth().onAuthStateChanged(user => {
-    if (user) {
-      setUser(user);
-      setAuthenticated(true);
-    } else {
-      setAuthenticated(false);
-    }
-  }); */
-
-  if (wait) return <Loading />;
+  /* if (wait) return <Loading />; */
 
   if (name) return <Name user={user}/>;
 

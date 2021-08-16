@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Text,
   View,
@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ToastAndroid,
+  Animated
 } from 'react-native';
 
 import {StackScreenProps} from '@react-navigation/stack';
@@ -23,6 +24,7 @@ import {BackButton} from '../../components/BackButton';
 import {useCategory} from '../../hooks/useCategory';
 import {SubcategoriesList} from '../../components/SubcategoriesList';
 import LinearGradient from 'react-native-linear-gradient';
+import { useAnimationXY } from '../../hooks/useAnimationXY';
 
 interface Props extends StackScreenProps<RootStackParams, 'CategoryScreen'> {}
 
@@ -36,33 +38,44 @@ export const CategoryScreen = (props: Props) => {
   } = category;
   const {top} = useSafeAreaInsets();
 
+  const [expanded, setExpanded] = useState(false);
+  const [infoButton, setInfoButton] = useState(false);
+
   const {isLoading, subcategories} = useCategory(id);
  
   const showToastWithGravityAndOffset = () => {
 
     ToastAndroid.showWithGravityAndOffset(
-      "Todos los precios tienen el envío incluído",
+      "\n ✅  Todos los precios de esta categoría tienen el envío incluído\n",
       ToastAndroid.LONG,
-      ToastAndroid.TOP,
+      ToastAndroid.CENTER,
       25,
       50
     );
 
     
    
-  };
-  console.log(id);
-  
+  };  
   useEffect(() => {
     if(id === '610c7275b33a5c00158b00a5'){
+      setInfoButton(true);
       showToastWithGravityAndOffset();
     }
     
-  }, [])
+  }, [expanded]);
+
   return (
     <>
       {/* Backbutton */}
       <BackButton navigation={navigation} />
+      {infoButton &&
+      <TouchableOpacity
+        style={{position: 'absolute',zIndex: 99999999, right: 30, top: top + 5,borderColor: 'white', borderWidth:1, borderRadius: 100, padding: 2}}
+        onPress={() => setExpanded(!expanded)}
+      >
+        <Text>❕</Text>
+      </TouchableOpacity>
+}
       <KeyboardAvoidingView
      
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -105,6 +118,7 @@ export const CategoryScreen = (props: Props) => {
           ) : (
             <SubcategoriesList subcategories={subcategories} />
           )}
+         
         </ScrollView>
       </KeyboardAvoidingView>
     </>

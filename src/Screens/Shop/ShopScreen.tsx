@@ -12,13 +12,13 @@ import {
   Image,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/core';
 import {SingleSubcategory} from '../../components/SingleSubcategory';
 import {ShopContext} from '../../context/shop/ShopContext';
 import {ThemeContext} from '../../context/theme/ThemeContext';
 import {HeaderTable} from '../../components/HeaderTable';
 import LinearGradient from 'react-native-linear-gradient';
 import {formatToCurrency} from '../../utils/formatToCurrency';
+import { ModalComponent } from '../../components/ModalComponent';
 
 export const ShopScreen = () => {
   const {
@@ -30,11 +30,17 @@ export const ShopScreen = () => {
   const {car, message, emptyCar, makeShop, removeAlert} =
     useContext(ShopContext);
   const [total, setTotal] = useState(0);
-  const navigation = useNavigation();
+  const [openModal, setOpenModal] = useState(false);
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
+  const [handleOpt, setHandleOpt] = useState(0);
+  const [description, setDescription] = useState('');
+  const [isLoading, setisLoading] = useState(false);
+  
   useEffect(() => {
     let total = 0;
     car.forEach(function (item) {
-      if(item.cantidad < 12){
+      if(item.cantidad < 6){
         const valor = item.cantidad * item.subcategory.price;
         total += valor;
       } else {
@@ -46,50 +52,50 @@ export const ShopScreen = () => {
     setTotal(total);
   }, [car]);
 
-  const makeShopFunction = () => {
-    Alert.alert(
-      '¡¡¡Gracias por su compra!!!',
-      'Para confirmar contactaremos con un administrador',
-      [
-        {
-          text: 'No',
-          onPress: () => {},
-          style: 'destructive',
-        },
-        {
-          text: 'Sí',
-          onPress: async () => {
-            
-           await makeShop(total);
+  const confirmModal = ()=>{
+    switch (handleOpt) {
+      case 0:
+        emptyCarConfirmed();
+        break;
+      case 1:
+        makeShopConfirmed();
+        break;
+       
+      default:
+        break;
+    }
+  }
+  const emptyCarConfirmed= () => {   
+    emptyCar();
+    setOpenModal(false);
+  }
+
+  const makeShopConfirmed= async() => { 
+    setisLoading(true); 
+    await makeShop(total, description);
+    setisLoading(false);
+    setOpenModal(false);
             /* navigation.navigate('HomeScreen'); */
             Linking.openURL(
               'http://api.whatsapp.com/send?text=Hola 📦 *baría*, he realizado una compra!&phone=+593992918332',
             );
-          
-          }
-          ,
-        },
-      ],
-    );
-    /* makeShop(total); */
+  }
+
+  const makeShopFunction = () => {
+
+    setHandleOpt(1);
+    setTitle('¡¡¡Gracias por su compra!!!');
+    setBody('Para confirmar contactaremos con un administrador');
+    setOpenModal(true);
+
   };
 
   const emptyCarConfirm = () => {
-    Alert.alert(
-      'Vaciar carrito',
-      '¿Está seguro que desea vaciar el carrito?',
-      [
-        {
-          text: 'No',
-          onPress: () => {},
-          style: 'destructive',
-        },
-        {
-          text: 'Sí',
-          onPress: () => emptyCar(),
-        },
-      ],
-    );
+    setHandleOpt(0);
+    setTitle('Vaciar carrito');
+    setBody('¿Está seguro que desea vaciar el carrito?');
+    setOpenModal(true);
+  
   };
 
   useEffect(() => {
@@ -172,7 +178,7 @@ export const ShopScreen = () => {
             </>
           ) : (
             <>         
-            <TextInput placeholder='Describa los detalles de su compra                                                                                     Ejemplo: Números, Colores, Marcas' multiline style={{backgroundColor: '#eeebeb',marginTop: 10, borderRadius: 8}}/>         
+            <TextInput onChangeText={setDescription} placeholder='Describa los detalles de su compra                                                                                     Ejemplo: Números, Colores, Marcas' multiline style={{backgroundColor: '#eeebeb',marginTop: 10, borderRadius: 8}}/>         
               <View style={{flexDirection: 'row'}}>
                 <Text
                   style={{
@@ -225,14 +231,16 @@ export const ShopScreen = () => {
         )}
       </ScrollView>
 
-      {car.length > 0 && <View style={styles.emptyButton}>
+      {car.length > 0 && 
+      <>
+      <View style={styles.emptyButton}>      
         <TouchableOpacity onPress={emptyCarConfirm}>
           <Text style={{color: colors.card, fontFamily: 'NovaSlim-Regular'}}>
             Vaciar Carrito
           </Text>
         </TouchableOpacity>
-      </View> }
-      {car.length > 0 &&
+      </View> 
+    
       <View style={{...styles.shopButton, backgroundColor: colors.card ,marginLeft: 50}}>
       <TouchableOpacity
         activeOpacity={car.length < 1 ? 1 : 0.8}
@@ -242,8 +250,9 @@ export const ShopScreen = () => {
         </Text>
       </TouchableOpacity>
     </View>
+    </>
       }
-      
+      <ModalComponent title={title} body={body} openModal={openModal} isLoading={isLoading} setOpenModal={setOpenModal} onConfirmModal={confirmModal}/>
     </>
   );
 };

@@ -59,13 +59,13 @@ export const HomeScreen = (props: Props) => {
           /* top: top, */
         }}>
         <Image
-          source={require('../../assets/LOGO2.png')}
+          source={require('../../assets/512x512.png')}
           style={{
            
             alignSelf: 'center',
             marginTop: top + 5,
             height: 37,
-            width: 180,
+            width: 100,
             marginRight: 30,
             marginBottom: 5,
           }}

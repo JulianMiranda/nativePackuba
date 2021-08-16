@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {AuthContext} from '../context/auth/AuthContext';
 import {ShopContext} from '../context/shop/ShopContext';
 import { TandC } from './TandC';
+import { ModalComponent } from './ModalComponent';
 
 type Key = 'historial' | 'whatsapp' | 'logout' | 'about' | 'radar'| 'app';
 
@@ -21,46 +22,68 @@ export default function SettingsOptions() {
   const {user, logOut} = useContext(AuthContext);
   const {emptyCar} = useContext(ShopContext);
 
+  const [openModal, setOpenModal] = useState(false);
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
+  const [handleOpt, setHandleOpt] = useState(0);
+
+  const confirmModal = ()=>{
+    switch (handleOpt) {
+      case 0:
+        closeSesion();
+        break;
+        case 1:
+        redirectWhatsapp();
+          break;
+        case 2:
+          redirectCorreo();
+          break;
+      default:
+        break;
+    }
+  }
+
+  const closeSesion= () => {
+    setOpenModal(false)
+    logOut();
+    emptyCar();
+  }
+
+  const redirectWhatsapp= () => {
+    setOpenModal(false)
+    Linking.openURL(
+      'http://api.whatsapp.com/send?text=Hola 📦 *baría*, me podría ayudar?&phone=+593992918332',
+    )
+  }
+
+  const redirectCorreo= () => {
+    setOpenModal(false)
+    Linking.openURL(
+      'https://www.correos.cu/rastreador-de-envios/',
+    )
+  }
+
   const sinOut = () => {
-    Alert.alert('Cerrar sesión', '¿Estás seguro que deseas cerrar sesión?', [
-      {
-        text: 'No',
-        onPress: () => {},
-        style: 'destructive',
-      },
-      {
-        text: 'Sí',
-        onPress: () => {
-          logOut();
-          emptyCar();
-        },
-      },
-    ]);
+    setHandleOpt(0);
+    setTitle('Cerrar sesión');
+    setBody('¿Estás seguro que deseas cerrar sesión?');
+    setOpenModal(true);
   };
 
   const rastrearCompra = () => {
-    Alert.alert(
-      'Rastrear mi Compra',
-      '¿Desea ir a la página de Correos de Cuba?',
-      [
-        {
-          text: 'No',
-          onPress: () => {},
-          style: 'destructive',
-        },
-        {
-          text: 'Sí',
-          onPress: () =>  Linking.openURL(
-            'https://www.correos.cu/rastreador-de-envios/',
-          )
-        },
-      ],
-    );
-
+    setHandleOpt(2);
+    setTitle('Rastrear mi Compra');
+    setBody('¿Desea ir a la página de Correos de Cuba?');
+    setOpenModal(true);
     };
 
     const irWhatsApp = () => {
-    Alert.alert(
+      setHandleOpt(1);
+      setTitle('Contáctanos vía WhatsApp');
+      setBody('¿Necesita ayuda de un administrador?');
+      setOpenModal(true);
+
+    /* Alert.alert(
       'Contáctanos vía WhatsApp',
       '¿Necesita ayuda de un administrador?',
       [
@@ -76,7 +99,7 @@ export default function SettingsOptions() {
           )
         },
       ],
-    );
+    ); */
     };
   const selectedComponent = (key: Key) => {
     switch (key) {
@@ -87,7 +110,7 @@ export default function SettingsOptions() {
         navigation.navigate('TandCScreen');
         break;
         case 'app':
-          navigation.navigate('TandCScreen');
+          navigation.navigate('AppScreen');
           break;
       case 'whatsapp':
         irWhatsApp();
@@ -143,6 +166,7 @@ export default function SettingsOptions() {
           )}
         </View>
       ))}
+      <ModalComponent isLoading={false} title={title} body={body} openModal={openModal} setOpenModal={setOpenModal} onConfirmModal={confirmModal}/>
     </ScrollView>
   );
 }

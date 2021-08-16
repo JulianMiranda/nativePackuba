@@ -7,6 +7,7 @@ import {ThemeContext} from '../context/theme/ThemeContext';
 import {Order} from '../interfaces/Order.interface';
 import {SingleOrderScreen} from '../screens/Settings/SingleOrderScreen';
 import { TandCScreen } from '../screens/Settings/TandCScreen';
+import { AppScreen } from '../screens/Settings/AppScreen';
 
 const Stack = createStackNavigator();
 
@@ -68,6 +69,15 @@ export const SettingsStack = () => {
       <Stack.Screen
         name="TandCScreen"
         component={TandCScreen}
+        options={{
+          headerShown: false,
+          /* title: 'Orden',
+          headerBackTitleVisible: false, */
+        }}
+      />
+       <Stack.Screen
+        name="AppScreen"
+        component={AppScreen}
         options={{
           headerShown: false,
           /* title: 'Orden',

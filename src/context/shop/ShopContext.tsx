@@ -14,7 +14,7 @@ type ShopContextProps = {
   unsetItem: (item: Subcategory) => void;
   emptyCar: () => void;
   removeAlert: () => void;
-  makeShop: (total: number) => void;
+  makeShop: (total: number, description: string) => void;
 };
 const shopInicialState: ShopState = {
   car: [],
@@ -67,13 +67,14 @@ export const ShopProvider = ({children}: any) => {
     dispatch({type: 'empty_car'});
   };
 
-  const makeShop = async (total: number) => {
+  const makeShop = async (total: number, description: string) => {
     const authorized = await api.get<User>(`/users/getOne/${user?.id}`);
     if (!authorized.data.authorized) {
       const a = await api.post('/orders/setOrder', {
         user: user!.id,
         cost: total,
         car: state.car,
+        description
       });
       if (a.status === 201) {       
         dispatch({type: 'empty_car'})};

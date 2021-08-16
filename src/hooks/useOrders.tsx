@@ -12,7 +12,7 @@ export const useOrders = () => {
 		const body = {
 			filter: {user: ['=', user?.id]}
 		};
-		const resp = await api.post<OrderResponse>('/orders/getList', {});
+		const resp = await api.post<OrderResponse>('/orders/getList', body);
 		setOrders(resp.data.data);
 		setIsLoading(false);
 	};

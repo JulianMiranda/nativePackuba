@@ -23,12 +23,13 @@ export const useAnimation = () => {
 
   const startMovingPosition = (
     initPosition: number,
+    finalPosition: number = 100,
     duration: number = 100,
   ) => {
     position.setValue(initPosition);
 
     Animated.timing(position, {
-      toValue: 0,
+      toValue: finalPosition,
       duration,
       useNativeDriver: true,
       // easing: Easing.bounce

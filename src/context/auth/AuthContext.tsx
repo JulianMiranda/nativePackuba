@@ -114,22 +114,7 @@ export const AuthProvider = ({children}: any) => {
       ).then(async(resp)=> {
         checkToken(true);
       });
-      /* auth()
-        .currentUser?.updateProfile({
-          displayName: name.trim(),
-        })
-        .then(async () => {
-          let forceRefresh = true;
-          await auth().currentUser?.getIdToken(forceRefresh);
-
-          checkToken(true);
-        })
-        .catch(() =>
-          dispatch({
-            type: 'addError',
-            payload: 'Error al actualizar nombre',
-          }),
-        ); */
+    
     } catch (error) {
       dispatch({
         type: 'addError',

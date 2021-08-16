@@ -89,7 +89,7 @@ export default function PhoneNumber(props: any) {
             padding: 1,
             paddingHorizontal: 10,
             borderRadius: 6,
-            backgroundColor: phoneNumber ? colors.primary : '#f1b2b3',
+            backgroundColor: phoneNumber ? '#b80204' : '#f1b2b3',
             alignSelf: 'center',
             marginTop: 30,
           }}

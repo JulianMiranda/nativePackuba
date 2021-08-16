@@ -1,10 +1,9 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Alert, Modal, Pressable, ScrollView, Image, Animated} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Pressable,  Image, Animated} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {ThemeContext} from '../../context/theme/ThemeContext';
 import SplashScreen from 'react-native-splash-screen';
 import {TopScreen} from '../../components/TopScreen';
-import {LogoColors} from '../../components/LogoColors';
 import { TandC } from '../../components/TandC';
 import { useAnimation } from '../../hooks/useAnimation';
 
@@ -18,7 +17,6 @@ export const InfoScreen = () => {
   useEffect(() => {
     SplashScreen.hide();
   }, []);
-  const [modalVisible, setModalVisible] = useState(false);
   const [showText1, setShowText1] = useState(false);
   const [showText2, setShowText2] = useState(false);
   const [open, setOpen] = useState(0);
@@ -26,16 +24,22 @@ export const InfoScreen = () => {
 
   return (
     <>
-    
+     
       <TopScreen
         colors={colorsBG}
-        text={`Bienvenido\n a `}
+        text={`Bienvenido\n `}
         backButton={false}
         height={210}
       />
+{/* <Image
+				source={require('../../assets/avion.jpg')}
+				style={{height: 170, width: 170, alignSelf: 'center', position: 'absolute', top: 10, right: 10}}
+			/> */}
       <View
-        style={{position: 'absolute', top: 140, right: 85, zIndex: 9999999}}>
-        <LogoColors />
+        style={{position: 'absolute', top: 85, right: 80, zIndex: 9999999}}>
+         
+
+       {/*  <LogoColors /> */}
       </View>
       <View style={{flex:1, justifyContent: 'center'}}>
       {open !== 2 && 
@@ -43,24 +47,23 @@ export const InfoScreen = () => {
       <Animated.View
       style={{
         backgroundColor: '#ffffff',
-       
-        opacity,
+       /* 
+        opacity, */
         transform:[{
           translateY: position,
         }]
       }}
       >
+    
       <Pressable
         style={{...styles.button, ...styles.buttonOpen, backgroundColor: colors.card}}
         onPress={() => {
-          fadeIn();
-         
           if(showText1){
-            startMovingPosition(-100);
+            startMovingPosition(-50,0); 
             setShowText1(!showText1);
             setOpen(0);
           } else {
-            startMovingPosition(100);
+            startMovingPosition(-50,-100);
             setShowText1(!showText1);
             setOpen(1);
           }
@@ -71,79 +74,48 @@ export const InfoScreen = () => {
       </Animated.View>
       </>
       }
-      {open !== 1 && <Pressable
+      {open !== 1 && 
+      
+      <Animated.View
+      style={{
+        backgroundColor: '#ffffff',
+       /* 
+        opacity, */
+        transform:[{
+          translateY: position,
+        }]
+      }}
+      >
+      <Pressable
         style={{...styles.button, ...styles.buttonOpen, backgroundColor: colors.card}}
         onPress={() => {if(showText2){
+          startMovingPosition(-50,0); 
           setShowText2(!showText2);
           setOpen(0);
         } else {
+          startMovingPosition(0,-100);
           setShowText2(!showText2);
           setOpen(2);
         }
       }}
       >
         <Text style={styles.textStyle}>{showText2 ? '-    ' : '+    '}Acerca de nuestra aplicacón</Text>
-      </Pressable>}
+      </Pressable>
+      </Animated.View>
+      }
       </View>
       <View style={styles.container}>
         {open === 0 && <Image
-				source={require('../../assets/avion.jpg')}
-				style={{height: 150, width: 300, alignSelf: 'center', marginTop: 50}}
+				source={require('../../assets/logo_splash.png')}
+				style={{height: 200, width: 270, alignSelf: 'center', marginTop: 50}}
 			/>}
-      
-        {/* <Text style={styles.title}>Bienvenido a PACKUBA</Text> */}
-       {/*  <View style={styles.centeredView}> */}
-      {/* <Modal
-        animationType="slide"
-        hardwareAccelerated
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal> */}
-     {/*  <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setShowText(!showText)}
-      >
-        <Text style={styles.textStyle}>{showText ? '- ' : '+ '}Qué debe usted saber antes de la compra</Text>
-      </Pressable> */}
-      
-      
-    {/* </View> */}
     {showText1 && (
+      <View style={{marginTop: -190}}>
         <TandC/>
-      )
-       
-       /*  <Text style={styles.text}>
-        📦 Somos una agencia de compras radicada en Ecuador con destino a Cuba
-        </Text>
-
-        <Text style={styles.text}>
-        📦 Ofrecemos productos para consumo personal y negocio
-        </Text>
-        <Text style={styles.text}>
-        📦 Toda mercadería a partir de 6 unidades toma un precio por mayor 
-        </Text> */
-        
-     
-      }
-
-{showText2 && (
-  <>
+        </View>
+      )}
+    {showText2 && (
+      <View style={{marginTop: -190}}>
         <Text style={styles.text}>
         📦 Somos una agencia de compras radicada en Ecuador con destino a Cuba
         </Text>
@@ -154,7 +126,7 @@ export const InfoScreen = () => {
         <Text style={styles.text}>
         📦 Toda mercadería a partir de 6 unidades toma un precio por mayor 
         </Text>
-        </>
+        </View>
       )}
        
       </View>

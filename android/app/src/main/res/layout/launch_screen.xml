@@ -7,10 +7,9 @@
     android:orientation="vertical">
 
     <FrameLayout
-        android:layout_width="292dp"
-        android:layout_height="363dp"
-        android:layout_gravity="center"
-        android:background="@drawable/logo123">
+        android:layout_width="294dp"
+        android:layout_height="222dp"
+        android:background="@drawable/logo_splash">
 
     </FrameLayout>
 </LinearLayout>

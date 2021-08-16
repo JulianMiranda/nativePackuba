@@ -32,7 +32,7 @@ export default function Name(props: any) {
       />
       {loading ? (
         <View style={{marginTop: 33}}>
-          <ActivityIndicator color={colors.card} />
+          <ActivityIndicator color={colors.primary} />
         </View>
       ) : (
         <TouchableOpacity
@@ -44,10 +44,7 @@ export default function Name(props: any) {
             paddingHorizontal: 10,
             borderRadius: 6,
             marginTop: 30,
-
-
-
-            backgroundColor: name.trim().length > 2 ? colors.primary : '#f1b2b3',
+            backgroundColor: name.trim().length > 2 ? '#b80204' : '#f1b2b3',
             alignSelf: 'center',
           }}
           onPress={name.trim().length > 2 ? () => handleSave() : () => {}}>
