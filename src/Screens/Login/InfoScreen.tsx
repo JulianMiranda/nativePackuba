@@ -6,6 +6,7 @@ import SplashScreen from 'react-native-splash-screen';
 import {TopScreen} from '../../components/TopScreen';
 import { TandC } from '../../components/TandC';
 import { useAnimation } from '../../hooks/useAnimation';
+import { AboutApp } from '../../components/AboutApp';
 
 export const InfoScreen = () => {
   const navigation = useNavigation();
@@ -116,16 +117,7 @@ export const InfoScreen = () => {
       )}
     {showText2 && (
       <View style={{marginTop: -190}}>
-        <Text style={styles.text}>
-        📦 Somos una agencia de compras radicada en Ecuador con destino a Cuba
-        </Text>
-
-        <Text style={styles.text}>
-        📦 Ofrecemos productos para consumo personal y negocio
-        </Text>
-        <Text style={styles.text}>
-        📦 Toda mercadería a partir de 6 unidades toma un precio por mayor 
-        </Text>
+        <AboutApp/>
         </View>
       )}
        
