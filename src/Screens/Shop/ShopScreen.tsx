@@ -19,6 +19,7 @@ import {HeaderTable} from '../../components/HeaderTable';
 import LinearGradient from 'react-native-linear-gradient';
 import {formatToCurrency} from '../../utils/formatToCurrency';
 import { ModalComponent } from '../../components/ModalComponent';
+import { AuthContext } from '../../context/auth/AuthContext';
 
 export const ShopScreen = () => {
   const {
@@ -26,6 +27,7 @@ export const ShopScreen = () => {
   } = useContext(ThemeContext);
   const color = colors.primary;
   const {top} = useSafeAreaInsets();
+  const {sendPrice} = useContext(AuthContext);
 
   const {car, message, emptyCar, makeShop, removeAlert} =
     useContext(ShopContext);
@@ -225,7 +227,7 @@ export const ShopScreen = () => {
                     fontWeight: '400',
                     fontFamily: 'NovaSlim-Regular',
                   }}>
-                  *Para su envío, la compra se embalará en paquetes de 1.5 kg con un costo de $19.80 por paquete.
+                  *Para su envío, la compra se embalará en paquetes de 1.5 kg con un costo de ${sendPrice} por paquete.
                 </Text>
                 </View>
         )}

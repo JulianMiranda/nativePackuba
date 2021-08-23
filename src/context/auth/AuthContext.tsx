@@ -1,9 +1,9 @@
 import React, {createContext, useEffect, useReducer} from 'react';
-
-import auth from '@react-native-firebase/auth';
+/* 
+import auth from '@react-native-firebase/auth'; */
 /* import firebase from 'firebase'; */
-
-import {getHeaders, getToken} from '../../api/getHeaders';
+/* 
+import {getHeaders, getToken} from '../../api/getHeaders'; */
 
 import api from '../../api/api';
 import {User, LoginData, RegisterData} from '../../interfaces/User.interface';
@@ -27,6 +27,7 @@ type AuthContextProps = {
   logOut: () => void;
   removeError: () => void;
   loginB: () => void;
+  sendPrice: number;
 };
 
 const authInicialState: AuthState = {
@@ -34,6 +35,7 @@ const authInicialState: AuthState = {
   wait: false,
   user: null,
   errorMessage: '',
+  sendPrice: 0,
 };
 
 export const AuthContext = createContext({} as AuthContextProps);
@@ -64,7 +66,9 @@ export const AuthProvider = ({children}: any) => {
 
   const checkToken = async (isLogin = false) => {
    /*  const headers = await getHeaders(); */
-  
+
+   const sendPrice = await api.get<number>('/orders/getPrice')
+   dispatch({type: 'setPrice', payload: sendPrice.data});
    const token = await AsyncStorage.getItem('token');
     // No token, no autenticado
     if (!token) return dispatch({type: 'notAuthenticated'});

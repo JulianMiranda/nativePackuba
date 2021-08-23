@@ -16,10 +16,14 @@ export const ModalComponent = ({isVisible, setIsVisible, images}: Props) => {
       transparent={true}
       onRequestClose={() => setIsVisible(false)}>
       <ImageViewer
-        imageUrls={images}
-        onSwipeDown={() => setIsVisible(false)}
-        enableSwipeDown
-        loadingRender={() => <ActivityIndicator />}
+       imageUrls={images}
+       onSwipeDown={() => setIsVisible(false)}
+       enableSwipeDown
+       backgroundColor={'rgba(0,0,0,0.8)'}
+       useNativeDriver
+       enablePreload
+      /*  renderImage={(image: ImageViewer) =>  {console.log(image); return <Text> {JSON.stringify(image)}</Text>}} */
+       loadingRender={() => <ActivityIndicator  color='#fb2331' size={32}/>}
       />
     </Modal>
   );

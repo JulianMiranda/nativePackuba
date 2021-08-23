@@ -1,12 +1,14 @@
-import React from 'react'
-import { Linking, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import React,{useContext} from 'react';
+import { Linking, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { AuthContext } from '../context/auth/AuthContext';
 
 export const TandC = () => {
+  const {sendPrice} = useContext(AuthContext);
     return (
         <ScrollView>
         <Text style={{...styles.text, fontSize: 26,}}>Estimado Cliente</Text>
         <Text style={{...styles.text, fontSize: 18,}}>•	Cada persona residente en Cuba puede recibir 30 paquetes al año, divididos en 10 cada dos meses.</Text>
-        <Text style={{...styles.text, fontSize: 18,}}>•	El peso máximo de cada paquete es de 1.50 kilogramos, con un costo de 19.80 USD por paquete.</Text>
+        <Text style={{...styles.text, fontSize: 18,}}>•	El peso máximo de cada paquete es de 1.50 kilogramos, con un costo de {sendPrice} USD por paquete.</Text>
         <Text style={{...styles.text, fontSize: 18,}}>•	Los artículos que excedan los 1.50 kilogramos tienen un costo mayor de envío según su peso y volumen, dichos artículos no pueden exceder los 200 puntos en valor de Aduanas de Cuba.</Text>
         <Text style={{...styles.text, fontSize: 18,}}>•	Para consultar los valores de Aduanas de Cuba recomendamos descargar la aplicación móvil NAC (Normas Aduaneras de Cuba).</Text>
         <Text style={{...styles.text, fontSize: 18,}}>•	Ofrecemos artículos para comercio y para consumo personal, el precio varía en dependencia de la cantidad de artículos seleccionados.</Text>
