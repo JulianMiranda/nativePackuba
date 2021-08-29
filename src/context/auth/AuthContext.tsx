@@ -44,6 +44,8 @@ export const AuthProvider = ({children}: any) => {
   const [state, dispatch] = useReducer(authReducer, authInicialState);
 
   useEffect(() => {
+    console.log('hacer authProv');
+    
     //auth().signOut();
     checkToken();
   }, []);
@@ -65,18 +67,30 @@ export const AuthProvider = ({children}: any) => {
   }
 
   const checkToken = async (isLogin = false) => {
+   
    /*  const headers = await getHeaders(); */
-
-   const sendPrice = await api.get<number>('/orders/getPrice')
-   dispatch({type: 'setPrice', payload: sendPrice.data});
+    try {
+      const sendPrice = await api.get<number>('/orders/getPrice');
+      dispatch({type: 'setPrice', payload: sendPrice.data});
+    } catch (error) {
+      await AsyncStorage.removeItem('token');
+      dispatch({type: 'notAuthenticated'})
+      console.log('no price');
+      
+    }
+ 
+  
    const token = await AsyncStorage.getItem('token');
     // No token, no autenticado
     if (!token) return dispatch({type: 'notAuthenticated'});
-
+  
     // Hay token
     try {
       const resp = await api.get<Login>('/tokenRenew');
-
+        
+      if (!resp.data.user.status) {
+        return dispatch({type: 'notAuthenticated'});
+      }
       if (resp.status !== 200) {
         return dispatch({type: 'notAuthenticated'});
       }

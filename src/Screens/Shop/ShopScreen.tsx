@@ -158,6 +158,7 @@ export const ShopScreen = () => {
               key={index.toString()}
               item={item.subcategory}
               root={'Shop'}
+              edit
             />
           ))}
 
@@ -179,7 +180,8 @@ export const ShopScreen = () => {
 				style={{height: 250, width: 250, alignSelf: 'center'}}/>
             </>
           ) : (
-            <>         
+            <>   
+                  
             <TextInput onChangeText={setDescription} placeholder='Describa los detalles de su compra                                                                                     Ejemplo: Números, Colores, Marcas' multiline style={{backgroundColor: '#eeebeb',marginTop: 10, borderRadius: 8}}/>         
               <View style={{flexDirection: 'row'}}>
                 <Text
@@ -204,6 +206,7 @@ export const ShopScreen = () => {
                 </Text>
                
               </View>
+    
             </>
           )}
         </View>
@@ -235,23 +238,25 @@ export const ShopScreen = () => {
 
       {car.length > 0 && 
       <>
-      <View style={styles.emptyButton}>      
-        <TouchableOpacity onPress={emptyCarConfirm}>
-          <Text style={{color: colors.card, fontFamily: 'NovaSlim-Regular'}}>
-            Vaciar Carrito
-          </Text>
-        </TouchableOpacity>
-      </View> 
+      <View style={{backgroundColor: 'gray'}}>
+        <View style={styles.emptyButton}>      
+          <TouchableOpacity onPress={emptyCarConfirm}>
+            <Text style={{color: colors.card, fontFamily: 'NovaSlim-Regular', fontSize: 14}}>
+              Vaciar
+            </Text>
+          </TouchableOpacity>
+        </View> 
     
-      <View style={{...styles.shopButton, backgroundColor: colors.card ,marginLeft: 50}}>
-      <TouchableOpacity
-        activeOpacity={car.length < 1 ? 1 : 0.8}
-        onPress={car.length < 1 ? () => {} : makeShopFunction}>
-        <Text style={{color: 'white', fontFamily: 'NovaSlim-Regular'}}>
-          Realizar Compra
-        </Text>
-      </TouchableOpacity>
-    </View>
+        <View style={{...styles.shopButton, backgroundColor: colors.card ,marginLeft: 50}}>
+            <TouchableOpacity
+                activeOpacity={car.length < 1 ? 1 : 0.8}
+                onPress={car.length < 1 ? () => {} : makeShopFunction}>
+              <Text style={{color: 'white', fontFamily: 'NovaSlim-Regular', fontSize: 14}}>
+               Comprar
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
     </>
       }
       <ModalComponent title={title} body={body} openModal={openModal} isLoading={isLoading} setOpenModal={setOpenModal} onConfirmModal={confirmModal}/>
@@ -287,7 +292,7 @@ const styles = StyleSheet.create({
     marginVertical: 3,
   },
   shopButton: {
-    width: 150,
+    width: 115,
     justifyContent: 'center',
     position: 'absolute',
     zIndex: 99999,
@@ -301,7 +306,7 @@ const styles = StyleSheet.create({
    
   },
   emptyButton: {
-    width: 150,
+    width: 115,
     justifyContent: 'center',
     position: 'absolute',
     bottom: 75,
