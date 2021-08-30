@@ -44,8 +44,8 @@ export const CategoryCard = ({category}: Props) => {
 const styles = StyleSheet.create({
   cardContainer: {
     marginHorizontal: 20,
-    height: 160,
-    width: 160,
+    height: width*0.38,
+    width: width*0.38,
     marginBottom: 60,
     borderRadius: 10,
     shadowColor: '#000',

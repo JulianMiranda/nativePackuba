@@ -83,8 +83,7 @@ export const ShopScreen = () => {
             );
   }
 
-  const makeShopFunction = () => {
-
+  const makeShopFunction = () => {   
     setHandleOpt(1);
     setTitle('¡¡¡Gracias por su compra!!!');
     setBody('Para confirmar contactaremos con un administrador');
@@ -238,7 +237,7 @@ export const ShopScreen = () => {
 
       {car.length > 0 && 
       <>
-      <View style={{backgroundColor: 'gray'}}>
+
         <View style={styles.emptyButton}>      
           <TouchableOpacity onPress={emptyCarConfirm}>
             <Text style={{color: colors.card, fontFamily: 'NovaSlim-Regular', fontSize: 14}}>
@@ -256,7 +255,7 @@ export const ShopScreen = () => {
               </Text>
             </TouchableOpacity>
           </View>
-        </View>
+
     </>
       }
       <ModalComponent title={title} body={body} openModal={openModal} isLoading={isLoading} setOpenModal={setOpenModal} onConfirmModal={confirmModal}/>

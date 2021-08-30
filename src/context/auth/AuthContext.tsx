@@ -75,8 +75,7 @@ export const AuthProvider = ({children}: any) => {
     } catch (error) {
       await AsyncStorage.removeItem('token');
       dispatch({type: 'notAuthenticated'})
-      console.log('no price');
-      
+     
     }
  
   

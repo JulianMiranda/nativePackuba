@@ -30,12 +30,17 @@ export const useCategory = (id: string) => {
         },
       ],
     };
-    const resp = await api.post<SubcategoryResp>(
-      '/subcategories/getList',
-      body,
-    );
-    setSubcategories(resp.data.data);
-    setIsLoading(false);
+    try {
+      const resp = await api.post<SubcategoryResp>(
+        '/subcategories/getList',
+        body,
+      );
+      setSubcategories(resp.data.data);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+    }
+    
   };
 
   useEffect(() => {
