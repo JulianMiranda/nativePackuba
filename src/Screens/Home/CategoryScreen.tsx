@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   Text,
   View,
@@ -9,7 +9,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   ToastAndroid,
-  Animated
+  Animated,
+  FlatList
 } from 'react-native';
 
 import {StackScreenProps} from '@react-navigation/stack';
@@ -21,10 +22,13 @@ import {FadeInImage} from '../../components/FadeInImage'; /*
 import { usePokemon } from '../hooks/usePokemon';
 import { PokemonDetails } from '../components/PokemonDetails'; */
 import {BackButton} from '../../components/BackButton';
-import {useCategory} from '../../hooks/useCategory';
+import {useSubcategoryPaginated} from '../../hooks/useSubcategoryPaginated';
 import {SubcategoriesList} from '../../components/SubcategoriesList';
 import LinearGradient from 'react-native-linear-gradient';
 import { useAnimationXY } from '../../hooks/useAnimationXY';
+import { HeaderTable } from '../../components/HeaderTable';
+import { SingleSubcategory } from '../../components/SingleSubcategory';
+import { ShopContext } from '../../context/shop/ShopContext';
 
 interface Props extends StackScreenProps<RootStackParams, 'CategoryScreen'> {}
 
@@ -41,7 +45,13 @@ export const CategoryScreen = (props: Props) => {
   const [expanded, setExpanded] = useState(false);
   const [infoButton, setInfoButton] = useState(false);
 
-  const {isLoading, subcategories} = useCategory(id);
+  const {isLoading, subcategories, loadSubcategories} = useSubcategoryPaginated(id);
+
+  const {car} = useContext(ShopContext);
+  const idsIncludes=[''];
+  car.map(({subcategory}) => {
+    idsIncludes.push(subcategory.id)
+  });
  
   const showToastWithGravityAndOffset = () => {
 
@@ -80,8 +90,64 @@ export const CategoryScreen = (props: Props) => {
      
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}>
-        <ScrollView style={{flex: 1}}>
-          {/* Heade Containerr */}
+
+        <FlatList
+          data={subcategories}
+          keyExtractor={(subcategory, index) => index.toString()}
+          showsVerticalScrollIndicator={false}
+          numColumns={1}
+          // Header
+          ListHeaderComponent={
+            <>
+            <View
+            style={{
+              ...styles.headerContainer,
+              overflow: 'hidden',
+            }}>
+            <LinearGradient
+              style={{
+                flex: 1,
+                width: '100%',
+              }}
+      
+              colors={[color, '#f7baba']}>
+              <Text
+                style={{
+                  ...styles.mainName,
+                  top: top + 50,
+                  fontFamily: 'NovaSlim-Regular',
+                }}>
+                {name + '\n'}
+              </Text>
+            </LinearGradient>
+          </View>
+          <FadeInImage uri={url} style={styles.mainImage} />
+          <View
+              style={{
+                alignItems: 'flex-start',
+                marginTop: 50,
+                marginLeft: 10,
+              }}>
+     
+      <HeaderTable editHeader={'Añadir'} />
+      </View>
+          </>
+          }
+          renderItem={({item}) => <SingleSubcategory  item={item} root={'Subca'} edit={idsIncludes.includes(item.id)} />}
+          // infinite scroll
+          onEndReached={loadSubcategories}
+					onEndReachedThreshold={0.4}
+					
+          ListFooterComponent={
+            <>
+            {isLoading && <ActivityIndicator /* style={{height: 50}} */ size={22} color={'#fb2331'} />}
+            
+            <View style={{height: 80}} />
+            </>
+          }
+        />
+        {/* <ScrollView style={{flex: 1}}>
+
 
           <View
             style={{
@@ -93,9 +159,7 @@ export const CategoryScreen = (props: Props) => {
                 flex: 1,
                 width: '100%',
               }}
-              //start={{x: 0.5, y: 0.0}}
-              //end={{x: 0.1, y: 0.2}}
-              //colors={['#4c669f', '#3b5998', '#192f6a']}
+      
               colors={[color, '#f7baba']}>
               <Text
                 style={{
@@ -109,8 +173,6 @@ export const CategoryScreen = (props: Props) => {
           </View>
           <FadeInImage uri={url} style={styles.mainImage} />
 
-          {/* Detalles y Loading */}
-
           {isLoading ? (
             <View style={styles.loadingIndicator}>
               <ActivityIndicator color={color} size={50} />
@@ -119,7 +181,7 @@ export const CategoryScreen = (props: Props) => {
             <SubcategoriesList subcategories={subcategories} />
           )}
          
-        </ScrollView>
+        </ScrollView> */}
       </KeyboardAvoidingView>
     </>
   );
