@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 3,
+    marginLeft: 5
   },
   name: {
     fontFamily: 'NovaSlim-Regular',

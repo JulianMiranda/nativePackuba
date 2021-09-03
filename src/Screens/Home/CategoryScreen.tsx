@@ -126,7 +126,7 @@ export const CategoryScreen = (props: Props) => {
               style={{
                 alignItems: 'flex-start',
                 marginTop: 50,
-                marginLeft: 10,
+                marginLeft: 8,
               }}>
      
       <HeaderTable editHeader={'Añadir'} />
