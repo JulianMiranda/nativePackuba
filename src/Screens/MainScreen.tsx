@@ -48,7 +48,7 @@ export const MainScreen = () => {
     </TouchableOpacity>
      </View>
      <Image
-				source={require('../assets/bariaPH.png')}
+				source={require('../assets/512x512.png')}
 				style={{height: 50, width: 80, alignSelf: 'center', marginTop: -50}}
 			/>
     </>

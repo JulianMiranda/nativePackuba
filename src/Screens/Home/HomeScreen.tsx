@@ -59,7 +59,7 @@ const navigation = useNavigation();
           /* top: top, */
         }}>
         <Image
-          source={require('../../assets/bariaPH.png')}
+     source={require('../../assets/bariaPH.png')}
           style={{
            
             alignSelf: 'center',
