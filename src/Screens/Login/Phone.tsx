@@ -12,11 +12,13 @@ import {loginStyles} from '../../styles/loginTheme';
 import CountryPicker from 'react-native-country-picker-modal';
 
 import {CountryCode, Country} from '../../utils/countryTypes';
+import { AuthContext } from '../../context/auth/AuthContext';
 
 export default function PhoneNumber(props: any) {
   const {
     theme: {colors},
   } = useContext(ThemeContext);
+  const {countryCode, countryCallCode, setCountryCode} = useContext(AuthContext);
   const inputRef = useRef<any>();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [loading, setLoading] = useState(false);
@@ -29,8 +31,6 @@ export default function PhoneNumber(props: any) {
       props.setNumber(number);
     }
   };
-
-  const [countryCode, setCountryCode] = useState<CountryCode>('CU');
 
   const onSelect = (country: Country) => {
     setCountryCode(country.cca2);
@@ -53,6 +53,7 @@ export default function PhoneNumber(props: any) {
               {...{
                 countryCode,
                 onSelect,
+                theme: {flagSizeButton: 25},
               }}
               withFilter
               /* renderCountryFilter={placeholder='Buscar'} */
@@ -67,7 +68,7 @@ export default function PhoneNumber(props: any) {
             <PhoneInput
               ref={inputRef}
               onChangePhoneNumber={onChangePhone}
-              initialCountry={'cu'}
+              initialCountry={countryCode.toLocaleLowerCase()}
               textProps={{
                 placeholder: '0962914922',
               }}

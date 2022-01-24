@@ -4,31 +4,23 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   ToastAndroid,
-  Animated,
   FlatList
 } from 'react-native';
 
 import {StackScreenProps} from '@react-navigation/stack';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-
 import {RootStackParams} from '../../navigation/HomeStack';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {FadeInImage} from '../../components/FadeInImage'; /* 
-import { usePokemon } from '../hooks/usePokemon';
-import { PokemonDetails } from '../components/PokemonDetails'; */
+import {FadeInImage} from '../../components/FadeInImage'; 
 import {BackButton} from '../../components/BackButton';
-import {useSubcategoryPaginated} from '../../hooks/useSubcategoryPaginated';
-import {SubcategoriesList} from '../../components/SubcategoriesList';
 import LinearGradient from 'react-native-linear-gradient';
-import { useAnimationXY } from '../../hooks/useAnimationXY';
-import { HeaderTable } from '../../components/HeaderTable';
 import { SingleSubcategory } from '../../components/SingleSubcategory';
+import { HeaderTable } from '../../components/HeaderTable';
 import { ShopContext } from '../../context/shop/ShopContext';
+import { useSubcategoryPaginated } from '../../hooks/useSubcategoryPaginated';
 
 interface Props extends StackScreenProps<RootStackParams, 'CategoryScreen'> {}
 
@@ -53,8 +45,11 @@ export const CategoryScreen = (props: Props) => {
     idsIncludes.push(subcategory.id)
   });
  
+
   const showToastWithGravityAndOffset = () => {
 
+   
+  
     ToastAndroid.showWithGravityAndOffset(
       "\n ✅  Todos los precios de esta categoría tienen el envío incluído\n",
       ToastAndroid.LONG,
@@ -65,7 +60,8 @@ export const CategoryScreen = (props: Props) => {
 
     
    
-  };  
+  }; 
+   
   useEffect(() => {
     if(id === '610c7275b33a5c00158b00a5'){
       setInfoButton(true);
@@ -86,103 +82,103 @@ export const CategoryScreen = (props: Props) => {
         <Text>❕</Text>
       </TouchableOpacity>
 }
-      <KeyboardAvoidingView
-     
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}>
+<KeyboardAvoidingView
 
-        <FlatList
-          data={subcategories}
-          keyExtractor={(subcategory, index) => index.toString()}
-          showsVerticalScrollIndicator={false}
-          numColumns={1}
-          // Header
-          ListHeaderComponent={
-            <>
-            <View
-            style={{
-              ...styles.headerContainer,
-              overflow: 'hidden',
-            }}>
-            <LinearGradient
-              style={{
-                flex: 1,
-                width: '100%',
-              }}
-      
-              colors={[color, '#f7baba']}>
-              <Text
-                style={{
-                  ...styles.mainName,
-                  top: top + 50,
-                  fontFamily: 'NovaSlim-Regular',
-                }}>
-                {name + '\n'}
-              </Text>
-            </LinearGradient>
-          </View>
-          <FadeInImage uri={url} style={styles.mainImage} />
-          <View
-              style={{
-                alignItems: 'flex-start',
-                marginTop: 50,
-                marginLeft: 8,
-              }}>
-     
-      <HeaderTable editHeader={'Añadir'} />
-      </View>
-          </>
-          }
-          renderItem={({item}) => <SingleSubcategory  item={item} root={'Subca'} edit={idsIncludes.includes(item.id)} />}
-          // infinite scroll
-          onEndReached={loadSubcategories}
-					onEndReachedThreshold={0.4}
-					
-          ListFooterComponent={
-            <>
-            {isLoading && <ActivityIndicator /* style={{height: 50}} */ size={22} color={'#fb2331'} />}
-            
-            <View style={{height: 80}} />
-            </>
-          }
-        />
-        {/* <ScrollView style={{flex: 1}}>
+     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+     style={{flex: 1}}>
 
-
-          <View
-            style={{
-              ...styles.headerContainer,
-              overflow: 'hidden',
-            }}>
-            <LinearGradient
-              style={{
-                flex: 1,
-                width: '100%',
-              }}
-      
-              colors={[color, '#f7baba']}>
-              <Text
-                style={{
-                  ...styles.mainName,
-                  top: top + 50,
-                  fontFamily: 'NovaSlim-Regular',
-                }}>
-                {name + '\n'}
-              </Text>
-            </LinearGradient>
-          </View>
-          <FadeInImage uri={url} style={styles.mainImage} />
-
-          {isLoading ? (
-            <View style={styles.loadingIndicator}>
-              <ActivityIndicator color={color} size={50} />
-            </View>
-          ) : (
-            <SubcategoriesList subcategories={subcategories} />
-          )}
+     <FlatList
+       data={subcategories}
+       keyExtractor={(subcategory, index) => index.toString()}
+       showsVerticalScrollIndicator={false}
+       numColumns={1}
+       // Header
+       ListHeaderComponent={
+         <>
+         <View
+         style={{
+           ...styles.headerContainer,
+           overflow: 'hidden',
+         }}>
+         <LinearGradient
+           style={{
+             flex: 1,
+             width: '100%',
+           }}
+   
+           colors={[color, '#eafcff']}>
+           <Text
+             style={{
+               ...styles.mainName,
+               top: top + 50,
+               fontFamily: 'NovaSlim-Regular',
+             }}>
+             {name + '\n'}
+           </Text>
+         </LinearGradient>
+       </View>
+       <FadeInImage uri={url} style={styles.mainImage} />
+       <View
+           style={{
+             alignItems: 'flex-start',
+             marginTop: 50,
+             marginLeft: 8,
+           }}>
+  
+   <HeaderTable editHeader={'Añadir'} />
+   </View>
+       </>
+       }
+       renderItem={({item}) => <SingleSubcategory  item={item} root={'Subca'} edit={idsIncludes.includes(item.id)} />}
+       // infinite scroll
+       onEndReached={loadSubcategories}
+       onEndReachedThreshold={0.4}
+       
+       ListFooterComponent={
+         <>
+         {isLoading && <ActivityIndicator /* style={{height: 50}} */ size={22} color={'#fb2331'} />}
          
-        </ScrollView> */}
-      </KeyboardAvoidingView>
+         <View style={{height: 80}} />
+         </>
+       }
+     />
+     {/* <ScrollView style={{flex: 1}}>
+
+
+       <View
+         style={{
+           ...styles.headerContainer,
+           overflow: 'hidden',
+         }}>
+         <LinearGradient
+           style={{
+             flex: 1,
+             width: '100%',
+           }}
+   
+           colors={[color, '#f7baba']}>
+           <Text
+             style={{
+               ...styles.mainName,
+               top: top + 50,
+               fontFamily: 'NovaSlim-Regular',
+             }}>
+             {name + '\n'}
+           </Text>
+         </LinearGradient>
+       </View>
+       <FadeInImage uri={url} style={styles.mainImage} />
+
+       {isLoading ? (
+         <View style={styles.loadingIndicator}>
+           <ActivityIndicator color={color} size={50} />
+         </View>
+       ) : (
+         <SubcategoriesList subcategories={subcategories} />
+       )}
+      
+     </ScrollView> */}
+   </KeyboardAvoidingView>
     </>
   );
 };

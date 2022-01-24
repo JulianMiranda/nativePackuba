@@ -117,7 +117,7 @@ export const InfoScreen = () => {
       )}
     {showText2 && (
       <View style={{marginTop: -190}}>
-        <AboutApp/>
+         <AboutApp/>
         </View>
       )}
        

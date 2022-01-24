@@ -15,11 +15,11 @@ import {ShopContext} from '../context/shop/ShopContext';
 import { TandC } from './TandC';
 import { ModalComponent } from './ModalComponent';
 
-type Key = 'historial' | 'whatsapp' | 'logout' | 'about' | 'radar'| 'app';
+type Key = 'historial' | 'whatsapp' | 'logout' | 'about' | 'radar'| 'app'| 'money';
 
 export default function SettingsOptions() {
   const navigation = useNavigation();
-  const {user, logOut} = useContext(AuthContext);
+  const {user, logOut, setMoney} = useContext(AuthContext);
   const {emptyCar} = useContext(ShopContext);
 
   const [openModal, setOpenModal] = useState(false);
@@ -83,23 +83,6 @@ export default function SettingsOptions() {
       setBody('¿Necesita ayuda de un administrador?');
       setOpenModal(true);
 
-    /* Alert.alert(
-      'Contáctanos vía WhatsApp',
-      '¿Necesita ayuda de un administrador?',
-      [
-        {
-          text: 'No',
-          onPress: () => {},
-          style: 'destructive',
-        },
-        {
-          text: 'Sí',
-          onPress: () =>  Linking.openURL(
-            'http://api.whatsapp.com/send?text=Hola 📦 *baría*, me podría ayudar?&phone=+593992918332',
-          )
-        },
-      ],
-    ); */
     };
   const selectedComponent = (key: Key) => {
     switch (key) {
@@ -117,9 +100,14 @@ export default function SettingsOptions() {
         
         break;
         case 'radar':
+          //navigation.navigate('TrackScreen');
           rastrearCompra();
-       
         break;
+
+        case 'money':
+          setMoney();
+          break;
+
       case 'logout':
         sinOut();
         break;
@@ -145,7 +133,7 @@ export default function SettingsOptions() {
             <Text
               style={{
                 textAlign: 'center',
-                fontSize: 22,
+                fontSize: 20,
                 fontWeight: '500',
                 color: '#615e5e',
                 fontFamily: 'NovaSlim-Regular',
@@ -186,7 +174,7 @@ function generateOptions(selectedComponent: any) {
       title: 'Rastrear mi compra',
       iconType: 'material-community',
       iconNameLeft: 'radar',
-      iconNameRight: 'arrow-top-right',
+      iconNameRight: 'chevron-right',
       iconSizeRight: 26,
       color: '#000000',
       onPress: () => selectedComponent('radar'),
@@ -217,6 +205,16 @@ function generateOptions(selectedComponent: any) {
       iconSizeRight: 26,
       color: '#21e462',
       onPress: () => selectedComponent('whatsapp'),
+    },
+
+    {
+      title: 'Enviar dinero',
+      iconType: 'material-community',
+      iconNameLeft: 'currency-usd',
+      iconNameRight: 'chevron-right',
+      iconSizeRight: 26,
+      color: '#008d0c',
+      onPress: () => selectedComponent('money'),
     },
     
     {

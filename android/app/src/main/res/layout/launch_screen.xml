@@ -7,9 +7,9 @@
     android:orientation="vertical">
 
     <FrameLayout
-        android:layout_width="294dp"
-        android:layout_height="222dp"
-        android:background="@drawable/logo_splash">
+        android:layout_width="277dp"
+        android:layout_height="307dp"
+        android:background="@drawable/slogan_baria_no_fondo">
 
     </FrameLayout>
 </LinearLayout>

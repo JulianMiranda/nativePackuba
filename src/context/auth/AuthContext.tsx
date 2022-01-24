@@ -1,56 +1,78 @@
 import React, {createContext, useEffect, useReducer} from 'react';
-/* 
-import auth from '@react-native-firebase/auth'; */
-/* import firebase from 'firebase'; */
-/* 
-import {getHeaders, getToken} from '../../api/getHeaders'; */
 
+import axios from 'axios';
 import api from '../../api/api';
 import {User, LoginData, RegisterData} from '../../interfaces/User.interface';
+import {CountryCode, Country} from '../../utils/countryTypes';
 
 import {authReducer, AuthState} from './authReducer';
 import messaging from '@react-native-firebase/messaging';
 import { Login } from '../../interfaces/Login.interface';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-/* 
-import {registerForPushNotifications} from '../../utils/notificationPermissions'; */
+import DeviceCountry from 'react-native-device-country';
 
 type AuthContextProps = {
   status: 'checking' | 'authenticated' | 'not-authenticated';
+  utility: 'choose' |'shop' | 'money';
   wait: boolean;
   user: User | null;
   errorMessage: string;
   signUpPhone: (name: string, user: any) => void;
+  deleteCode: (code: string) => void;
+  setCode: (code: string) => void;
+  setCountryCode: (countryCode: CountryCode) => void;
+  setCountryCallCode: (countryCallCode: string) => void;
   signInPhone: (resp: Login) => void;
   logOut: () => void;
   removeError: () => void;
   loginB: () => void;
+  setShop: () => void;
+  setMoney: () => void;
   sendPrice: number;
+  countryCode: CountryCode;
+  countryCallCode: string;
+  mn: number;
+  mlc: number;
 };
 
 const authInicialState: AuthState = {
   status: 'checking',
+  utility: 'choose',
   wait: false,
   user: null,
   errorMessage: '',
   sendPrice: 0,
+  countryCode: 'CU',
+  countryCallCode: '+53',
+  mn: 60,
+  mlc: 130
 };
 
 export const AuthContext = createContext({} as AuthContextProps);
 
 export const AuthProvider = ({children}: any) => {
   const [state, dispatch] = useReducer(authReducer, authInicialState);
-
+  
   useEffect(() => {
-    console.log('hacer authProv');
     
-    //auth().signOut();
+   DeviceCountry.getCountryCode()
+  .then((result: any) => {   
+    if(result && result.code){
+        const country = result.code.toUpperCase();
+      dispatch({type: 'setCountryCode', payload: country});
+    }
+    // 
+  })
+  .catch((e) => {
+    console.log(e);
+  });
+ },[])
+  useEffect(() => {
     checkToken();
   }, []);
 
-  async function requestUserPermission() {
+   async function requestUserPermission() {
     const authStatus = await messaging().requestPermission();
     const enabled =
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
@@ -67,15 +89,24 @@ export const AuthProvider = ({children}: any) => {
   }
 
   const checkToken = async (isLogin = false) => {
-   
    /*  const headers = await getHeaders(); */
     try {
-      const sendPrice = await api.get<number>('/orders/getPrice');
-      dispatch({type: 'setPrice', payload: sendPrice.data});
-    } catch (error) {
-      await AsyncStorage.removeItem('token');
-      dispatch({type: 'notAuthenticated'})
+      //const sendPrice = await api.get<number>('/orders/getPrice');
+   
+      const [sendPrice, mn,mlc] = await Promise.all([
+        api.get<number>('/orders/getPrice'),
+        api.get<number>('/orders/getMN'),
+        api.get<number>('/orders/getMLC')
+
+      ])
+     /*  const  sendPrice = await api.get<number>('/orders/getPrice'); */
+    
      
+      dispatch({type: 'setPrice', payload: sendPrice.data});
+      dispatch({type: 'setMN', payload: mn.data});
+      dispatch({type: 'setMLC', payload: mlc.data});
+    } catch (error) {
+      console.log('dio err el ip');  
     }
  
   
@@ -85,6 +116,7 @@ export const AuthProvider = ({children}: any) => {
   
     // Hay token
     try {
+
       const resp = await api.get<Login>('/tokenRenew');
         
       if (!resp.data.user.status) {
@@ -93,6 +125,7 @@ export const AuthProvider = ({children}: any) => {
       if (resp.status !== 200) {
         return dispatch({type: 'notAuthenticated'});
       }
+ 
       await AsyncStorage.setItem('token', resp.data.token);
       if (resp.data.user.role === 'JUN') {
         requestUserPermission();
@@ -145,23 +178,85 @@ export const AuthProvider = ({children}: any) => {
   };
 
   const logOut = async () => {
+    
     AsyncStorage.removeItem('token');
+    dispatch({type: 'utilityChoose'});
     dispatch({type: 'logout'});
+  };
+
+  const setCountryCode = async (country_code: CountryCode) => {
+    dispatch({type: 'setCountryCode', payload: country_code});
+  };
+
+  const setCountryCallCode = async (country_call_code: string) => {
+    dispatch({type: 'setCountryCallCode', payload: country_call_code});
   };
 
   const removeError = () => {
     dispatch({type: 'removeError'});
   };
 
+  const deleteCode = async (deletecode: string) => {
+
+    if(state.user){
+      const newCodes = state.user.codes.filter((code)=> code !== deletecode );     
+      try{
+        const resp = await api.put<Boolean>('/users/update/'+state.user?.id, {codes: newCodes}  );
+        const newUser = {
+          ...state.user,
+          codes: newCodes
+        };
+        dispatch({type: 'deleteCode',payload: {user: newUser} });
+      }catch(error){
+        console.log(error)
+      }
+     
+    }
+    
+  };
+  const setCode = async (setcode: string) => {
+
+    if(state.user){
+      const newCodes = [setcode ,...state.user.codes ]   
+      try{
+        const resp = await api.put<Boolean>('/users/update/'+state.user?.id, {codes: newCodes}  );
+        
+        const newUser = {
+          ...state.user,
+          codes: newCodes
+        };
+        dispatch({type: 'setCode',payload: {user: newUser} });
+      }catch(error){
+        console.log(error)
+      }
+     
+    }
+
+    
+  };
+  
+  const setShop = () => {
+    dispatch({type: 'utilityShop'});
+  };
+
+  const setMoney = () => {
+    dispatch({type: 'utilityMoney'});
+  };
   return (
     <AuthContext.Provider
       value={{
         ...state,
+        setCountryCode,
+        setCountryCallCode,
         logOut,
         removeError,
         signInPhone,
         signUpPhone,
         loginB,
+        deleteCode,
+        setCode,
+        setShop,
+        setMoney
       }}>
       {children}
     </AuthContext.Provider>
