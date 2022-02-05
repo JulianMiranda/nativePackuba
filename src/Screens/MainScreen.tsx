@@ -1,5 +1,5 @@
 import React, { useContext, useEffect} from 'react';
-import {Text, StyleSheet,TouchableOpacity, View, Image} from 'react-native';
+import {Text, StyleSheet,TouchableOpacity, View, Image, Dimensions} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import { AuthContext } from '../context/auth/AuthContext';
 import SplashScreen from 'react-native-splash-screen';
@@ -10,8 +10,9 @@ import { TopScreen } from '../components/TopScreen';
 
 
 
+const {height, width} = Dimensions.get('window');
 export const MainScreen = () => {
-  const navigation = useNavigation();
+ 
   const {setMoney, setShop} = useContext(AuthContext);
   const colorsBG = ['#2684FD', '#bae6f7'];
   useEffect(() => {
@@ -22,14 +23,15 @@ export const MainScreen = () => {
   
   return (
     <>
+    
     <TopScreen
         colors={colorsBG}
         text={`Elija un servicio`}
         backButton={false}
-        height={210}
+        height={height*0.22}
       />
    {/*  <Text style={{fontSize:32,alignSelf: 'center', marginTop: 70, marginBottom: -20}}>Elija un servicio</Text> */}
-     <View style={{flex:1, justifyContent: 'center', alignItems: 'center',}}>
+     <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
   
    
     <TouchableOpacity
