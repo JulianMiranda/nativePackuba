@@ -1,326 +1,298 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useRef, useState, useContext} from 'react';
 import {
   StyleSheet,
   View,
   Text,
   ScrollView,
+  Animated,
+  Dimensions,
   TouchableOpacity,
-  Platform,
-  Alert,
-  Linking,
-  TextInput,
-  Image,
 } from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {SingleSubcategory} from '../../components/SingleSubcategory';
+import {ModalComponent} from '../../components/ModalComponent';
+import {useShop} from '../../hooks/useShop';
+import {AnimatedProgress} from '../../components/AnimatedProgress';
+import {ShopStepOne} from '../../components/ShopStepOne';
+import {ShopStepTwo} from '../../components/ShopStepTwo';
+import {ShopStepThree} from '../../components/ShopStepThree';
 import {ShopContext} from '../../context/shop/ShopContext';
-import {ThemeContext} from '../../context/theme/ThemeContext';
-import {HeaderTable} from '../../components/HeaderTable';
-import LinearGradient from 'react-native-linear-gradient';
-import {formatToCurrency} from '../../utils/formatToCurrency';
-import { ModalComponent } from '../../components/ModalComponent';
-import { AuthContext } from '../../context/auth/AuthContext';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useToast} from 'react-native-toast-notifications';
+import ScreenLoading from '../../components/LoadingSafe';
+import {useNavigation} from '@react-navigation/native';
+import {Modalize} from 'react-native-modalize';
+import {ShopSuccess} from '../../components/ShpSuccessComponent';
+import {AuthContext} from '../../context/auth/AuthContext';
 
+const {width} = Dimensions.get('window');
+export interface RellenoInterface {
+  noone: boolean;
+  refresco: boolean;
+  maquina: boolean;
+  golosina: boolean;
+  plantilla: boolean;
+  lapicero: boolean;
+}
 export const ShopScreen = () => {
   const {
-    theme: {colors},
-  } = useContext(ThemeContext);
-  const color = colors.primary;
+    isLoading,
+    openModal,
+    title,
+    body,
+    weigth,
+    cantPaqOS,
+    setOpenModal,
+    confirmModal,
+    total,
+    totalMoneyReCalc,
+    totalPaqReCalc,
+  } = useShop();
+
+  const [progress, setProgress] = useState(2);
+  const {car, makeShop, addCarLoading} = useContext(ShopContext);
+  const {prices} = useContext(AuthContext);
   const {top} = useSafeAreaInsets();
+  const toast = useToast();
+  const navigation = useNavigation();
+  const modalizeRef = useRef<Modalize>(null);
+  const [selectedCarnet, setSelectedCarnet] = useState<string[]>([]);
+  const [relleno, setRelleno] = useState<RellenoInterface>({
+    noone: false,
+    refresco: false,
+    maquina: false,
+    golosina: false,
+    plantilla: false,
+    lapicero: false,
+  });
 
-  const {car, message, emptyCar, makeShop, removeAlert} =
-    useContext(ShopContext);
-    const {sendPrice} = useContext(AuthContext);
-  const [total, setTotal] = useState(0);
-  const [openModal, setOpenModal] = useState(false);
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
-  const [handleOpt, setHandleOpt] = useState(0);
-  const [description, setDescription] = useState('');
-  const [isLoading, setisLoading] = useState(false);
-  
-  useEffect(() => {
-    let total = 0;
-    car.forEach(function (item) {
-      if(item.cantidad < 6){
-        const valor = item.cantidad * item.subcategory.price;
-        total += valor;
-      } else {
-        const valor = item.cantidad * item.subcategory.priceGalore;
-      total += valor;
+  const barWidth = useRef(new Animated.Value(0)).current;
+
+  const pressNavigate = () => {
+    modalizeRef.current?.close();
+    navigation.navigate('HomeScreen');
+  };
+
+  const handleButton = async () => {
+    if (progress === 2) {
+      const paquete = 1440 + (weigth - 1 - cantPaqOS.oneandhalfkgPrice * 1440);
+      if (paquete < 1300) {
+        toast.show('Completa el último paquete', {
+          type: 'normal',
+          placement: 'bottom',
+          duration: 3000,
+          style: {
+            justifyContent: 'center',
+            marginBottom: 150,
+            borderRadius: 50,
+            paddingHorizontal: 20,
+            backgroundColor: 'rgba(0,0,0,0.8)',
+          },
+          textStyle: {fontSize: 16},
+          animationType: 'zoom-in',
+        });
+
+        return;
       }
-      
-    });
-    setTotal(total);
-  }, [car]);
-
-  const confirmModal = ()=>{
-    switch (handleOpt) {
-      case 0:
-        emptyCarConfirmed();
-        break;
-      case 1:
-        makeShopConfirmed();
-        break;
-       
-      default:
-        break;
     }
-  }
-  const emptyCarConfirmed= () => {   
-    emptyCar();
-    setOpenModal(false);
-  }
+    if (progress >= 1) {
+      const newBarWith =
+        progress === 2
+          ? (width * 0.8) / progress - 20
+          : (width * 0.8) / progress - 50;
+      Animated.spring(barWidth, {
+        toValue: newBarWith,
+        bounciness: 0,
+        speed: 2,
+        useNativeDriver: false,
+      }).start();
+      setProgress(progress - 1);
+    } else {
+      const respShop = await makeShop(
+        total + totalMoneyReCalc,
+        '',
+        cantPaqOS,
+        totalPaqReCalc,
+        prices,
+        selectedCarnet,
+        relleno,
+      );
+      setProgress(2);
+      const newBarWith =
+        progress === 2
+          ? (width * 0.8) / progress - 20
+          : (width * 0.8) / progress - 50;
+      Animated.spring(barWidth, {
+        toValue: newBarWith,
+        bounciness: 0,
+        speed: 2,
+        useNativeDriver: false,
+      }).reset();
+      if (respShop) {
+        modalizeRef.current?.open();
 
-  const makeShopConfirmed= async() => { 
-    setisLoading(true); 
-    await makeShop(total, description);
-    setisLoading(false);
-    setOpenModal(false);
-            /* navigation.navigate('HomeScreen'); */
-            Linking.openURL(
-              'http://api.whatsapp.com/send?text=Hola 📦 *baría*, he realizado una compra!&phone=+593992918332',
-            );
-  }
-
-  const makeShopFunction = () => {
-
-    setHandleOpt(1);
-    setTitle('¡¡¡Gracias por su compra!!!');
-    setBody('Para confirmar contactaremos con un administrador');
-    setOpenModal(true);
-
+        /*  navigation.navigate('HomeScreen'); */
+      }
+    }
   };
-
-  const emptyCarConfirm = () => {
-    setHandleOpt(0);
-    setTitle('Vaciar carrito');
-    setBody('¿Está seguro que desea vaciar el carrito?');
-    setOpenModal(true);
-  
-  };
-
-  useEffect(() => {
-    if (message.length === 0) return;
-
-    Alert.alert('Paso obligatorio', message, [
-      {
-        text: 'No',
-        onPress: removeAlert,
-        style: 'destructive',
-      },
-      {
-        text: 'Sí',
-        onPress: () => {
-          removeAlert();
-          Linking.openURL(
-            'http://api.whatsapp.com/send?text=Este es un mensaje predetermidado&phone=+593995687985',
-          );
-        },
-      },
-    ]);
-  }, [message]);
 
   return (
     <>
-      <ScrollView style={{flex: 1, marginBottom: 120}}>
-        
-        <View
-          style={{
-            ...styles.headerContainer,
-            overflow: 'hidden',
-           
-          }}>
-          <LinearGradient
+      <View
+        style={{
+          ...styles.headerContainer,
+        }}>
+        {progress === 2 && (
+          <Text
             style={{
-              flex: 1,
-              width: '100%',
-            }}
-            
-            colors={[color, '#f7baba']}>
-            <Text
-              style={{
-                ...styles.titleList,
-                top: top + 40,
-              }}>
-              Mi Compra
-            </Text>
-          </LinearGradient>
-        </View>
-
-        
-        <View style={{marginLeft: 7, marginTop: 20}}>
-          <View>
-            <HeaderTable editHeader={'Quitar'} />
-          </View>
-          {car.map((item, index) => (
-            <SingleSubcategory
-              key={index.toString()}
-              item={item.subcategory}
-              root={'Shop'}
-              edit
-            />
-          ))}
-
-          {car.length < 1 ? (
-            <>
-            <Text
-              style={{
-                marginTop: 30,
-                marginBottom: 100,
-                marginLeft: 10,
-                fontSize: 22,
-                fontWeight: '400',
-                fontFamily: 'NovaSlim-Regular',
-                alignSelf: 'center',           
-              }}>
-              Carrito vacío 😦
-            </Text>
-            <Image source={require('../../assets/emtyCar.jpg')}
-				style={{height: 250, width: 250, alignSelf: 'center'}}/>
-            </>
-          ) : (
-            <>         
-            <TextInput onChangeText={setDescription} placeholder='Describa los detalles de su compra                                                                                     Ejemplo: Números, Colores, Marcas' multiline style={{backgroundColor: '#eeebeb',marginTop: 10, borderRadius: 8}}/>         
-              <View style={{flexDirection: 'row'}}>
-                <Text
-                  style={{
-                    marginTop: 30,
-                    marginLeft: 10,
-                    fontSize: 24,
-                    fontWeight: '400',
-                    fontFamily: 'NovaSlim-Regular',
-                  }}>
-                  Valor de compra:
-                </Text>
-                <Text
-                  style={{
-                    marginTop: 30,
-                    marginLeft: 10,
-                    fontSize: 26,
-                    fontWeight: '600',
-                    fontFamily: 'NovaSlim-Regular',
-                  }}>
-                  {formatToCurrency(total)}
-                </Text>
-               
-              </View>
-            </>
-          )}
-        </View>
-
-
-        {car.length > 0 && (
-        <View  style={{
-                    marginTop: 30,
-                    margin: 15,                    
-                    marginBottom: 20,
-                    padding: 10,
-                    borderRadius: 8,
-                    backgroundColor: '#dce8ff',
-
-                  }} >
-                <Text
-                  style={{
-                   
-                    marginLeft: 10,
-                    fontSize: 16,
-                    fontWeight: '400',
-                    fontFamily: 'NovaSlim-Regular',
-                  }}>
-                  *Para su envío, la compra se embalará en paquetes de 1.5 kg con un costo de ${sendPrice} por paquete.
-                </Text>
-                </View>
-        )}
-      </ScrollView>
-
-      {car.length > 0 && 
-      <>
-      <View style={styles.emptyButton}>      
-        <TouchableOpacity onPress={emptyCarConfirm}>
-        <Text style={{color: colors.card, fontFamily: 'NovaSlim-Regular', fontSize: 14}}>
-               Vaciar
+              ...styles.titleList,
+            }}>
+            Mi Compra
           </Text>
+        )}
+        {progress === 1 && (
+          <Text
+            style={{
+              ...styles.titleList,
+            }}>
+            Factura{' '}
+          </Text>
+        )}
+        {progress === 0 && (
+          <Text
+            style={{
+              ...styles.titleList,
+            }}>
+            Datos
+          </Text>
+        )}
+      </View>
+      {progress < 2 && (
+        <TouchableOpacity
+          onPress={() => setProgress(progress + 1)}
+          activeOpacity={0.8}
+          style={{
+            top: top + 20,
+            marginLeft: 10,
+            padding: 6,
+            backgroundColor: 'white',
+            borderRadius: 50,
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5,
+
+            position: 'absolute',
+            zIndex: 999999999,
+            left: 10,
+          }}>
+          <Icon name="arrow-back-outline" color={'black'} size={26} />
         </TouchableOpacity>
-      </View> 
-    
-      <View style={{...styles.shopButton, backgroundColor: colors.card ,marginLeft: 50}}>
-      <TouchableOpacity
-        activeOpacity={car.length < 1 ? 1 : 0.8}
-        onPress={car.length < 1 ? () => {} : makeShopFunction}>
-        <Text style={{color: 'white', fontFamily: 'NovaSlim-Regular', fontSize: 14}}>
-               Comprar
-        </Text>
-      </TouchableOpacity>
-    </View>
-    </>
-      }
-      <ModalComponent title={title} body={body} openModal={openModal} isLoading={isLoading} setOpenModal={setOpenModal} onConfirmModal={confirmModal}/>
+      )}
+
+      {car.length > 0 && (
+        <>
+          <View
+            style={{
+              marginTop: 30,
+              marginBottom: 30,
+            }}>
+            <AnimatedProgress progress={progress} barWidth={barWidth} />
+          </View>
+        </>
+      )}
+      <ScrollView
+        style={{flex: 1}}
+
+        /*  scrollEventThrottle={16}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollY}}}],
+          {useNativeDriver: false},
+        )} */
+      >
+        {progress === 2 && (
+          <ShopStepOne
+            handleButton={handleButton}
+            relleno={relleno}
+            setRelleno={setRelleno}
+          />
+        )}
+        {progress === 1 && <ShopStepTwo handleButton={handleButton} />}
+        {progress === 0 && (
+          <ShopStepThree
+            handleButton={handleButton}
+            selectedCarnet={selectedCarnet}
+            setSelectedCarnet={setSelectedCarnet}
+          />
+        )}
+        <View style={{height: 80}} />
+      </ScrollView>
+      <ModalComponent
+        title={title}
+        body={body}
+        openModal={openModal}
+        isLoading={isLoading}
+        setOpenModal={setOpenModal}
+        onConfirmModal={confirmModal}
+      />
+      {addCarLoading && (
+        <View style={styles.loadingContainer}>
+          <ScreenLoading size={32} text="" />
+        </View>
+      )}
+      <Modalize ref={modalizeRef}>
+        <ShopSuccess pressNavigate={pressNavigate} />
+      </Modalize>
     </>
   );
 };
 
 const styles = StyleSheet.create({
+  animatedHeader: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#FFB0A5',
+    alignItems: 'center',
+  },
   headerContainer: {
-    height: 170,
+    backgroundColor: '#FFB0A5',
+    height: 130,
+    overflow: 'hidden',
     zIndex: 999,
     alignItems: 'center',
-    borderBottomRightRadius: Platform.OS === 'ios' ? 1000 : 100,
-    borderBottomLeftRadius: 0,
   },
-
   titleList: {
     color: 'white',
-    fontFamily: 'NovaSlim-Regular',
+    alignSelf: 'center',
+    marginTop: 50,
     fontSize: 40,
-    alignSelf: 'flex-start',
-    left: 70,
   },
-  itemContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 3,
-    marginHorizontal: 10,
-  },
-  name: {
-    fontSize: 16,
-    fontWeight: '300',
-    marginVertical: 3,
-  },
-  shopButton: {
-    width: 115,
-    justifyContent: 'center',
+  headerTitle: {
     position: 'absolute',
-    zIndex: 99999,
-    bottom: 75,
-    right: 50,
-    alignContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
-    borderRadius: 8, 
-   
-  },
-  emptyButton: {
-    width: 115,
     justifyContent: 'center',
-    position: 'absolute',
-    bottom: 75,
-    zIndex: 99999,
-    left: 50,
-    alignContent: 'space-between',
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#eeebeb',
-    padding: 10,
-    borderRadius: 8,
-  
+    width: '100%',
   },
-  tableTitle: {
-    marginTop: 30,
-    marginBottom: 15,
-    marginLeft: 10,
-    fontSize: 26,
-    fontWeight: '600',
+  textTitle: {
+    color: 'white',
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+  loadingContainer: {
+    zIndex: 9999999,
+    position: 'absolute',
+    flex: 1,
+    top: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    height: '100%',
+    width: '100%',
   },
 });

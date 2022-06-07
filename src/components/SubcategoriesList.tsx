@@ -11,9 +11,9 @@ interface Props {
 
 export const SubcategoriesList = ({subcategories}: Props) => {
   const {car, setItem} = useContext(ShopContext);
-  const idsIncludes=[''];
+  const idsIncludes = [''];
   car.map(({subcategory}) => {
-    idsIncludes.push(subcategory.id)
+    idsIncludes.push(subcategory.id);
   });
   return (
     <View
@@ -23,11 +23,15 @@ export const SubcategoriesList = ({subcategories}: Props) => {
         marginLeft: 10,
         marginBottom: 70,
       }}>
-     
       <HeaderTable editHeader={'Añadir'} />
 
       {subcategories.map((item, index) => (
-        <SingleSubcategory key={index.toString()} item={item} root={'Subca'} edit={idsIncludes.includes(item.id)} />
+        <SingleSubcategory
+          key={index.toString()}
+          item={item}
+          root={'Subca'}
+          edit={idsIncludes.includes(item.id)}
+        />
       ))}
     </View>
   );

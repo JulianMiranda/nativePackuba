@@ -1,20 +1,22 @@
 import React, {createContext, useEffect, useReducer} from 'react';
 
-import axios from 'axios';
 import api from '../../api/api';
-import {User, LoginData, RegisterData} from '../../interfaces/User.interface';
-import {CountryCode, Country} from '../../utils/countryTypes';
+import {User} from '../../interfaces/User.interface';
+import {CountryCode} from '../../utils/countryTypes';
+
+import PushNotification from 'react-native-push-notification';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 import {authReducer, AuthState} from './authReducer';
-import messaging from '@react-native-firebase/messaging';
-import { Login } from '../../interfaces/Login.interface';
+import {Login} from '../../interfaces/Login.interface';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DeviceCountry from 'react-native-device-country';
+import {Prices, PricesResponse} from '../../interfaces/Prices.interface';
 
 type AuthContextProps = {
-  status: 'checking' | 'authenticated' | 'not-authenticated';
-  utility: 'choose' |'shop' | 'money';
+  status: 'checking' | 'authenticated' | 'not-authenticated' | 'not-internet';
+  utility: 'choose' | 'shop' | 'money';
   wait: boolean;
   user: User | null;
   errorMessage: string;
@@ -29,11 +31,11 @@ type AuthContextProps = {
   loginB: () => void;
   setShop: () => void;
   setMoney: () => void;
-  sendPrice: number;
+  refreshApp: () => void;
+  updateReciveNotifications: (user: User) => void;
+  prices: Prices;
   countryCode: CountryCode;
   countryCallCode: string;
-  mn: number;
-  mlc: number;
 };
 
 const authInicialState: AuthState = {
@@ -42,94 +44,72 @@ const authInicialState: AuthState = {
   wait: false,
   user: null,
   errorMessage: '',
-  sendPrice: 0,
   countryCode: 'CU',
   countryCallCode: '+53',
-  mn: 60,
-  mlc: 130
+  prices: {
+    mlc: 125,
+    mn: 100,
+    oneandhalfkgPrice: 21,
+    twokgPrice: 25,
+    threekgPrice: 30,
+    fourkgPrice: 37,
+    fivekgPrice: 46,
+    sixkgPrice: 52,
+    sevenkgPrice: 58,
+    eigthkgPrice: 61,
+    ninekgPrice: 70,
+    tenkgPrice: 80,
+  },
 };
 
 export const AuthContext = createContext({} as AuthContextProps);
 
 export const AuthProvider = ({children}: any) => {
   const [state, dispatch] = useReducer(authReducer, authInicialState);
-  
+
   useEffect(() => {
-    
-   DeviceCountry.getCountryCode()
-  .then((result: any) => {   
-    if(result && result.code){
-        const country = result.code.toUpperCase();
-      dispatch({type: 'setCountryCode', payload: country});
-    }
-    // 
-  })
-  .catch((e) => {
-    console.log(e);
-  });
- },[])
+    DeviceCountry.getCountryCode()
+      .then((result: any) => {
+        if (result && result.code) {
+          const country = result.code.toUpperCase();
+          dispatch({type: 'setCountryCode', payload: country});
+        }
+        //
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }, []);
   useEffect(() => {
     checkToken();
   }, []);
 
-   async function requestUserPermission() {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-    const fcmToken = await messaging().getToken();
-    if (fcmToken) {
-      console.log('FCM', fcmToken);
-    }
-
-    if (enabled) {
-      console.log('Authorization status:', authStatus);
-    }
-  }
-
   const checkToken = async (isLogin = false) => {
-   /*  const headers = await getHeaders(); */
+    /*  const headers = await getHeaders(); */
     try {
-      //const sendPrice = await api.get<number>('/orders/getPrice');
-   
-      const [sendPrice, mn,mlc] = await Promise.all([
-        api.get<number>('/orders/getPrice'),
-        api.get<number>('/orders/getMN'),
-        api.get<number>('/orders/getMLC')
+      const prices = await api.get<PricesResponse>('/prices/getPrices');
+      console.log(prices.data.prices);
 
-      ])
-     /*  const  sendPrice = await api.get<number>('/orders/getPrice'); */
-    
-     
-      dispatch({type: 'setPrice', payload: sendPrice.data});
-      dispatch({type: 'setMN', payload: mn.data});
-      dispatch({type: 'setMLC', payload: mlc.data});
+      dispatch({type: 'setPrices', payload: prices.data.prices});
     } catch (error) {
-      console.log('dio err el ip');  
+      console.log('dio err el ip');
     }
- 
-  
-   const token = await AsyncStorage.getItem('token');
+
+    const token = await AsyncStorage.getItem('token');
     // No token, no autenticado
     if (!token) return dispatch({type: 'notAuthenticated'});
-  
+
     // Hay token
     try {
-
       const resp = await api.get<Login>('/tokenRenew');
-        
+
       if (!resp.data.user.status) {
         return dispatch({type: 'notAuthenticated'});
       }
       if (resp.status !== 200) {
         return dispatch({type: 'notAuthenticated'});
       }
- 
       await AsyncStorage.setItem('token', resp.data.token);
-      if (resp.data.user.role === 'JUN') {
-        requestUserPermission();
-      }
 
       dispatch({
         type: 'signUp',
@@ -138,14 +118,44 @@ export const AuthProvider = ({children}: any) => {
         },
       });
     } catch (error) {
-      return dispatch({type: 'notAuthenticated'});
+      console.log(error.message);
+      if (error.message === 'Network Error') {
+        dispatch({type: 'notInternet'});
+      }
+
+      // return dispatch({type: 'notAuthenticated'});
     }
   };
 
   const signInPhone = async (resp: Login) => {
     try {
       dispatch({type: 'initCheck'});
-     
+      PushNotification.configure({
+        onRegister: async function (token) {
+          if (token.token) {
+            console.log('TOKEN:', token);
+
+            await api.put(`/users/update/${resp.user!.id}`, {
+              notificationTokens: token.token,
+            });
+          }
+        },
+
+        onRegistrationError: function (err) {
+          console.error(err.message, err);
+        },
+
+        permissions: {
+          alert: true,
+          badge: true,
+          sound: true,
+        },
+
+        popInitialNotification: true,
+
+        requestPermissions: true,
+      });
+
       checkToken(true);
     } catch (error) {
       dispatch({
@@ -158,13 +168,34 @@ export const AuthProvider = ({children}: any) => {
   const signUpPhone = async (name: string, user: any) => {
     dispatch({type: 'initCheck'});
     try {
-      api.put<Login>(
-        'users/update/'+user.id,
-        {name}
-      ).then(async(resp)=> {
+      PushNotification.configure({
+        onRegister: async function (token) {
+          if (token.token) {
+            console.log('TOKEN:', token);
+
+            await api.put(`/users/update/${user.id}`, {
+              notificationTokens: token.token,
+            });
+          }
+        },
+
+        onRegistrationError: function (err) {
+          console.error(err.message, err);
+        },
+
+        permissions: {
+          alert: true,
+          badge: true,
+          sound: true,
+        },
+
+        popInitialNotification: true,
+
+        requestPermissions: true,
+      });
+      api.put<Login>('users/update/' + user.id, {name}).then(() => {
         checkToken(true);
       });
-    
     } catch (error) {
       dispatch({
         type: 'addError',
@@ -178,8 +209,7 @@ export const AuthProvider = ({children}: any) => {
   };
 
   const logOut = async () => {
-    
-    AsyncStorage.removeItem('token');
+    await AsyncStorage.removeItem('token');
     dispatch({type: 'utilityChoose'});
     dispatch({type: 'logout'});
   };
@@ -197,50 +227,55 @@ export const AuthProvider = ({children}: any) => {
   };
 
   const deleteCode = async (deletecode: string) => {
-
-    if(state.user){
-      const newCodes = state.user.codes.filter((code)=> code !== deletecode );     
-      try{
-        const resp = await api.put<Boolean>('/users/update/'+state.user?.id, {codes: newCodes}  );
+    if (state.user) {
+      const newCodes = state.user.codes.filter(code => code !== deletecode);
+      try {
+        await api.put<Boolean>('/users/update/' + state.user?.id, {
+          codes: newCodes,
+        });
         const newUser = {
           ...state.user,
-          codes: newCodes
+          codes: newCodes,
         };
-        dispatch({type: 'deleteCode',payload: {user: newUser} });
-      }catch(error){
-        console.log(error)
+        dispatch({type: 'deleteCode', payload: {user: newUser}});
+      } catch (error) {
+        console.log(error);
       }
-     
     }
-    
   };
   const setCode = async (setcode: string) => {
+    if (state.user) {
+      const newCodes = [setcode, ...state.user.codes];
+      try {
+        await api.put<Boolean>('/users/update/' + state.user?.id, {
+          codes: newCodes,
+        });
 
-    if(state.user){
-      const newCodes = [setcode ,...state.user.codes ]   
-      try{
-        const resp = await api.put<Boolean>('/users/update/'+state.user?.id, {codes: newCodes}  );
-        
         const newUser = {
           ...state.user,
-          codes: newCodes
+          codes: newCodes,
         };
-        dispatch({type: 'setCode',payload: {user: newUser} });
-      }catch(error){
-        console.log(error)
+        dispatch({type: 'setCode', payload: {user: newUser}});
+      } catch (error) {
+        console.log(error);
       }
-     
     }
-
-    
   };
-  
+
   const setShop = () => {
     dispatch({type: 'utilityShop'});
   };
 
+  const refreshApp = () => {
+    checkToken();
+  };
+
   const setMoney = () => {
     dispatch({type: 'utilityMoney'});
+  };
+
+  const updateReciveNotifications = (user: User) => {
+    dispatch({type: 'updateReciveNotifications', payload: user});
   };
   return (
     <AuthContext.Provider
@@ -256,7 +291,9 @@ export const AuthProvider = ({children}: any) => {
         deleteCode,
         setCode,
         setShop,
-        setMoney
+        setMoney,
+        refreshApp,
+        updateReciveNotifications,
       }}>
       {children}
     </AuthContext.Provider>
