@@ -6,16 +6,23 @@ import {
   TouchableOpacity,
   Linking,
   ScrollView,
-  Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {AuthContext} from '../context/auth/AuthContext';
 import {ShopContext} from '../context/shop/ShopContext';
-import { TandC } from './TandC';
-import { ModalComponent } from './ModalComponent';
+import {ModalComponent} from './ModalComponent';
 
-type Key = 'historial' | 'whatsapp' | 'logout' | 'about' | 'radar'| 'app'| 'money';
+type Key =
+  | 'historial'
+  | 'whatsapp'
+  | 'logout'
+  | 'about'
+  | 'radar'
+  | 'app'
+  | 'money'
+  | 'prices'
+  | 'token';
 
 export default function SettingsOptions() {
   const navigation = useNavigation();
@@ -27,86 +34,86 @@ export default function SettingsOptions() {
   const [body, setBody] = useState('');
   const [handleOpt, setHandleOpt] = useState(0);
 
-  const confirmModal = ()=>{
+  const confirmModal = () => {
     switch (handleOpt) {
       case 0:
         closeSesion();
         break;
-        case 1:
+      case 1:
         redirectWhatsapp();
-          break;
-        case 2:
-          redirectCorreo();
-          break;
+        break;
+      case 2:
+        redirectCorreo();
+        break;
       default:
         break;
     }
-  }
+  };
 
-  const closeSesion= () => {
-    setOpenModal(false)
+  const closeSesion = async () => {
+    setOpenModal(false);
+    await emptyCar();
     logOut();
-    emptyCar();
-  }
+  };
 
-  const redirectWhatsapp= () => {
-    setOpenModal(false)
+  const redirectWhatsapp = () => {
+    setOpenModal(false);
     Linking.openURL(
-      'http://api.whatsapp.com/send?text=Hola 📦 *baría*, me podría ayudar?&phone=+593992918332',
-    )
-  }
+      'http://api.whatsapp.com/send?text=Hola 📦 *baría*, me podría ayudar?&phone=+593995687985',
+    );
+  };
 
-  const redirectCorreo= () => {
-    setOpenModal(false)
-    Linking.openURL(
-      'https://www.correos.cu/rastreador-de-envios/',
-    )
-  }
+  const redirectCorreo = () => {
+    setOpenModal(false);
+    Linking.openURL('https://www.correos.cu/rastreador-de-envios/');
+  };
 
   const sinOut = () => {
     setHandleOpt(0);
     setTitle('Cerrar sesión');
-    setBody('¿Estás seguro que deseas cerrar sesión?');
+    setBody('¿Deseas cerrar sesión?');
     setOpenModal(true);
   };
 
   const rastrearCompra = () => {
     setHandleOpt(2);
     setTitle('Rastrear mi Compra');
-    setBody('¿Desea ir a la página de Correos de Cuba?');
+    setBody('¿Desea visitar Correos de Cuba?');
     setOpenModal(true);
-    };
+  };
 
-    const irWhatsApp = () => {
-      setHandleOpt(1);
-      setTitle('Contáctanos vía WhatsApp');
-      setBody('¿Necesita ayuda de un administrador?');
-      setOpenModal(true);
-
-    };
+  const irWhatsApp = () => {
+    setHandleOpt(1);
+    setTitle('Contáctanos vía WhatsApp');
+    setBody('¿Necesita ayuda de baría?');
+    setOpenModal(true);
+  };
   const selectedComponent = (key: Key) => {
     switch (key) {
-      case 'historial':
-        navigation.navigate('OrdersScreen');
+      case 'token':
+        navigation.navigate('NotificationScreen');
+        break;
+      case 'prices':
+        navigation.navigate('PricesScreen');
         break;
       case 'about':
         navigation.navigate('TandCScreen');
         break;
-        case 'app':
-          navigation.navigate('AppScreen');
-          break;
+      case 'app':
+        navigation.navigate('AppScreen');
+        break;
       case 'whatsapp':
         irWhatsApp();
-        
+
         break;
-        case 'radar':
-          //navigation.navigate('TrackScreen');
-          rastrearCompra();
+      case 'radar':
+        //navigation.navigate('TrackScreen');
+        rastrearCompra();
         break;
 
-        case 'money':
-          setMoney();
-          break;
+      case 'money':
+        setMoney();
+        break;
 
       case 'logout':
         sinOut();
@@ -118,43 +125,62 @@ export default function SettingsOptions() {
   return (
     <ScrollView>
       {menuOptions.map((menu, index) => (
-        <View
-          key={index.toString()}
-          style={{flexDirection: 'row', marginVertical: 10, marginLeft: 10}}>
-          <Icon name={menu.iconNameLeft} color={menu.color} size={32} />
-          <TouchableOpacity
-            onPress={menu.onPress}
+        <View key={index.toString()}>
+          <View
             style={{
-              width: '80%',
-              alignItems: 'flex-start',
-              justifyContent: 'center',
+              height: 1,
+              width: '90%',
+              alignSelf: 'center',
+              backgroundColor: '#f1f1f1',
+            }}
+          />
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingVertical: 10,
               marginLeft: 10,
             }}>
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: 20,
-                fontWeight: '500',
-                color: '#615e5e',
-                fontFamily: 'NovaSlim-Regular',
-              }}>
-              {menu.title}
-            </Text>
-          </TouchableOpacity>
-          {menu.iconNameLeft !== 'power' && (
+            <Icon name={menu.iconNameLeft} color={menu.color} size={28} />
             <TouchableOpacity
               onPress={menu.onPress}
-              style={{alignItems: 'center', justifyContent: 'center'}}>
-              <Icon
-                name={menu.iconNameRight}
-                color="#ccc"
-                size={menu.iconSizeRight}
-              />
+              style={{
+                width: '80%',
+                alignItems: 'flex-start',
+                justifyContent: 'center',
+                marginLeft: 10,
+              }}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 20,
+                  fontWeight: '500',
+                  color: '#615e5e',
+                }}>
+                {menu.title}
+              </Text>
             </TouchableOpacity>
-          )}
+            {menu.iconNameLeft !== 'power' && (
+              <TouchableOpacity
+                onPress={menu.onPress}
+                style={{alignItems: 'center', justifyContent: 'center'}}>
+                <Icon
+                  name={menu.iconNameRight}
+                  color="#ccc"
+                  size={menu.iconSizeRight}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
       ))}
-      <ModalComponent isLoading={false} title={title} body={body} openModal={openModal} setOpenModal={setOpenModal} onConfirmModal={confirmModal}/>
+      <ModalComponent
+        isLoading={false}
+        title={title}
+        body={body}
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        onConfirmModal={confirmModal}
+      />
     </ScrollView>
   );
 }
@@ -162,13 +188,22 @@ export default function SettingsOptions() {
 function generateOptions(selectedComponent: any) {
   return [
     {
-      title: 'Ver historial de compras',
+      title: 'Precios envíos',
       iconType: 'material-community',
-      iconNameLeft: 'history',
+      iconNameLeft: 'cube-send',
       iconNameRight: 'chevron-right',
       iconSizeRight: 32,
-      color: '#2684FD',
-      onPress: () => selectedComponent('historial'),
+      color: '#EE23C0',
+      onPress: () => selectedComponent('prices'),
+    },
+    {
+      title: 'Notificaciones',
+      iconType: 'material-community',
+      iconNameLeft: 'bell',
+      iconNameRight: 'chevron-right',
+      iconSizeRight: 32,
+      color: '#FF2E00',
+      onPress: () => selectedComponent('token'),
     },
     {
       title: 'Rastrear mi compra',
@@ -207,7 +242,7 @@ function generateOptions(selectedComponent: any) {
       onPress: () => selectedComponent('whatsapp'),
     },
 
-    {
+    /* {
       title: 'Enviar dinero',
       iconType: 'material-community',
       iconNameLeft: 'currency-usd',
@@ -215,8 +250,8 @@ function generateOptions(selectedComponent: any) {
       iconSizeRight: 26,
       color: '#008d0c',
       onPress: () => selectedComponent('money'),
-    },
-    
+    }, */
+
     {
       title: 'Cerrar sesión',
       iconType: 'material-community',

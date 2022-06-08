@@ -113,10 +113,10 @@ export const HomeScreen = () => {
           source={require('../../assets/bariaPH.png')}
           style={{
             alignSelf: 'center',
-            marginTop: top + 6,
-            height: 45,
+            marginTop: top + 5,
+            height: 37,
             width: 100,
-            marginBottom: -2,
+            marginBottom: 5,
           }}
         />
       </View>
@@ -132,7 +132,6 @@ export const HomeScreen = () => {
             style={{
               ...homeStyles.carouselTitles,
               marginLeft: 10,
-              fontFamily: 'NovaSlim-Regular',
             }}>
             Categorías
           </Text>
@@ -161,7 +160,6 @@ export const HomeScreen = () => {
                   fontSize: 24,
                   fontWeight: 'bold',
                   alignSelf: 'center',
-                  fontFamily: 'NovaSlim-Regular',
                 }}>
                 REBAJAS
               </Text>

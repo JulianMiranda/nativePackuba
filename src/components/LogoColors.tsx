@@ -13,7 +13,6 @@ export const LogoColors = () => {
 };
 const styles = StyleSheet.create({
   text: {
-    fontFamily: 'Berlin Sans FB Demi',
     fontSize: 36,
   },
 });
