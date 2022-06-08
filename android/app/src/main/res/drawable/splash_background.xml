@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:drawable="@drawable/gradient"/>
-    <item android:drawable="@drawable/barianofondo"
+    <item android:drawable="@drawable/logo_splash_full"
         android:width="200dp"
         android:height="200dp"
         android:gravity="center"

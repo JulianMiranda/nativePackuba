@@ -110,7 +110,7 @@ export const HomeScreen = () => {
           backgroundColor: 'rgba(255,255,255,0.92)',
         }}>
         <Image
-          source={require('../../assets/bariaPH.png')}
+          source={require('../../assets/pequenonofondo.png')}
           style={{
             alignSelf: 'center',
             marginTop: top + 5,
