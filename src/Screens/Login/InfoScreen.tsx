@@ -17,7 +17,7 @@ export const InfoScreen = () => {
   return (
     <>
       <Image
-        source={require('../../assets/bariaInfo.png')}
+        source={require('../../assets/bariaInfo2.png')}
         style={{width: '100%', height: '100%'}}
       />
       <TouchableOpacity
