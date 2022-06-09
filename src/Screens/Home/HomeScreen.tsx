@@ -33,7 +33,7 @@ const {width, height} = Dimensions.get('window');
 export const HomeScreen = () => {
   const {top} = useSafeAreaInsets();
   const navigation = useNavigation();
-  const {user} = useContext(AuthContext);
+  const {user, updatePrices} = useContext(AuthContext);
   const {
     theme: {colors},
   } = useContext(ThemeContext);
@@ -57,6 +57,16 @@ export const HomeScreen = () => {
   }, [isLoading, user]);
 
   useEffect(() => {
+    if (!user?.notificationTokens) {
+      obteinToken();
+    } else if (user && user.notificationTokens.length < 0) {
+      obteinToken();
+    } else {
+      console.log('ya tiene token');
+    }
+  }, [user]);
+
+  useEffect(() => {
     PushNotification.configure({
       onNotification: async function (notification) {
         /*  console.log('notification.data.click_action', notification.data); */
@@ -65,6 +75,7 @@ export const HomeScreen = () => {
           notification.data.click_action === 'UPDATE_ENVIO_NOTIFICATION_CLICK'
         ) {
           console.log('navegar Precios');
+          updatePrices();
           navigation.navigate('Settings', {screen: 'PricesScreen'});
           /*   navigation.navigate('PricesScreen'); */
         }
@@ -97,6 +108,36 @@ export const HomeScreen = () => {
     });
   }, [navigation]);
 
+  const obteinToken = () => {
+    console.log('obteinToken 1ra vez');
+    PushNotification.configure({
+      onRegister: async function (token) {
+        if (token.token) {
+          console.log('TOKEN:', token);
+          try {
+            api.put(`/users/update/${user!.id}`, {
+              notificationTokens: token.token,
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      },
+      onRegistrationError: function (err) {
+        console.error(err.message, err);
+      },
+
+      permissions: {
+        alert: true,
+        badge: true,
+        sound: true,
+      },
+
+      popInitialNotification: true,
+
+      requestPermissions: true,
+    });
+  };
   return (
     <>
       {/* <SearchInputBar setOpenHeader={setOpenHeader} /> */}

@@ -32,6 +32,7 @@ type AuthContextProps = {
   setShop: () => void;
   setMoney: () => void;
   refreshApp: () => void;
+  updatePrices: () => void;
   updateReciveNotifications: (user: User) => void;
   prices: Prices;
   countryCode: CountryCode;
@@ -110,7 +111,6 @@ export const AuthProvider = ({children}: any) => {
         return dispatch({type: 'notAuthenticated'});
       }
       await AsyncStorage.setItem('token', resp.data.token);
-
       dispatch({
         type: 'signUp',
         payload: {
@@ -243,6 +243,12 @@ export const AuthProvider = ({children}: any) => {
       }
     }
   };
+
+  const updatePrices = async () => {
+    const prices = await api.get<PricesResponse>('/prices/getPrices');
+    dispatch({type: 'setPrices', payload: prices.data.prices});
+  };
+
   const setCode = async (setcode: string) => {
     if (state.user) {
       const newCodes = [setcode, ...state.user.codes];
@@ -294,6 +300,7 @@ export const AuthProvider = ({children}: any) => {
         setMoney,
         refreshApp,
         updateReciveNotifications,
+        updatePrices,
       }}>
       {children}
     </AuthContext.Provider>

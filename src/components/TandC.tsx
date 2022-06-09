@@ -9,7 +9,7 @@ import {
 import {AuthContext} from '../context/auth/AuthContext';
 
 export const TandC = () => {
-  const {sendPrice} = useContext(AuthContext);
+  const {prices} = useContext(AuthContext);
   return (
     <ScrollView>
       <Text style={{...styles.text, fontSize: 26}}>Estimado Cliente</Text>
@@ -18,8 +18,8 @@ export const TandC = () => {
         divididos en 10 cada dos meses.
       </Text>
       <Text style={{...styles.text, fontSize: 18}}>
-        • El peso máximo de cada paquete es de 1.50 kilogramos, con un costo de{' '}
-        {sendPrice} USD por paquete.
+        • El peso máximo de cada paquete de misceláneas es de 1.50 kilogramos,
+        con un costo de {prices.oneandhalfkgPrice} USD por paquete.
       </Text>
       <Text style={{...styles.text, fontSize: 18}}>
         • Los artículos que excedan los 1.50 kilogramos tienen un costo mayor de
@@ -36,15 +36,11 @@ export const TandC = () => {
       </Text>
       <Text style={{...styles.text, fontSize: 18}}>
         • Consideramos una compra por mayor para comercio a partir de seis (6)
-        piezas del mismo artículo.
+        piezas del mismo artículo, ó a partir de 5 paquetes en su pedido.
       </Text>
       <Text style={{...styles.text, fontSize: 18}}>
         • Al realizar compras por mayor las marcas, colores, números, tallas,
         etc, son surtidas.
-      </Text>
-      <Text style={{...styles.text, fontSize: 18}}>
-        • No disponemos de tiendas con productos, realizamos la compra bajo
-        pedido, por lo tanto, realizamos los encargos sin especificidades.
       </Text>
       <Text style={{...styles.text, fontSize: 18}}>
         • Las fotos exhibidas en nuestra app de ventas son referenciales, le
@@ -53,7 +49,7 @@ export const TandC = () => {
       </Text>
       <Text style={{...styles.text, fontSize: 18}}>
         • Una vez enviados sus paquetes se le enviarán los códigos de
-        seguimiento de sus paquetes de 24 horas a 72 horas laborables.
+        seguimiento de sus paquetes de manera instantánea.
       </Text>
       <Text style={{...styles.text, fontSize: 18}}>
         • Cada paquete tiene su código, es independiente a otro y así son
@@ -69,8 +65,8 @@ export const TandC = () => {
         posible.
       </Text>
       <Text style={{...styles.text, fontSize: 18}}>
-        • baría NO se hace responsable de sus envíos una vez entregados a
-        Aduanas de Cuba y sigan su curso de destino hasta su domicilio.
+        • baría se hace responsable de sus envíos, una vez entregados a Aduanas
+        de Cuba y sigan su curso de destino hasta su domicilio.
       </Text>
       <Text style={{...styles.text, fontSize: 18}}>
         • Algunos artículos pagan servicios de aduanas en la moneda del país
