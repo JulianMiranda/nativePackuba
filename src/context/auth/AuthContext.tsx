@@ -5,8 +5,6 @@ import {User} from '../../interfaces/User.interface';
 import {CountryCode} from '../../utils/countryTypes';
 
 import PushNotification from 'react-native-push-notification';
-import PushNotificationIOS from '@react-native-community/push-notification-ios';
-
 import {authReducer, AuthState} from './authReducer';
 import {Login} from '../../interfaces/Login.interface';
 
