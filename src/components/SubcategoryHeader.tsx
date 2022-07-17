@@ -35,7 +35,7 @@ export const SubcategoryHeader = ({id, name, image}: Props) => {
     useSubcategoryPaginated(id);
   const navigation = useNavigation<PropsNavigation>();
   const scrollY = useRef(new Animated.Value(0)).current;
-  console.log(height);
+
   const headerHeight = scrollY.interpolate({
     inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
     outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],

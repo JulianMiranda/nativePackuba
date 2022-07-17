@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
   Platform,
+  Dimensions,
 } from 'react-native';
 import {ShopContext} from '../../context/shop/ShopContext';
 import {RootStackParams} from '../../navigation/HomeStack';
@@ -24,7 +25,6 @@ import ScreenLoading from '../../components/LoadingSafe';
 import {BackButton} from '../../components/BackButton';
 import {AviablesColors} from '../../components/AviablesColors';
 import {PricesView} from '../../components/PricesView';
-import {Dimensions} from 'react-native';
 
 interface Props
   extends StackScreenProps<RootStackParams, 'SubcategoryScreen'> {}
