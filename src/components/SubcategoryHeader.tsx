@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Dimensions,
 } from 'react-native';
 import {useSubcategoryPaginated} from '../hooks/useSubcategoryPaginated';
 import {FadeInImage} from './FadeInImage';
@@ -16,8 +17,9 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParams} from '../navigation/HomeStack';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const HEADER_MAX_HEIGHT = 120;
-const HEADER_MIN_HEIGHT = 70;
+const {height} = Dimensions.get('screen');
+const HEADER_MAX_HEIGHT = height * 0.15;
+const HEADER_MIN_HEIGHT = height < 600 ? 50 : 70;
 const PROFILE_IMAGE_MAX_HEIGHT = 80;
 const PROFILE_IMAGE_MIN_HEIGHT = 40;
 interface Props {
@@ -33,7 +35,7 @@ export const SubcategoryHeader = ({id, name, image}: Props) => {
     useSubcategoryPaginated(id);
   const navigation = useNavigation<PropsNavigation>();
   const scrollY = useRef(new Animated.Value(0)).current;
-
+  console.log(height);
   const headerHeight = scrollY.interpolate({
     inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
     outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
@@ -54,7 +56,7 @@ export const SubcategoryHeader = ({id, name, image}: Props) => {
     extrapolate: 'clamp',
   });
   const headerZindex = scrollY.interpolate({
-    inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT, 120],
+    inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT, HEADER_MAX_HEIGHT],
     outputRange: [0, 0, 1000],
     extrapolate: 'clamp',
   });

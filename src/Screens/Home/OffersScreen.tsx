@@ -4,6 +4,7 @@ import React, {useRef} from 'react';
 import {
   ActivityIndicator,
   Animated,
+  Dimensions,
   FlatList,
   Image,
   Text,
@@ -15,8 +16,9 @@ import {SubcategoryDiscountCard} from '../../components/SubcategoryDiscountCard'
 import {useOffersPaginated} from '../../hooks/useOffersPaginated';
 import {RootStackParams} from '../../navigation/HomeStack';
 
-const HEADER_MAX_HEIGHT = 120;
-const HEADER_MIN_HEIGHT = 70;
+const {height} = Dimensions.get('screen');
+const HEADER_MAX_HEIGHT = height * 0.15;
+const HEADER_MIN_HEIGHT = height < 600 ? 50 : 70;
 const PROFILE_IMAGE_MAX_HEIGHT = 80;
 const PROFILE_IMAGE_MIN_HEIGHT = 40;
 
@@ -48,7 +50,7 @@ export const OffersScreen = () => {
     extrapolate: 'clamp',
   });
   const headerZindex = scrollY.interpolate({
-    inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT, 120],
+    inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT, HEADER_MAX_HEIGHT],
     outputRange: [0, 0, 1000],
     extrapolate: 'clamp',
   });

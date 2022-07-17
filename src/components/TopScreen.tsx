@@ -37,26 +37,12 @@ export const TopScreen = (props: Props) => {
           <Text
             style={{
               ...styles.mainName,
-              top: top + 35,
+              top: height * 0.4,
               alignSelf: 'center',
+              justifyContent: 'center',
             }}>
             {text}
           </Text>
-          {/* <LinearGradient
-          style={{
-            flex: 1,
-            width: '100%',
-          }}
-          colors={colors}>
-          <Text
-            style={{
-              ...styles.mainName,
-              top: top + 50,
-              alignSelf: 'center',
-            }}>
-            {text}
-          </Text>
-        </LinearGradient> */}
         </View>
       </View>
     </>
@@ -67,12 +53,9 @@ const styles = StyleSheet.create({
   headerContainer: {
     zIndex: 999,
     alignItems: 'center',
-    borderBottomRightRadius: Platform.OS === 'ios' ? 1000 : 100,
-    borderBottomLeftRadius: 0,
   },
   mainName: {
     color: 'white',
     fontSize: 40,
-    alignSelf: 'flex-start',
   },
 });

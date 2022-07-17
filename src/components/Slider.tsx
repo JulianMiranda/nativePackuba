@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet, useWindowDimensions} from 'react-native';
 import {Image, Image as PImage} from '../interfaces/Image.interface';
 import {SliderBox} from 'react-native-image-slider-box';
 
@@ -16,6 +16,8 @@ interface Item {
   };
 }
 
+const {width, height} = Dimensions.get('window');
+
 export const Slider = ({images, setIsVisible, setImageIndex}: Props) => {
   const slides = images.map(image => image.url);
 
@@ -23,7 +25,7 @@ export const Slider = ({images, setIsVisible, setImageIndex}: Props) => {
     <>
       <SliderBox
         images={slides}
-        sliderBoxHeight={400}
+        sliderBoxHeight={height * 0.45}
         onCurrentImagePressed={(item: any) => {
           setIsVisible(true);
           setImageIndex({url: slides[item], id: images[item].id});

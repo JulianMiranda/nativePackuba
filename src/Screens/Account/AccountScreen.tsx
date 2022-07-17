@@ -5,12 +5,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Dimensions,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {ThemeContext} from '../../context/theme/ThemeContext';
 import {TopScreen} from '../../components/TopScreen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+const {height} = Dimensions.get('screen');
 export const AccountScreen = () => {
   const {
     theme: {colors},
@@ -19,7 +21,7 @@ export const AccountScreen = () => {
 
   return (
     <>
-      <TopScreen text="Mi Perfil" backButton={false} height={170} />
+      <TopScreen text="Mi Perfil" backButton={false} height={height * 0.18} />
       <ScrollView>
         <View
           style={{

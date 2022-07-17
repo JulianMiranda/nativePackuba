@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     borderTopLeftRadius: 20,
     borderBottomLeftRadius: 20,
-
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -113,6 +112,7 @@ const styles = StyleSheet.create({
   },
   left: {fontSize: 22, fontWeight: 'bold', color: 'white'},
   numberContainer: {
+    overflow: 'hidden',
     backgroundColor: 'blue',
     borderWidth: 1,
     paddingHorizontal: 8,
@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
   },
   number: {fontSize: 18, fontWeight: '600'},
   addContainer: {
+    overflow: 'hidden',
     backgroundColor: 'white',
     borderColor: 'gray',
     paddingHorizontal: 12,

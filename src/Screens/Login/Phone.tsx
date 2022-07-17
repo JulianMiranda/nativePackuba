@@ -113,10 +113,13 @@ export default function PhoneNumber(props: any) {
             onPress={
               phoneNumber
                 ? () => {
+                    console.log('Press');
                     setLoading(true);
                     props.onSubmit(phoneNumber);
                   }
-                : () => {}
+                : () => {
+                    console.log('Press');
+                  }
             }>
             <Text style={loginStyles.textButton}>Continuar</Text>
             <Icon
@@ -132,7 +135,7 @@ export default function PhoneNumber(props: any) {
           Si continúas, es posible que recibas un SMS de verificación. Pueden
           aplicarse las tarifas de mensajes y datos
         </Text>
-        <MovilButtons />
+        {/* <MovilButtons /> */}
       </View>
     </>
   );
