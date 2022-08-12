@@ -10,7 +10,7 @@ export const useCategory = (id: string) => {
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
 
   const loadSubcategories = async () => {
-    const body = {      
+    const body = {
       filter: {category: ['=', id], status: ['=', true]},
       docsPerPage: 1000,
       population: [
@@ -40,7 +40,6 @@ export const useCategory = (id: string) => {
     } catch (error) {
       setIsLoading(false);
     }
-    
   };
 
   useEffect(() => {

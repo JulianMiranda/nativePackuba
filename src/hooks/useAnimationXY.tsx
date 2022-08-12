@@ -22,7 +22,7 @@ export const useAnimationXY = () => {
   };
 
   const startMovingPosition = (
-    initPosition: {x: number, y: number},
+    initPosition: {x: number; y: number},
     x: number = 25,
     y: number = 25,
     duration: number = 100,
@@ -30,13 +30,13 @@ export const useAnimationXY = () => {
     position.setValue(initPosition);
 
     Animated.timing(position, {
-      toValue: { x, y },
+      toValue: {x, y},
       duration,
       useNativeDriver: true,
       // easing: Easing.bounce
     }).start();
   };
- 
+
   return {
     opacity,
     position,

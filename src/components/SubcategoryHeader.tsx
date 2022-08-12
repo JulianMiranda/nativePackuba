@@ -16,7 +16,6 @@ import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParams} from '../navigation/HomeStack';
 import Icon from 'react-native-vector-icons/Ionicons';
-
 const {height} = Dimensions.get('screen');
 const HEADER_MAX_HEIGHT = height * 0.15;
 const HEADER_MIN_HEIGHT = height < 600 ? 50 : 70;

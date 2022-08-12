@@ -158,7 +158,6 @@ export const ModalEditCarnet = ({
         setIsLoading(true);
         const exist = await api.post('/carnets/getList', {
           filter: {
-          status: ['=', true],
             user: ['=', user?.id],
             carnet: ['=', datos.carnet],
           },

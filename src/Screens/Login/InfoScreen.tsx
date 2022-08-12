@@ -18,7 +18,7 @@ export const InfoScreen = () => {
     <>
       <Image
         source={require('../../assets/bariaInfo2.png')}
-        style={{width: '100%', height: '100%'}}
+        style={{width: '100%', height: '100%', resizeMode: 'stretch'}}
       />
       <TouchableOpacity
         style={{...styles.button, backgroundColor: colors.primary}}

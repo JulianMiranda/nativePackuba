@@ -31,6 +31,7 @@ interface Props
 
 interface PropsNavigation
   extends StackNavigationProp<RootStackParams, 'SubcategoryScreen'> {}
+
 const {height} = Dimensions.get('window');
 
 export const SubcategoryScreen = (props: Props) => {

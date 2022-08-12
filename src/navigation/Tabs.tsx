@@ -33,7 +33,10 @@ export const Tabs = () => {
               style={[
                 styles.xFillLine,
                 {
-                  backgroundColor: 'rgba(255,255,255,0.92)',
+                  backgroundColor:
+                    Platform.OS === 'ios'
+                      ? 'transparent'
+                      : 'rgba(255,255,255,0.92)',
                   overflow: 'hidden',
                   zIndex: -1,
                 },
@@ -54,8 +57,8 @@ export const Tabs = () => {
           backgroundColor:
             Platform.OS === 'android'
               ? 'rgba(255,255,255,0.92)'
-              : 'rgba(255,255,255,0.92)',
-          marginBottom: 4,
+              : 'transparent',
+          marginBottom: 0,
         },
         activeTintColor: colors.card,
       }}>
@@ -133,7 +136,8 @@ const styles = StyleSheet.create({
   },
   navigator: {
     borderTopWidth: 0,
-    backgroundColor: Platform.OS === 'ios' ? 'transparent' : 'transparent',
+    backgroundColor:
+      Platform.OS === 'ios' ? 'rgba(255,255,255,0.92)' : 'transparent',
     elevation: 30,
   },
   xFillLine: {

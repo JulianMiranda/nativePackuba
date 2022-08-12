@@ -23,8 +23,9 @@ import {useNavigation} from '@react-navigation/native';
 import {Modalize} from 'react-native-modalize';
 import {ShopSuccess} from '../../components/ShpSuccessComponent';
 import {AuthContext} from '../../context/auth/AuthContext';
+import {CheckWeigth} from '../../utils/checkWeigth';
 
-const {height, width} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 export interface RellenoInterface {
   noone: boolean;
   refresco: boolean;
@@ -47,6 +48,7 @@ export const ShopScreen = () => {
     totalMoneyReCalc,
     totalPaqReCalc,
   } = useShop();
+
   const [progress, setProgress] = useState(2);
   const {car, makeShop, addCarLoading} = useContext(ShopContext);
   const {prices} = useContext(AuthContext);
@@ -56,6 +58,7 @@ export const ShopScreen = () => {
   const scrollRef = useRef<any>();
   const modalizeRef = useRef<Modalize>(null);
   const [selectedCarnet, setSelectedCarnet] = useState<string[]>([]);
+  const [warning, setWarning] = useState<boolean>(true);
   const [relleno, setRelleno] = useState<RellenoInterface>({
     noone: false,
     refresco: false,
@@ -67,24 +70,27 @@ export const ShopScreen = () => {
 
   const barWidth = useRef(new Animated.Value(0)).current;
 
+  const pressNavigate = () => {
+    modalizeRef.current?.close();
+    navigation.navigate('HomeScreen');
+  };
   useEffect(() => {
     (progress === 1 || progress === 0) &&
       scrollRef.current.scrollTo({x: 0, y: 0, animated: true});
   }, [progress]);
 
-  const pressNavigate = () => {
-    modalizeRef.current?.close();
-    navigation.navigate('HomeScreen');
-  };
+  useEffect(() => {
+    setWarning(true);
+  }, [weigth]);
 
   const handleButton = async () => {
     if (progress === 2) {
-      const paquete = 1440 + (weigth - 1 - cantPaqOS.oneandhalfkgPrice * 1440);
-      if (paquete < 1300) {
-        toast.show('Completa el último paquete', {
+      const resp = CheckWeigth(weigth, cantPaqOS, warning, setWarning);
+      if (resp.problem) {
+        toast.show(resp.message, {
           type: 'normal',
           placement: 'bottom',
-          duration: 3000,
+          duration: 4000,
           style: {
             justifyContent: 'center',
             marginBottom: 150,
@@ -92,7 +98,10 @@ export const ShopScreen = () => {
             paddingHorizontal: 20,
             backgroundColor: 'rgba(0,0,0,0.8)',
           },
-          textStyle: {fontSize: 16},
+          textStyle: {
+            fontSize: 16,
+            alignSelf: 'center',
+          },
           animationType: 'zoom-in',
         });
 
@@ -170,6 +179,7 @@ export const ShopScreen = () => {
             Datos
           </Text>
         )}
+
         {progress < 2 && (
           <TouchableOpacity
             onPress={() => setProgress(progress + 1)}
@@ -187,6 +197,7 @@ export const ShopScreen = () => {
               shadowOpacity: 0.25,
               shadowRadius: 3.84,
               elevation: 5,
+
               position: 'absolute',
               bottom: 10,
               zIndex: 999999999,
@@ -196,7 +207,6 @@ export const ShopScreen = () => {
           </TouchableOpacity>
         )}
       </View>
-
       {car.length > 0 && (
         <>
           <View

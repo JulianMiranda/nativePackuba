@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {
   View,
   Image,
@@ -51,10 +51,8 @@ export const HomeScreen = () => {
   } = useHome();
 
   useEffect(() => {
-    if (!isLoading) {
-      SplashScreen.hide();
-    }
-  }, [isLoading, user]);
+    SplashScreen.hide();
+  }, [user]);
 
   useEffect(() => {
     if (!user?.notificationTokens) {
@@ -138,6 +136,7 @@ export const HomeScreen = () => {
       requestPermissions: true,
     });
   };
+
   return (
     <>
       {/* <SearchInputBar setOpenHeader={setOpenHeader} /> */}
@@ -154,10 +153,10 @@ export const HomeScreen = () => {
           source={require('../../assets/pequenonofondo.png')}
           style={{
             alignSelf: 'center',
-            marginTop: top + 5,
-            height: 37,
-            width: 100,
-            marginBottom: 5,
+            marginTop: top + 6,
+            height: 45,
+            width: 85,
+            resizeMode: 'contain',
           }}
         />
       </View>

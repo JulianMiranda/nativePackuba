@@ -4,12 +4,12 @@ import React, {useRef} from 'react';
 import {
   ActivityIndicator,
   Animated,
-  Dimensions,
   FlatList,
   Image,
   Text,
   TouchableOpacity,
   View,
+  Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {SubcategoryDiscountCard} from '../../components/SubcategoryDiscountCard';

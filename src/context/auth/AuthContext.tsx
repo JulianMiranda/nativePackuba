@@ -5,6 +5,8 @@ import {User} from '../../interfaces/User.interface';
 import {CountryCode} from '../../utils/countryTypes';
 
 import PushNotification from 'react-native-push-notification';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+
 import {authReducer, AuthState} from './authReducer';
 import {Login} from '../../interfaces/Login.interface';
 
@@ -109,6 +111,7 @@ export const AuthProvider = ({children}: any) => {
         return dispatch({type: 'notAuthenticated'});
       }
       await AsyncStorage.setItem('token', resp.data.token);
+      console.log('user', resp.data.user);
       dispatch({
         type: 'signUp',
         payload: {
@@ -125,6 +128,10 @@ export const AuthProvider = ({children}: any) => {
     }
   };
 
+  const updatePrices = async () => {
+    const prices = await api.get<PricesResponse>('/prices/getPrices');
+    dispatch({type: 'setPrices', payload: prices.data.prices});
+  };
   const signInPhone = async (resp: Login) => {
     try {
       dispatch({type: 'initCheck'});
@@ -241,12 +248,6 @@ export const AuthProvider = ({children}: any) => {
       }
     }
   };
-
-  const updatePrices = async () => {
-    const prices = await api.get<PricesResponse>('/prices/getPrices');
-    dispatch({type: 'setPrices', payload: prices.data.prices});
-  };
-
   const setCode = async (setcode: string) => {
     if (state.user) {
       const newCodes = [setcode, ...state.user.codes];

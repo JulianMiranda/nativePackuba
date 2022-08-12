@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {Dimensions, StyleSheet, useWindowDimensions} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {Image, Image as PImage} from '../interfaces/Image.interface';
 import {SliderBox} from 'react-native-image-slider-box';
 
@@ -15,7 +15,6 @@ interface Item {
     image: string;
   };
 }
-
 const {width, height} = Dimensions.get('window');
 
 export const Slider = ({images, setIsVisible, setImageIndex}: Props) => {

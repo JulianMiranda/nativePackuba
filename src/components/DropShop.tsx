@@ -64,8 +64,8 @@ export default class JDtest extends PureComponent {
             top: -JDDevice.getRpx(600),
             zIndex: 4,
             /*
-                                            2. Vincula el valor de la animación al atributo de estilo.
-                      * */
+                                             2. Vincula el valor de la animación al atributo de estilo.
+                       * */
             transform: [
               {
                 translateY: this.state.animValue.interpolate({

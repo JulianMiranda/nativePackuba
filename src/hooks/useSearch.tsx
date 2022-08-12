@@ -10,40 +10,39 @@ export const useSearch = (term: string) => {
   const [products, setProducts] = useState<Subcategory[]>([]);
 
   const loadSubcategories = async () => {
-    const body = {      
-                
-        docsPerPage:  10,
-        sort: "desc",
-        search: {text: term, fields: ["name"]},
-        population: [
-          {
-            path: 'category',
-            filter: {status: true},
-            fields: {
-              name: true,
-            },
+    const body = {
+      docsPerPage: 10,
+      sort: 'desc',
+      search: {text: term, fields: ['name']},
+      population: [
+        {
+          path: 'category',
+          filter: {status: true},
+          fields: {
+            name: true,
           },
-          {
-            path: 'images',
-            filter: {status: true},
-            fields: {
-              url: true,
-            },
+        },
+        {
+          path: 'images',
+          filter: {status: true},
+          fields: {
+            url: true,
           },
-        ],
-      };
-    
+        },
+      ],
+    };
+
     try {
-        api.post<SubcategoryResp>('/subcategories/getList',body)
-            
-        .then((response) => {
-            setProducts(response.data.data);
+      api
+        .post<SubcategoryResp>('/subcategories/getList', body)
+
+        .then(response => {
+          setProducts(response.data.data);
         });
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
     }
-    
   };
 
   /* useEffect(() => {
