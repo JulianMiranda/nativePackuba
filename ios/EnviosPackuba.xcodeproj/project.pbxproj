@@ -49,6 +49,7 @@
 		5ADBEDD7B3194A4F9BF54A05 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../src/assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		5B9F052D6374A97F70D0D0D1 /* Pods-EnviosPackuba-EnviosPackubaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EnviosPackuba-EnviosPackubaTests.release.xcconfig"; path = "Target Support Files/Pods-EnviosPackuba-EnviosPackubaTests/Pods-EnviosPackuba-EnviosPackubaTests.release.xcconfig"; sourceTree = "<group>"; };
 		5C70D27F25EA4E649F573CA5 /* Montserrat-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Thin.ttf"; path = "../src/assets/fonts/Montserrat-Thin.ttf"; sourceTree = "<group>"; };
+		5E3C9FFB28874B2D005A6B82 /* EnviosPackuba.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = EnviosPackuba.entitlements; path = EnviosPackuba/EnviosPackuba.entitlements; sourceTree = "<group>"; };
 		6DD43AD7F97E8C2A23BBD8F6 /* Pods-EnviosPackuba.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EnviosPackuba.debug.xcconfig"; path = "Target Support Files/Pods-EnviosPackuba/Pods-EnviosPackuba.debug.xcconfig"; sourceTree = "<group>"; };
 		75002D997FD247AE941C42A4 /* Montserrat-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBoldItalic.ttf"; path = "../src/assets/fonts/Montserrat-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		7C45D363D51346BF9D4C1BB9 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
@@ -120,6 +121,7 @@
 		13B07FAE1A68108700A75B9A /* EnviosPackuba */ = {
 			isa = PBXGroup;
 			children = (
+				5E3C9FFB28874B2D005A6B82 /* EnviosPackuba.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -523,8 +525,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = EnviosPackuba/EnviosPackuba.entitlements;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = X4598HARTA;
+				DEVELOPMENT_TEAM = C58QK2SKN9;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = EnviosPackuba/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -536,8 +540,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jmirandauriadev.bariaapp;
 				PRODUCT_NAME = EnviosPackuba;
+				PROVISIONING_PROFILE_SPECIFIER = "baria Profile";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -550,8 +555,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = EnviosPackuba/EnviosPackuba.entitlements;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = X4598HARTA;
+				DEVELOPMENT_TEAM = C58QK2SKN9;
 				INFOPLIST_FILE = EnviosPackuba/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -562,8 +569,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jmirandauriadev.bariaapp;
 				PRODUCT_NAME = EnviosPackuba;
+				PROVISIONING_PROFILE_SPECIFIER = "baria Profile";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

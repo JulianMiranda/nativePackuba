@@ -25,6 +25,8 @@ export const HomeStack = () => {
         component={HomeScreen}
         options={{
           headerShown: false,
+          headerTitle: 'HomeScreen',
+          headerBackTitleVisible: false,
           /* 	title: 'Home',
 					headerBackTitleVisible: false */
         }}
