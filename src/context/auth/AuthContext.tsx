@@ -119,9 +119,11 @@ export const AuthProvider = ({children}: any) => {
         },
       });
     } catch (error) {
-      console.log(error.message);
+      console.log(JSON.stringify(error));
       if (error.message === 'Network Error') {
         dispatch({type: 'notInternet'});
+      } else {
+        return dispatch({type: 'notAuthenticated'});
       }
 
       // return dispatch({type: 'notAuthenticated'});

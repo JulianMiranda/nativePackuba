@@ -15,7 +15,8 @@ export const CheckWeigth = (
     cantPaqOS.twentykgPrice === 0
       ? weigth
       : weigth - 20000 * cantPaqOS.twentykgPrice;
-  if (finalWeigth < 1300) {
+  console.log('finalWeigth', finalWeigth);
+  if (finalWeigth > 0 && finalWeigth < 1300) {
     return {
       problem: true,
       message: 'Su paquete debe tener al menos 1 500 gramos',
