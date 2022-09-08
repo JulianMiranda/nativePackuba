@@ -106,13 +106,14 @@ export const AuthProvider = ({children}: any) => {
   const checkToken = async (isLogin = false) => {
     /*  const headers = await getHeaders(); */
     try {
+      console.log('CheckToken Auth');
       const prices = await api.get<PricesResponse>('/prices/getPricesNoAuth');
       console.log(prices.data.prices);
 
       dispatch({type: 'setPrices', payload: prices.data.prices});
     } catch (error) {
       console.log(JSON.stringify(error));
-      console.log('dio err el ip');
+      console.log('dio err el ip PRices');
     }
 
     const token = await AsyncStorage.getItem('token');
@@ -147,8 +148,9 @@ export const AuthProvider = ({children}: any) => {
         dispatch({type: 'notInternet'});
       }
       if (error.message === 'Request failed with status code 503') {
+        console.log('Status code 503');
         await AsyncStorage.setItem('token', '');
-        dispatch({type: 'notAuthenticated'});
+        dispatch({type: 'invited'});
       }
       // return dispatch({type: 'notAuthenticated'});
     }

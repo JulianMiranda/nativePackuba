@@ -9,9 +9,9 @@ const baseURL = 'https://packuba.herokuapp.com/api';
 const api = axios.create({baseURL});
 
 api.interceptors.request.use(async config => {
- /*  const headers = await getHeaders();
+  /*  const headers = await getHeaders();
   const token = headers.get('x-token'); */
-  
+
   const token = await AsyncStorage.getItem('token');
 
   if (token)
